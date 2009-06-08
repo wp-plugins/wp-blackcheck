@@ -1,7 +1,7 @@
 === WP-BlackCheck ===
 Contributors: Stargazer
 Donate link: http://my.stargazer.at/wishlist/
-Tags: comment,spam,blacklist
+Tags: comments,spam,blacklist
 Requires at least: 2.6
 Tested up to: latest svn
 Stable tag: trunk

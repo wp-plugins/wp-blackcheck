@@ -2,14 +2,14 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.1
+ * @version 1.2
  */
 /*
 Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.1
+Version: 1.2
 Author URI: http://my.stargazer.at/
 
 Changelog:

@@ -14,6 +14,7 @@ Author URI: http://my.stargazer.at/
 
 Changelog:
 
+1.2 - Remove reported spam to prevent double reports
 1.1 - Added reporting
 1.0 - Simple check against the centralized blacklist
 
@@ -81,6 +82,8 @@ function check_akismet_queue() {
 		} else {
 		    echo '<li>Already known: '.$userip.'</li>';
 		}
+		// Removing the spam comments
+		$wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP=$userip");
 	    }
 	} 
 	

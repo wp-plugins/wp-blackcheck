@@ -35,6 +35,13 @@ innocent users to remove their IP from the blacklist via removal request.
 The Plugin does not prevent reading of your blog. But if a blocked IP tries to post a comment
 WP-BlackCheck will block it, displaying a link to the removal request form.
 
+= What happens if I am blacklisted? =
+I'd assume that spammers do not authenticate against your blog. The plugin will just act if
+you are not logged in
+
+= I am blacklisted! What now? =
+Just follow the link to http://www.stargazer.at/blacklist/ and follow the instructions
+
 == Screenshots ==
 none
 

@@ -2,18 +2,19 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.2
+ * @version 1.3
  */
 /*
 Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.2
+Version: 1.3
 Author URI: http://my.stargazer.at/
 
 Changelog:
 
+1.3 - If someone spams 3 times, it's most likely NOT an accident
 1.2 - Remove reported spam to prevent double reports
 1.1 - Added reporting
 1.0 - Simple check against the centralized blacklist
@@ -68,8 +69,8 @@ function check_akismet_queue() {
     $comments = $wpdb->get_results("SELECT comment_author_IP, COUNT(comment_author_IP) AS comment_per_ip FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
     if ($comments) {
 	foreach($comments as $comment) {
-	    // We're checking for if someone spammed us more than 5 times
-	    if ($comment->comment_per_ip > 5) {
+	    // We're checking for if someone spammed us more than 2 times 
+	    if ($comment->comment_per_ip > 2) {
 		$userip = $comment->comment_author_IP;
 		// prevent reporting listed hosts
 		$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
@@ -82,8 +83,8 @@ function check_akismet_queue() {
 		} else {
 		    echo '<li>Already known: '.$userip.'</li>';
 		}
-		// Removing the spam comments
-		$wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP=$userip");
+		// Removing the spam comments - doesn't work yet
+		// $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP=$userip");
 	    }
 	} 
 	

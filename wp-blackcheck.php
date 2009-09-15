@@ -69,8 +69,8 @@ function check_akismet_queue() {
     $comments = $wpdb->get_results("SELECT comment_author_IP, COUNT(comment_author_IP) AS comment_per_ip FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
     if ($comments) {
 	foreach($comments as $comment) {
-	    // We're checking for if someone spammed us more than 2 times 
-	    if ($comment->comment_per_ip > 2) {
+	    // We're checking for if someone spammed us (more) than 2 times 
+	    if ($comment->comment_per_ip > 1) {
 		$userip = $comment->comment_author_IP;
 		// prevent reporting listed hosts
 		$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));

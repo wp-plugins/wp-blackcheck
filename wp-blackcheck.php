@@ -9,11 +9,12 @@ Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.3
+Version: 1.4
 Author URI: http://my.stargazer.at/
 
 Changelog:
 
+1.4 - Changed Spamcount before reporting, empty quarantine now supported
 1.3 - If someone spams 3 times, it's most likely NOT an accident
 1.2 - Remove reported spam to prevent double reports
 1.1 - Added reporting
@@ -83,8 +84,8 @@ function check_akismet_queue() {
 		} else {
 		    echo '<li>Already known: '.$userip.'</li>';
 		}
-		// Removing the spam comments - doesn't work yet
-		// $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP=$userip");
+		// Empty the spam quarantine
+		$wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam'");
 	    }
 	} 
 	

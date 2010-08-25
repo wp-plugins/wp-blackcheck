@@ -2,18 +2,19 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.4
+ * @version 1.5
  */
 /*
 Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.4
+Version: 1.5
 Author URI: http://my.stargazer.at/
 
 Changelog:
 
+1.5 - Corrected messages, fixed comment IP querying
 1.4 - Changed Spamcount before reporting, empty quarantine now supported
 1.3 - If someone spams 3 times, it's most likely NOT an accident
 1.2 - Remove reported spam to prevent double reports
@@ -49,7 +50,7 @@ function do_check($request, $host, $path, $port = 80) {
 
 function blackcheck($comment) {
     if (!is_user_logged_in()) {
-	$userip = $comment['user_ip'];
+	$userip = $_SERVER['REMOTE_ADDR'];
 	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
 	$response = do_check($querystring, 'www.stargazer.at', '/blacklist/query.php');
 	
@@ -106,7 +107,7 @@ function blackcheck_report() {
     echo '</ul><p>Process finished.</p>';
   } else {
 ?> 
-  <p>By pressing this button you are only reporting the spammers IP adresses. You still have to delete the spam manually!</p>
+  <p>By pressing this button you are reporting the spammers IP adresses and cleaning out your comments.</p>
   <form name="blackcheck_form" action="" method="post">
    <p class="submit">
       <input type="hidden" name="submitted" />

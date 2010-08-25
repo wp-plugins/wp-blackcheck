@@ -2,7 +2,7 @@
 Contributors: Stargazer
 Donate link: http://my.stargazer.at/wishlist/
 Tags: comments,spam,blacklist
-Requires at least: 2.6
+Requires at least: 3.0
 Tested up to: latest svn
 Stable tag: trunk
 

@@ -2,7 +2,7 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.5
+ * @version 1.6
  */
 /*
 Plugin Name: WP-Blackcheck
@@ -14,6 +14,7 @@ Author URI: http://my.stargazer.at/
 
 Changelog:
 
+1.6 - Integrated Report Button into comments view
 1.5 - Corrected messages, fixed comment IP querying
 1.4 - Changed Spamcount before reporting, empty quarantine now supported
 1.3 - If someone spams 3 times, it's most likely NOT an accident
@@ -21,6 +22,21 @@ Changelog:
 1.1 - Added reporting
 1.0 - Simple check against the centralized blacklist
 
+
+    Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License, version 2, as 
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 
@@ -66,13 +82,25 @@ function blackcheck($comment) {
     }
 }
 
+function report_spam_button($comment_status) {
+        if ( 'approved' == $comment_status )
+                return;
+
+	if ( function_exists('plugins_url') )
+		$link = 'index.php?page=wp-blackcheck/wp-blackcheck.php';
+	echo "</div><div class='alignleft'><a class='button-secondary checkforspam' href='$link'>" . __('Report and Clean Spam') . "</a>";
+
+}
+add_action('manage_comments_nav', 'report_spam_button');
+
+
 function check_akismet_queue() {
     global $wpdb;
     $comments = $wpdb->get_results("SELECT comment_author_IP, COUNT(comment_author_IP) AS comment_per_ip FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
     if ($comments) {
 	foreach($comments as $comment) {
 	    // We're checking for if someone spammed us (more) than 2 times 
-	    if ($comment->comment_per_ip > 1) {
+	    if ($comment->comment_per_ip > 0) {
 		$userip = $comment->comment_author_IP;
 		// prevent reporting listed hosts
 		$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
@@ -96,33 +124,15 @@ function check_akismet_queue() {
 }
 
 
-function blackcheck_report() {
-?>
-<div class="wrap">
-  <h2>WP-BlackCheck</h2>
-<?php 
-  if(isset($_POST['submitted'])){
+function blackcheck_report($param) {
+    echo '<div class="wrap"><h2>WP-BlackCheck</h2>';
     echo '<ul>';
     check_akismet_queue();
-    echo '</ul><p>Process finished.</p>';
-  } else {
-?> 
-  <p>By pressing this button you are reporting the spammers IP adresses and cleaning out your comments.</p>
-  <form name="blackcheck_form" action="" method="post">
-   <p class="submit">
-      <input type="hidden" name="submitted" />
-      <input type="submit" name="Submit" value="<?php _e($rev_action);?> Scan Spam-Queue and report IPs &raquo;" />
-   </p>
-   </form>
-<?php } ?>
-</div>
-
-<?php
+    echo '</ul><p>Process finished.</p></div>';
 }
 
 function blackcheck_add_page() {
-	// add_submenu_page('options-general.php', 'WP-BlackCheck', 'WP-BlackCheck', 10, __FILE__, 'blackcheck_report');
-	add_submenu_page('index.php', 'WP-BlackCheck', 'WP-BlackCheck', 'manage_options', __FILE__, 'blackcheck_report');
+	add_submenu_page('index.php', 'WP-BlackCheck', 'Report Spam', 'manage_options', __FILE__, 'blackcheck_report');
 	
 }
 

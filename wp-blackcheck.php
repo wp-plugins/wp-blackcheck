@@ -9,7 +9,7 @@ Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.5
+Version: 1.6
 Author URI: http://my.stargazer.at/
 
 Changelog:

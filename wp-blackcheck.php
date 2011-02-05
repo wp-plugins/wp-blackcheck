@@ -9,11 +9,12 @@ Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.6
+Version: 1.7
 Author URI: http://my.stargazer.at/
 
 Changelog:
 
+1.7 - Tighten Security, add statistics
 1.6 - Integrated Report Button into comments view
 1.5 - Corrected messages, fixed comment IP querying
 1.4 - Changed Spamcount before reporting, empty quarantine now supported
@@ -38,6 +39,12 @@ Changelog:
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+
+if ( !function_exists( 'add_action' ) ) {
+	echo "Called directly. Taking the emergency exit.";
+	exit;
+}
 
 
 function do_check($request, $host, $path, $port = 80) {
@@ -71,6 +78,7 @@ function blackcheck($comment) {
 	$response = do_check($querystring, 'www.stargazer.at', '/blacklist/query.php');
 	
 	if ($response[1] != "NOT LISTED") {
+	  update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 	  $diemsg  = '<h1>Your host is ' . $response[1] . "</h1>\n<br />";
 	  $diemsg .= 'See <a href="http://www.stargazer.at/blacklist/?ip='.urlencode($userip).'">here</a> for details.';
 	  wp_die($diemsg);
@@ -93,6 +101,12 @@ function report_spam_button($comment_status) {
 }
 add_action('manage_comments_nav', 'report_spam_button');
 
+function blackcheck_stats() {
+	if ( !$count = get_option('blackcheck_spam_count') )
+		return;
+        echo '<p>'.sprintf( _n( '<a href="%1$s">WP-BlackCheck</a> has protected your site from <a href="%2$s">%3$s spam comments</a>.','<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.', $count ), 'http://www.stargazer.at/blacklist/', number_format_i18n($count) ).'</p>';
+}
+add_action('activity_box_end', 'blackcheck_stats');
 
 function check_akismet_queue() {
     global $wpdb;

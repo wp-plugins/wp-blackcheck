@@ -104,7 +104,7 @@ add_action('manage_comments_nav', 'report_spam_button');
 function blackcheck_stats() {
 	if ( !$count = get_option('blackcheck_spam_count') )
 		return;
-        echo '<p>'.sprintf( _n( '<a href="%1$s">WP-BlackCheck</a> has protected your site from <a href="%2$s">%2$s spam comments</a>.','<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.', $count ), 'http://www.stargazer.at/blacklist/', number_format_i18n($count) ).'</p>';
+        echo '<p>'.sprintf( _n( '<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.','<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.', $count ), 'http://www.stargazer.at/blacklist/', number_format_i18n($count) ).'</p>';
 }
 add_action('activity_box_end', 'blackcheck_stats');
 

@@ -2,18 +2,19 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.6
+ * @version 1.8
  */
 /*
 Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.7
+Version: 1.8
 Author URI: http://my.stargazer.at/
 
 Changelog:
 
+1.8 - remove multiple spam-comment per IP check, fix spam deletion, prepare limit for reporting in chunks
 1.7 - Tighten Security, add statistics
 1.6 - Integrated Report Button into comments view
 1.5 - Corrected messages, fixed comment IP querying
@@ -108,35 +109,35 @@ function blackcheck_stats() {
 }
 add_action('activity_box_end', 'blackcheck_stats');
 
-function check_akismet_queue() {
+function check_akismet_queue($limit='-1') {
     global $wpdb;
-    $comments = $wpdb->get_results("SELECT comment_author_IP, COUNT(comment_author_IP) AS comment_per_ip FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
+    if ($limit = -1) {
+      $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
+    } else {
+      $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP LIMIT $limit");
+    }
+
     if ($comments) {
 	foreach($comments as $comment) {
-	    // We're checking for if someone spammed us (more) than 2 times 
-	    if ($comment->comment_per_ip > 0) {
-		$userip = $comment->comment_author_IP;
-		// prevent reporting listed hosts
-		$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
+	    $userip = $comment->comment_author_IP;
+	    // prevent reporting listed hosts
+	    $querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
+	    $response = do_check($querystring, 'www.stargazer.at', '/blacklist/query.php');
+	    // found someone new?
+	    if ($response[1] == "NOT LISTED") {
+		$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
 		$response = do_check($querystring, 'www.stargazer.at', '/blacklist/query.php');
-		// found someone new?
-		if ($response[1] == "NOT LISTED") {
-		    $querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
-		    $response = do_check($querystring, 'www.stargazer.at', '/blacklist/query.php');
-		    echo '<li>Reported new: '.$userip.'</li>';
-		} else {
-		    echo '<li>Already known: '.$userip.'</li>';
-		}
-		// Empty the spam quarantine
-		$wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam'");
+		echo '<li>Reported new: '.$userip.'</li>';
+	    } else {
+		echo '<li>Already known: '.$userip.'</li>';
 	    }
-	} 
-	
+	    // Purge IP from the spam quarantine
+	    $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP = '$userip'"); 
+	}
     } else {
-	echo '<p>Nothing to report as your spam queue is empty.</p>';
+	echo '<p>Nothing to report. Your spam queue is empty.</p>';
     }
 }
-
 
 function blackcheck_report($param) {
     echo '<div class="wrap"><h2>WP-BlackCheck</h2>';

@@ -54,7 +54,7 @@ function do_check($request, $host, $path, $port = 80) {
         $http_request .= "Host: $host\r\n";
         $http_request .= "Content-Type: application/x-www-form-urlencoded; charset=" . get_option('blog_charset') . "\r\n";
         $http_request .= "Content-Length: " . strlen($request) . "\r\n";
-        $http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.0\r\n";
+        $http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.8\r\n";
         $http_request .= "\r\n";
         $http_request .= $request;
 
@@ -109,7 +109,7 @@ function blackcheck_stats() {
 }
 add_action('activity_box_end', 'blackcheck_stats');
 
-function check_akismet_queue($limit=='-1') {
+function check_akismet_queue($limit='-1') {
     global $wpdb;
     if ($limit == -1) {
       $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");

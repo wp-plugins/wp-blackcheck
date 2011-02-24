@@ -111,7 +111,7 @@ add_action('activity_box_end', 'blackcheck_stats');
 
 function check_akismet_queue($limit=='-1') {
     global $wpdb;
-    if ($limit = -1) {
+    if ($limit == -1) {
       $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
     } else {
       $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP LIMIT $limit");

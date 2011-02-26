@@ -47,13 +47,39 @@ none
 
 
 == Changelog ==
-1.9 - Add admin-page, add reporting in chunks, make statistics optional
-1.8 - Remove multiple spam-comment per IP check, fix spam deletion, prepare limit for reporting in chunks
-1.7 - Tighten Security, add statistics
-1.6 - Integrated Report Button into comments view
-1.5 - Corrected messages, fixed comment IP querying
-1.4 - Changed Spamcount before reporting, empty quarantine now supported
-1.3 - If someone spams 3 times, it's most likely NOT an accident
-1.2 - Remove reported spam to prevent double reports
-1.1 - Added reporting
-1.0 - Simple check against the centralized blacklist
+= 1.9 =
+* Add admin-page
+* Add reporting in chunks
+* Make statistics optional
+
+= 1.8 =
+* Remove multiple spam-comment per IP check
+* Fix spam deletion 
+* Prepare limit for reporting in chunks
+
+= 1.7 =
+* Tighten Security
+* Add statistics
+
+= 1.6 =
+* Integrated Report Button into comments view
+
+= 1.5 =
+* Corrected messages
+* Fixed comment IP querying
+
+= 1.4 =
+* Changed Spamcount before reporting
+* Empty quarantine now supported
+
+= 1.3 = 
+* If someone spams 3 times, it's most likely NOT an accident
+
+= 1.2 = 
+* Remove reported spam to prevent double reports
+
+= 1.1 = 
+* Add reporting
+
+= 1.0 = 
+* Simple check against the centralized blacklist

@@ -2,28 +2,15 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.8
+ * @version 1.9
  */
 /*
 Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.8
+Version: 1.9
 Author URI: http://my.stargazer.at/
-
-Changelog:
-
-1.8 - remove multiple spam-comment per IP check, fix spam deletion, prepare limit for reporting in chunks
-1.7 - Tighten Security, add statistics
-1.6 - Integrated Report Button into comments view
-1.5 - Corrected messages, fixed comment IP querying
-1.4 - Changed Spamcount before reporting, empty quarantine now supported
-1.3 - If someone spams 3 times, it's most likely NOT an accident
-1.2 - Remove reported spam to prevent double reports
-1.1 - Added reporting
-1.0 - Simple check against the centralized blacklist
-
 
     Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
 
@@ -54,7 +41,7 @@ function do_check($request, $host, $path, $port = 80) {
         $http_request .= "Host: $host\r\n";
         $http_request .= "Content-Type: application/x-www-form-urlencoded; charset=" . get_option('blog_charset') . "\r\n";
         $http_request .= "Content-Length: " . strlen($request) . "\r\n";
-        $http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.8\r\n";
+        $http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.9\r\n";
         $http_request .= "\r\n";
         $http_request .= $request;
 
@@ -103,14 +90,17 @@ function report_spam_button($comment_status) {
 add_action('manage_comments_nav', 'report_spam_button');
 
 function blackcheck_stats() {
-	if ( !$count = get_option('blackcheck_spam_count') )
-		return;
-        echo '<p>'.sprintf( _n( '<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.','<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.', $count ), 'http://www.stargazer.at/blacklist/', number_format_i18n($count) ).'</p>';
+	if ( get_option('wpbc_statistics') == 'on' ) {
+		if ( !$count = get_option('blackcheck_spam_count') )
+			return;
+		echo '<p>'.sprintf( _n( '<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.','<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.', $count ), 'http://www.stargazer.at/blacklist/', number_format_i18n($count) ).'</p>';
+	}
 }
 add_action('activity_box_end', 'blackcheck_stats');
 
 function check_akismet_queue($limit='-1') {
     global $wpdb;
+    if (!is_numeric($limit)) $limit = '-1';
     if ($limit == -1) {
       $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
     } else {
@@ -132,8 +122,11 @@ function check_akismet_queue($limit='-1') {
 		echo '<li>Already known: '.$userip.'</li>';
 	    }
 	    // Purge IP from the spam quarantine
-	    $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP = '$userip'"); 
+	    $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP = '$userip'"); 	    
 	}
+        $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam'");
+        if ($comments) echo '<p>There are still some spam comments in your queue. Click <a href="index.php?page=wp-blackcheck/wp-blackcheck.php">here</a> to process the next batch.</p>';
+
     } else {
 	echo '<p>Nothing to report. Your spam queue is empty.</p>';
     }
@@ -142,15 +135,35 @@ function check_akismet_queue($limit='-1') {
 function blackcheck_report($param) {
     echo '<div class="wrap"><h2>WP-BlackCheck</h2>';
     echo '<ul>';
-    check_akismet_queue();
-    echo '</ul><p>Process finished.</p></div>';
+    check_akismet_queue(get_option('wpbc_reportstack', '-1'));
+    echo '</ul><p>Process finished.</p>';
+    echo '</div>';
 }
 
 function blackcheck_add_page() {
 	add_submenu_page('index.php', 'WP-BlackCheck', 'Report Spam', 'manage_options', __FILE__, 'blackcheck_report');
+	add_submenu_page('options-general.php', 'WP-BlackCheck', 'WP-BlackCheck', 10, __FILE__, 'do_adminpage');
 	
 }
 
+function wpbc_install() {
+	if ( !get_option('wpbc_stacksize') ) {
+		update_option('wpbc_statistics',  'on');
+		update_option('wpbc_reportstack', '-1');
+	}
+}
+
+function do_adminpage() {
+	if(isset($_POST['submitted'])) {
+		update_option('wpbc_statistics', $_POST['wpbc_statistics']);
+		if ($_POST['wpbc_reportstack']) update_option('wpbc_reportstack', $_POST['wpbc_reportstack']);
+		
+	}
+	
+	include('adminpanel.php');
+}
+
+add_action('activate_wp-blackcheck/wp-blackcheck.php', 'wpbc_install');
 add_action('admin_menu', 'blackcheck_add_page');
 add_action('preprocess_comment', 'blackcheck', 1);
 ?>

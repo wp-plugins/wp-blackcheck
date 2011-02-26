@@ -26,7 +26,7 @@ innocent users to remove their IP from the blacklist via removal request.
 * Easy installation
 
 == Installation ==
-1. Upload the contents of the wp-blackcheck directory into your wordpress plugin directory.
+1. Upload the contents of the wp-blackcheck directory into your wordpress plugin directory or use the plugin installer.
 2. Activate the Plugin
 3. Optionally report spam
 
@@ -46,3 +46,14 @@ Just follow the link to http://www.stargazer.at/blacklist/ and follow the instru
 none
 
 
+== Changelog ==
+1.9 - Add admin-page, add reporting in chunks, make statistics optional
+1.8 - Remove multiple spam-comment per IP check, fix spam deletion, prepare limit for reporting in chunks
+1.7 - Tighten Security, add statistics
+1.6 - Integrated Report Button into comments view
+1.5 - Corrected messages, fixed comment IP querying
+1.4 - Changed Spamcount before reporting, empty quarantine now supported
+1.3 - If someone spams 3 times, it's most likely NOT an accident
+1.2 - Remove reported spam to prevent double reports
+1.1 - Added reporting
+1.0 - Simple check against the centralized blacklist

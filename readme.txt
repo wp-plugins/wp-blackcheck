@@ -47,6 +47,18 @@ none
 
 
 == Changelog ==
+
+= 1.10 =
+* Code cleanup and inline documentation
+* Fix direct access to adminpage
+* Check permissions before doing the admin page
+* Set report stacks to 100 IPs at once
+* Fix issues with IPv6
+* Add throttle for spammers hitting the server quite heavy
+* Add option to decline bbCode and optionally report them automatically
+* Add option to decline comments that come in too fast and optionally report them automatically 
+* Exclude pingbacks/trackbacks from our checks
+
 = 1.9 =
 * Add admin-page
 * Add reporting in chunks

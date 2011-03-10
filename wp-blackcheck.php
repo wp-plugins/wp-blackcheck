@@ -2,7 +2,7 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.10
+ * @version 1.10.1
  */
 /*
 Plugin Name: WP-Blackcheck
@@ -63,7 +63,7 @@ function do_check($userip) {
 }
 
 function do_report($userip) {
-	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
+	$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
 	$response = do_request($querystring, 'www.stargazer.at', '/blacklist/query.php');
 	return $response;
 }

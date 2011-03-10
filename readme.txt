@@ -48,6 +48,9 @@ none
 
 == Changelog ==
 
+= 1.10.1 =
+bugfix release to fix whitespace issue and typo in request
+
 = 1.10 =
 * Code cleanup and inline documentation
 * Fix direct access to adminpage

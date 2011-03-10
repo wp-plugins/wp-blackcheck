@@ -114,4 +114,3 @@ if(isset($_POST['submitted'])) echo '<div style="border:1px outset gray; margin:
 		<strong>A:</strong> Decrease the number of IPs being reported at once. The number you are reporting at once depends on your hosting environment.
 	</p>
 </div>
-

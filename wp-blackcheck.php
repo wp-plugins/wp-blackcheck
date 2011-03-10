@@ -290,5 +290,3 @@ add_action('comment_form', 'do_extend_commentform');
 add_action('manage_comments_nav', 'report_spam_button');
 add_action('preprocess_comment', 'blackcheck', 1);
 ?>
-
-

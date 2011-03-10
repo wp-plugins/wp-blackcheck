@@ -289,8 +289,6 @@ add_action('admin_menu', 'blackcheck_add_page');
 add_action('comment_form', 'do_extend_commentform');
 add_action('manage_comments_nav', 'report_spam_button');
 add_action('preprocess_comment', 'blackcheck', 1);
-
-
 ?>
 
 

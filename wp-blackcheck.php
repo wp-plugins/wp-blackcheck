@@ -2,14 +2,14 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.10.1
+ * @version 1.11
  */
 /*
 Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.10.1
+Version: 1.11
 Author URI: http://my.stargazer.at/
 
     Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
@@ -23,10 +23,6 @@ Author URI: http://my.stargazer.at/
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
 */
 
 // Securing against direct calls
@@ -39,7 +35,7 @@ function do_request($request, $host, $path, $port = 80) {
         $http_request .= "Host: $host\r\n";
         $http_request .= "Content-Type: application/x-www-form-urlencoded; charset=" . get_option('blog_charset') . "\r\n";
         $http_request .= "Content-Length: " . strlen($request) . "\r\n";
-        $http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.10\r\n";
+        $http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.11\r\n";
         $http_request .= "\r\n";
         $http_request .= $request;
 
@@ -57,12 +53,14 @@ function do_request($request, $host, $path, $port = 80) {
         return $response;
 }
 
+// Check an IP
 function do_check($userip) {
 	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
 	$response = do_request($querystring, 'www.stargazer.at', '/blacklist/query.php');
 	return $response;
 }
 
+// Report an IP
 function do_report($userip) {
 	$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
 	$response = do_request($querystring, 'www.stargazer.at', '/blacklist/query.php');
@@ -71,21 +69,45 @@ function do_report($userip) {
 
 // Checking a comment as we got it (hook calls us)
 function blackcheck($comment) {
+	// IPv6 - IPv4 compatibility mode hack
+	$_SERVER['REMOTE_ADDR'] = preg_replace("/^::ffff:/", "", $_SERVER['REMOTE_ADDR']);
+	$userip = $_SERVER['REMOTE_ADDR'];
+	
 	
 	// trackbacks/pingbacks are a different topic
-	if ($content['comment_type'] == 'trackback' || $content['comment_type'] == 'pingback') {
+	if ($comment['comment_type'] == 'trackback' || $comment['comment_type'] == 'pingback') {
+		// trackback verification happens here
+		if (get_option('wpbc_trackback_check')) {
+			// Proxy servers do not send trackbacks
+			$headers = get_http_headers();
+			if (array_key_exists('Via', $headers) || array_key_exists('Max-Forwards', $headers) || array_key_exists('X-Forwarded-For', $headers) || array_key_exists('Client-Ip', $headers)) {
+				wp_die("Invalid request: Proxy servers do not send trackbacks or pingbacks.");
+			}
+			
+			// Proper URL?
+			if(!preg_match("/^http/", $comment['comment_author_url'])) {
+				wp_die("Invalid url: ".$comment['comment_author_url']);
+			}
+			
+		}
+		
+		if (get_option('wpbc_trackback_list')) {
+			$response = do_check($userip);
+			if ($response[1] != "NOT LISTED") wp_die("Your host is blacklisted and cannot send any trackbacks");
+		}
+		
 		return $comment;
+		
 	}
+	
 		
 	if (!is_user_logged_in()) {
-		// IPv6 - IPv4 compatibility mode hack
-		$_SERVER['REMOTE_ADDR'] = preg_replace("/^::ffff:/", "", $_SERVER['REMOTE_ADDR']);
 		
-		$userip = $_SERVER['REMOTE_ADDR'];
 		
 		// Additional checks happen here as needed/wanted
 		if (get_option('wpbc_ip_already_spam')) pc_already_spam($userip);
 		if (get_option('wpbc_nobbcode')) pc_nobbcode($comment);
+		if (get_option('wpbc_linklimit')) pc_linklimit($comment);
 		if (get_option('wpbc_timecheck')) pc_speedlimit($comment);
 		
 		// do the blacklist-check now
@@ -148,6 +170,16 @@ function pc_speedlimit($comment) {
 		wp_die("Slow down, cowboy! Speed kills.");
 	}
 }
+
+// PreCheck - Link Limits
+function pc_linklimit($comment) {
+	$linklimit = get_option('wpbc_linklimit_number');
+	$linkCount = preg_match_all("|(href\t*?=\t*?['\"]?)?(https?:)?//|i", $comment['comment_content'], $out);
+	if ($linkCount > $linklimit) {
+		wp_die("This blog has a limit of $linklimit hyperlinks per comment.");
+	}
+}
+
 
 // Report-Spam button for the Spam-Queue
 function report_spam_button($comment_status) {
@@ -219,6 +251,15 @@ function blackcheck_add_page() {
 	
 }
 
+// Get a usable HTTP Header
+function get_http_headers() {
+	$headers = array();
+	foreach ($_SERVER as $h => $v)
+		if (preg_match('/HTTP_(.+)/', $h, $hp))
+			$headers[str_replace("_", "-", uc_all($hp[1]))] = $v;
+	return $headers;
+}
+
 // Installer - Option handling
 function wpbc_install() {
 	if ( !get_option('wpbc_stacksize') ) {
@@ -229,6 +270,10 @@ function wpbc_install() {
 		update_option('wpbc_nobbcode_autoreport',	'');
 		update_option('wpbc_timecheck', 		'');
 		update_option('wpbc_timecheck_autoreport',	'');
+		update_option('wpbc_linklimit',			'');
+		update_option('wpbc_linklimit_number',		'5');
+		update_option('wpbc_trackback_list', 		'');
+		update_option('wpbc_trackback_check', 		'');
 	}
 }
 
@@ -257,6 +302,9 @@ function do_adminpage() {
 				update_option('wpbc_ip_already_spam', $_POST['wpbc_ip_already_spam']);
 				update_option('wpbc_nobbcode', $_POST['wpbc_nobbcode']);
 				update_option('wpbc_timecheck', $_POST['wpbc_timecheck']);
+				update_option('wpbc_linklimit', $_POST['wpbc_linklimit']);
+				update_option('wpbc_trackback_list', $_POST['wpbc_trackback_list']);
+				update_option('wpbc_trackback_check', $_POST['wpbc_trackback_check']);
 				
 				// Special option treatment
 				if ( $_POST['wpbc_nobbcode'] == 'on') {
@@ -269,7 +317,11 @@ function do_adminpage() {
 				} else {
 					update_option('wpbc_timecheck_autoreport', '');
 				}
-				
+				if ( $_POST['wpbc_linklimit'] == 'on') {
+					update_option('wpbc_linklimit_number', $_POST['wpbc_linklimit_number']);
+				} else {
+					update_option('wpbc_linklimit_number', '-1');
+				}
 				// Values here
 				if ($_POST['wpbc_reportstack']) update_option('wpbc_reportstack', $_POST['wpbc_reportstack']);
 				

@@ -10,6 +10,10 @@ $wpbc_nobbcode			= get_option('wpbc_nobbcode');
 $wpbc_nobbcode_autoreport	= get_option('wpbc_nobbcode_autoreport');
 $wpbc_timecheck			= get_option('wpbc_timecheck');
 $wpbc_timecheck_autoreport	= get_option('wpbc_timecheck_autoreport');
+$wpbc_linklimit			= get_option('wpbc_linklimit');
+$wpbc_linklimit_number		= get_option('wpbc_linklimit_number');
+$wpbc_trackback_list		= get_option('wpbc_trackback_list');
+$wpbc_trackback_check		= get_option('wpbc_trackback_check');
 ?>
 
 
@@ -64,7 +68,7 @@ if(isset($_POST['submitted'])) echo '<div style="border:1px outset gray; margin:
 		}
 		?>
 		<tr>
-			<td>Use speed-limit for comments (comment typing needs more then 5 sec):</td>
+			<td>Use speed-limit for comments (comment typing needs more than 5 sec):</td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_timecheck" type="checkbox" value="on" <?php if($wpbc_timecheck == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
@@ -81,6 +85,35 @@ if(isset($_POST['submitted'])) echo '<div style="border:1px outset gray; margin:
 		}
 		?>
 		
+		<tr>
+			<td>Block comments having too many links:</td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_linklimit" type="checkbox" value="on" <?php if($wpbc_linklimit == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+		<?php
+		if ($wpbc_linklimit) {
+		?>
+		<tr>
+			<td>Maximum number of links:</td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_linklimit_number" type="text" size="5" maxlength="2" value="<?php echo $wpbc_linklimit_number; ?>"/></td>
+		</tr>
+		<?php
+		}
+		?>
+		<tr height="30px">
+			<td colspan="3"><strong>Pingback / Trackback Settings:</strong></td>
+		</tr>
+		<tr>
+			<td>Check Trackbacks against Blacklist (<i>not recommended</i>):</td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_trackback_list" type="checkbox" value="on" <?php if($wpbc_trackback_list == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+		<tr>
+			<td>Validate Trackbacks</td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_trackback_check" type="checkbox" value="on" <?php if($wpbc_trackback_check == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
 		
 		<tr height="30px">
 			<td colspan="3"><strong>Statistics:</strong></td>
@@ -112,5 +145,9 @@ if(isset($_POST['submitted'])) echo '<div style="border:1px outset gray; margin:
 	<p>
 		<strong>Q:</strong> If the number of messages in the Spam-Queue is very high, the script times out.<br />
 		<strong>A:</strong> Decrease the number of IPs being reported at once. The number you are reporting at once depends on your hosting environment.
+	</p>
+	<p>
+		<strong>Q:</strong> Trackbacks do not work since WP-BlackCheck checks them.<br />
+		<strong>A:</strong> As some blogs live on hosted environments it might have happened that the server got listed.
 	</p>
 </div>

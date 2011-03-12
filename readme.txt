@@ -42,11 +42,15 @@ you are not logged in
 = I am blacklisted! What now? =
 Just follow the link to http://www.stargazer.at/blacklist/ and follow the instructions
 
-== Screenshots ==
-none
-
+= Why should I report spam? =
+Spammers usually hit quite a few servers with their IPs. It's pretty uncommon that you are the only one who has been hit from that IP. Sharing that info prevents spam on other blogs.
 
 == Changelog ==
+
+= 1.11 =
+* Add Link-Limit
+* Add explicit trackback/pingback check for proxy servers
+* Add check for valid trackback/pingback URL
 
 = 1.10.1 =
 bugfix release to fix whitespace issue and typo in request

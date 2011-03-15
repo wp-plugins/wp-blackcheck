@@ -2,6 +2,43 @@
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
+// Option handling - Write values
+if(isset($_POST['submitted'])) {
+	
+	// Checkbox handling
+	update_option('wpbc_statistics', $_POST['wpbc_statistics']);
+	update_option('wpbc_ip_already_spam', $_POST['wpbc_ip_already_spam']);
+	update_option('wpbc_nobbcode', $_POST['wpbc_nobbcode']);
+	update_option('wpbc_timecheck', $_POST['wpbc_timecheck']);
+	update_option('wpbc_linklimit', $_POST['wpbc_linklimit']);
+	update_option('wpbc_trackback_list', $_POST['wpbc_trackback_list']);
+	update_option('wpbc_trackback_check', $_POST['wpbc_trackback_check']);
+	
+	// Special option treatment
+	if ( $_POST['wpbc_nobbcode'] == 'on') {
+		update_option('wpbc_nobbcode_autoreport', $_POST['wpbc_nobbcode_autoreport']);
+		} else {
+			update_option('wpbc_nobbcode_autoreport', '');
+		}
+		if ( $_POST['wpbc_timecheck'] == 'on') {
+			update_option('wpbc_timecheck_autoreport', $_POST['wpbc_timecheck_autoreport']);
+			} else {
+				update_option('wpbc_timecheck_autoreport', '');
+			}
+			if ( $_POST['wpbc_linklimit'] == 'on') {
+				update_option('wpbc_linklimit_number', $_POST['wpbc_linklimit_number']);
+			} else {
+				update_option('wpbc_linklimit_number', '-1');
+			}
+			// Values here
+			if ($_POST['wpbc_reportstack']) update_option('wpbc_reportstack', $_POST['wpbc_reportstack']);
+								      
+								      // Clear statistics if requested
+			if ($_POST['wpbc_clear_wpbc_stats']) update_option('blackcheck_spam_count', '0');
+									   if ($_POST['wpbc_clear_akismet_stats']) update_option('akismet_spam_count', '0');
+								      }
+
+
 // Fetch the options
 $wpbc_statistics 		= get_option('wpbc_statistics');
 $wpbc_reportstack 		= get_option('wpbc_reportstack');
@@ -45,7 +82,7 @@ if(isset($_POST['submitted'])) echo '<div style="border:1px outset gray; margin:
 			<td colspan="3"><strong>Misc Spam prevention functions:</strong></td>
 		</tr>
 		<tr>
-			<td>Throttle spammers having 3 comments in your queue:</td>
+			<td>Stop spammers having 3 comments in your queue last 12 hours:</td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_ip_already_spam" type="checkbox" value="on" <?php if($wpbc_ip_already_spam == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
@@ -148,6 +185,6 @@ if(isset($_POST['submitted'])) echo '<div style="border:1px outset gray; margin:
 	</p>
 	<p>
 		<strong>Q:</strong> Trackbacks do not work since WP-BlackCheck checks them.<br />
-		<strong>A:</strong> As some blogs live on hosted environments it might have happened that the server got listed.
+		<strong>A:</strong> As some blogs live on hosted environments it might have happened that the server got listed. Disable checking trackbacks against the blacklist.
 	</p>
 </div>

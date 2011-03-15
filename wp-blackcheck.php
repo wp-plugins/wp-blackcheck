@@ -2,14 +2,14 @@
 /**
  * @package WP-Blackcheck
  * @author Christoph "Stargazer" Bauer
- * @version 1.11
+ * @version 1.12
  */
 /*
 Plugin Name: WP-Blackcheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 1.11
+Version: 1.12
 Author URI: http://my.stargazer.at/
 
     Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
@@ -28,30 +28,8 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-// Doing the check - request
-function do_request($request, $host, $path, $port = 80) {
-        global $wp_version;
-        $http_request  = "POST $path HTTP/1.0\r\n";
-        $http_request .= "Host: $host\r\n";
-        $http_request .= "Content-Type: application/x-www-form-urlencoded; charset=" . get_option('blog_charset') . "\r\n";
-        $http_request .= "Content-Length: " . strlen($request) . "\r\n";
-        $http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.11\r\n";
-        $http_request .= "\r\n";
-        $http_request .= $request;
+include ('functions.inc.php');
 
-        $response = '';
-        if( false != ( $fs = @fsockopen($host, $port, $errno, $errstr, 10) ) ) {
-                fwrite($fs, $http_request);
-
-                while ( !feof($fs) )
-                        $response .= fgets($fs, 1160); // One TCP-IP packet
-                fclose($fs);
-                $response = explode("\r\n\r\n", $response, 2);
-        }
-
-
-        return $response;
-}
 
 // Check an IP
 function do_check($userip) {
@@ -105,10 +83,10 @@ function blackcheck($comment) {
 		
 		
 		// Additional checks happen here as needed/wanted
-		if (get_option('wpbc_ip_already_spam')) pc_already_spam($userip);
-		if (get_option('wpbc_nobbcode')) pc_nobbcode($comment);
-		if (get_option('wpbc_linklimit')) pc_linklimit($comment);
-		if (get_option('wpbc_timecheck')) pc_speedlimit($comment);
+		if (get_option('wpbc_ip_already_spam')) 	pc_already_spam($userip);
+		if (get_option('wpbc_nobbcode')) 		pc_nobbcode($comment);
+		if (get_option('wpbc_linklimit')) 		pc_linklimit($comment);
+		if (get_option('wpbc_timecheck')) 		pc_speedlimit($comment);
 		
 		// do the blacklist-check now
 		$response = do_check($userip);
@@ -135,7 +113,7 @@ function pc_already_spam($userip) {
 	$hitcount = $comments->hitcount;
 	if ($hitcount > 2) {
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		// we already have his spam at least 3 times - so let's put that 'on hold'
+		// we already have his spam at least 3 times - so let's just die.
 		wp_die('You have already submitted too many comments at once. Please wait before posting the next comment.');
 	}
 }
@@ -149,7 +127,7 @@ function pc_nobbcode($comment) {
 			if ($response[1] == "NOT LISTED") $response = do_report($userip);
 		}
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		wp_die('Your comment was rejected because it included a <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a> hyperlink. This blog does not use BBCode.');
+		wp_die('Your comment was rejected because it contains <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a>. This blog does not use BBCode.');
 	}
 }
 
@@ -160,6 +138,7 @@ function pc_speedlimit($comment) {
 	$finish = $time; 
 	$totaltime = ($finish - $comment->comment_timestamp); 
 	
+	// 5 seconds from page load to submission is no time.
 	if ($totaltime < 5) {
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		if (get_option('wpbc_timecheck_autoreport')) {
@@ -201,39 +180,7 @@ function blackcheck_stats() {
 	}
 }
 
-// Actual reporting happens here
-//- we loop through the comments
-function check_akismet_queue($limit='-1') {
-    global $wpdb;
-    if (!is_numeric($limit)) $limit = '-1';
-    if ($limit == -1) {
-      $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP");
-    } else {
-      $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam' GROUP BY comment_author_IP LIMIT $limit");
-    }
 
-    if ($comments) {
-	foreach($comments as $comment) {
-	    $userip = $comment->comment_author_IP;
-	    // prevent reporting listed hosts
-	    $response = do_check($userip);
-	    // found someone new?
-	    if ($response[1] == "NOT LISTED") {
-		$response = do_report($userip);
-		echo '<li>Reported new: '.$userip.'</li>';
-	    } else {
-		echo '<li>Already known: '.$userip.'</li>';
-	    }
-	    // Purge IP from the spam quarantine
-	    $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP = '$userip'"); 	    
-	}
-        $comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam'");
-        if ($comments) echo '<p>There are still some spam comments in your queue. Click <a href="index.php?page=wp-blackcheck/wp-blackcheck.php">here</a> to process the next batch.</p>';
-
-    } else {
-	echo '<p>Nothing to report. Your spam queue is empty.</p>';
-    }
-}
 
 // Trigger for the reporting
 function blackcheck_report($param) {
@@ -251,32 +198,6 @@ function blackcheck_add_page() {
 	
 }
 
-// Get a usable HTTP Header
-function get_http_headers() {
-	$headers = array();
-	foreach ($_SERVER as $h => $v)
-		if (preg_match('/HTTP_(.+)/', $h, $hp))
-			$headers[str_replace("_", "-", uc_all($hp[1]))] = $v;
-	return $headers;
-}
-
-// Installer - Option handling
-function wpbc_install() {
-	if ( !get_option('wpbc_stacksize') ) {
-		update_option('wpbc_statistics',		'on');
-		update_option('wpbc_reportstack', 		'100');
-		update_option('wpbc_ip_already_spam', 		'');
-		update_option('wpbc_nobbcode', 			'');
-		update_option('wpbc_nobbcode_autoreport',	'');
-		update_option('wpbc_timecheck', 		'');
-		update_option('wpbc_timecheck_autoreport',	'');
-		update_option('wpbc_linklimit',			'');
-		update_option('wpbc_linklimit_number',		'5');
-		update_option('wpbc_trackback_list', 		'');
-		update_option('wpbc_trackback_check', 		'');
-	}
-}
-
 // extend the comment form - we want to know more
 function do_extend_commentform() {
 	if ( get_option('wpbc_timecheck')) {
@@ -286,50 +207,13 @@ function do_extend_commentform() {
 	}
 }
 
-// Call for the admin page - page actually in adminpanel.php - see include statement
+// Call for the admin page - page actually in adminpanel.php
 function do_adminpage() {
 	global $wp_db_version;
 	
 	if (function_exists('current_user_can')) {
-		// Hello WP 2.x
+		// Hello WP 2.x+
 		if (current_user_can('manage_options')) {
-			
-			// Option handling - Write values
-			if(isset($_POST['submitted'])) {
-				
-				// Checkbox handling
-				update_option('wpbc_statistics', $_POST['wpbc_statistics']);
-				update_option('wpbc_ip_already_spam', $_POST['wpbc_ip_already_spam']);
-				update_option('wpbc_nobbcode', $_POST['wpbc_nobbcode']);
-				update_option('wpbc_timecheck', $_POST['wpbc_timecheck']);
-				update_option('wpbc_linklimit', $_POST['wpbc_linklimit']);
-				update_option('wpbc_trackback_list', $_POST['wpbc_trackback_list']);
-				update_option('wpbc_trackback_check', $_POST['wpbc_trackback_check']);
-				
-				// Special option treatment
-				if ( $_POST['wpbc_nobbcode'] == 'on') {
-					update_option('wpbc_nobbcode_autoreport', $_POST['wpbc_nobbcode_autoreport']);
-				} else {
-					update_option('wpbc_nobbcode_autoreport', '');
-				}
-				if ( $_POST['wpbc_timecheck'] == 'on') {
-					update_option('wpbc_timecheck_autoreport', $_POST['wpbc_timecheck_autoreport']);
-				} else {
-					update_option('wpbc_timecheck_autoreport', '');
-				}
-				if ( $_POST['wpbc_linklimit'] == 'on') {
-					update_option('wpbc_linklimit_number', $_POST['wpbc_linklimit_number']);
-				} else {
-					update_option('wpbc_linklimit_number', '-1');
-				}
-				// Values here
-				if ($_POST['wpbc_reportstack']) update_option('wpbc_reportstack', $_POST['wpbc_reportstack']);
-				
-				// Clear statistics if requested
-				if ($_POST['wpbc_clear_wpbc_stats']) update_option('blackcheck_spam_count', '0');
-				if ($_POST['wpbc_clear_akismet_stats']) update_option('akismet_spam_count', '0');
-			}
-			
 			include('adminpanel.php');
 		}
 	}

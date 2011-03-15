@@ -19,6 +19,7 @@ innocent users to remove their IP from the blacklist via removal request.
 == Requirements ==
 * Wordpress >= 2.6
 * Akismet
+* PHP 5
 
 == Features ==
 * Prevent known IPs from posting comments
@@ -46,6 +47,12 @@ Just follow the link to http://www.stargazer.at/blacklist/ and follow the instru
 Spammers usually hit quite a few servers with their IPs. It's pretty uncommon that you are the only one who has been hit from that IP. Sharing that info prevents spam on other blogs.
 
 == Changelog ==
+
+= 1.12 =
+* Split off some functions to functions.inc.php, relocated some code to improve readability
+* Corrected typo in wp_die message
+* Improve trackback handling
+* Improve some message texts
 
 = 1.11 =
 * Add Link-Limit

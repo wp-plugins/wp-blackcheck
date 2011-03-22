@@ -42,18 +42,18 @@ function check_akismet_queue($limit='-1') {
 			// found someone new?
 			if ($response[1] == "NOT LISTED") {
 				$response = do_report($userip);
-				echo '<li>Reported new: '.$userip.'</li>';
+				echo '<li>' . __('Reported new:', 'wp-blackcheck') . ' ' .$userip.'</li>';
 			} else {
-				echo '<li>Already known: '.$userip.'</li>';
+				echo '<li>' . __('Already known:', 'wp-blackcheck') . ' ' .$userip.'</li>';
 			}
 			// Purge IP from the spam quarantine
 			$wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP = '$userip'"); 	    
 		}
 		$comments = $wpdb->get_results("SELECT comment_author_IP FROM $wpdb->comments WHERE comment_approved = 'spam'");
-		if ($comments) echo '<p>There are still some spam comments in your queue. Click <a href="index.php?page=wp-blackcheck/wp-blackcheck.php">here</a> to process the next batch.</p>';
+		if ($comments)  echo '<p>' . __('There are still some spam comments in your queue. Click <a href="index.php?page=wp-blackcheck/wp-blackcheck.php">here</a> to process the next batch.', 'wp-blackcheck') . '</p>';
 		
 	} else {
-		echo '<p>Nothing to report. Your spam queue is empty.</p>';
+		echo '<p>' . __('Nothing to report. Your spam queue is empty.', 'wp-blackcheck') . '</p>';
 	}
 }
 
@@ -64,7 +64,7 @@ function do_request($request, $host, $path, $port = 80) {
 	$http_request .= "Host: $host\r\n";
 	$http_request .= "Content-Type: application/x-www-form-urlencoded; charset=" . get_option('blog_charset') . "\r\n";
 	$http_request .= "Content-Length: " . strlen($request) . "\r\n";
-	$http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/1.12\r\n";
+	$http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/" . WPBC_VERSION . "\r\n";
 	$http_request .= "\r\n";
 	$http_request .= $request;
 	
@@ -116,5 +116,15 @@ function wpbc_install() {
 	}
 }
 
+function wpbc_textdomain() {
+	if (function_exists('load_plugin_textdomain')) {
+		if ( !defined('WP_PLUGIN_DIR') ) {
+			load_plugin_textdomain('wp-blackcheck', str_replace( ABSPATH, '', dirname(__FILE__) ) . '/languages');
 
+		} else {
+			load_plugin_textdomain('wp-blackcheck', false, dirname( plugin_basename(__FILE__) ) . '/languages');
+		}
+		
+	}
+}
 ?>

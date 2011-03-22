@@ -6,15 +6,20 @@ Requires at least: 3.0
 Tested up to: latest svn
 Stable tag: trunk
 
-WP-BlackCheck is a Blacklist Service for Wordpress blogs trying to block common spam IPs.
+WP-BlackCheck is a Blacklist Service for Wordpress blogs trying to block common Spam IPs.
 
 == Description ==
-WP-BlackCheck is an attempt to reduce spam in the comment queue of my blogs based on the
-fact that it is only a couple of IPs trying to flood my sites with spam.
+WP-BlackCheck is an attempt to reduce Spam in the comment queue of my blogs based on the
+fact that it is only a couple of IPs trying to flood my sites with Spam.
 
 Blocking them via htaccess or other server settings would do the job, but that would require
 to keep all the files in sync. So I decided to write a centralized solution that enables
 innocent users to remove their IP from the blacklist via removal request.
+
+Notice:
+New version format uses 3 digits:  Major.Minor.Patch
+Minor number change indicates that a new feature was introduced
+If only the patch number changes, it was a pure bugfix release.
 
 == Requirements ==
 * Wordpress >= 2.6
@@ -23,13 +28,17 @@ innocent users to remove their IP from the blacklist via removal request.
 
 == Features ==
 * Prevent known IPs from posting comments
-* Scan your spam comments for reporting
+* Scan your Spam comments for reporting
 * Easy installation
 
+This plugin is already translated to:
+* English
+* German
+
 == Installation ==
-1. Upload the contents of the wp-blackcheck directory into your wordpress plugin directory or use the plugin installer.
+1. Upload the contents of the wp-blackcheck directory into your Wordpress plugin directory or use the plugin installer.
 2. Activate the Plugin
-3. Optionally report spam
+3. Optionally report Spam
 
 == Frequently Asked Questions ==
 = What happens if a blocked IP hits my site? =
@@ -37,16 +46,24 @@ The Plugin does not prevent reading of your blog. But if a blocked IP tries to p
 WP-BlackCheck will block it, displaying a link to the removal request form.
 
 = What happens if I am blacklisted? =
-I'd assume that spammers do not authenticate against your blog. The plugin will just act if
-you are not logged in
+I'd assume that spammers do not authenticate against your blog. The plugin will block your comments if you are not logged in.
 
 = I am blacklisted! What now? =
-Just follow the link to http://www.stargazer.at/blacklist/ and follow the instructions
+Just follow the link to http://www.stargazer.at/blacklist/ and follow the instructions on the page.
 
-= Why should I report spam? =
-Spammers usually hit quite a few servers with their IPs. It's pretty uncommon that you are the only one who has been hit from that IP. Sharing that info prevents spam on other blogs.
+= Why should I report Spam? =
+Spammers usually hit quite a few servers with their IPs. It's pretty uncommon that you are the only one who has been hit from that IP. Sharing that info prevents Spam on other blogs.
+
+= WP-BlackCheck is not available in (insert language here) =
+The plugin comes with a file named wp-blackcheck.pot which contains the messages printed. Feel free to translate it into your language and send the .mo and .po file back to me, so I can include it into the next release.
 
 == Changelog ==
+
+= 2.0.0 =
+* Localization
+* Rewrite speed limit code
+* Add debug code for speed limit
+* Fix spam counting for queue
 
 = 1.12 =
 * Split off some functions to functions.inc.php, relocated some code to improve readability
@@ -60,11 +77,11 @@ Spammers usually hit quite a few servers with their IPs. It's pretty uncommon th
 * Add check for valid trackback/pingback URL
 
 = 1.10.1 =
-bugfix release to fix whitespace issue and typo in request
+* bugfix release to fix whitespace issue and typo in request
 
 = 1.10 =
 * Code cleanup and inline documentation
-* Fix direct access to adminpage
+* Fix direct access to admin-page
 * Check permissions before doing the admin page
 * Set report stacks to 100 IPs at once
 * Fix issues with IPv6
@@ -79,8 +96,8 @@ bugfix release to fix whitespace issue and typo in request
 * Make statistics optional
 
 = 1.8 =
-* Remove multiple spam-comment per IP check
-* Fix spam deletion 
+* Remove multiple Spam-comment per IP check
+* Fix Spam deletion
 * Prepare limit for reporting in chunks
 
 = 1.7 =
@@ -95,14 +112,14 @@ bugfix release to fix whitespace issue and typo in request
 * Fixed comment IP querying
 
 = 1.4 =
-* Changed Spamcount before reporting
+* Changed Spam count before reporting
 * Empty quarantine now supported
 
 = 1.3 = 
-* If someone spams 3 times, it's most likely NOT an accident
+* If someone hits us 3 times, it's most likely NOT an accident
 
 = 1.2 = 
-* Remove reported spam to prevent double reports
+* Remove reported Spam to prevent double reports
 
 = 1.1 = 
 * Add reporting

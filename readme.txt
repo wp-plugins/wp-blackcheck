@@ -22,7 +22,7 @@ Minor number change indicates that a new feature was introduced
 If only the patch number changes, it was a pure bugfix release.
 
 == Requirements ==
-* Wordpress >= 2.6
+* Wordpress >= 2.9
 * Akismet
 * PHP 5
 

@@ -15,9 +15,11 @@ fact that it is only a couple of IPs trying to flood my sites with Spam.
 Blocking them via htaccess or other server settings would do the job, but that would require
 to keep all the files in sync. So I decided to write a centralized solution that enables
 innocent users to remove their IP from the blacklist via removal request.
+By now many additional features have been added, making this plugin a full grown anti-spam solution.
 
 Notice:
 New version format uses 3 digits:  Major.Minor.Patch
+
 Minor number change indicates that a new feature was introduced
 If only the patch number changes, it was a pure bugfix release.
 
@@ -28,6 +30,7 @@ If only the patch number changes, it was a pure bugfix release.
 
 == Features ==
 * Prevent known IPs from posting comments
+* Detection of yet unknown spammers
 * Scan your Spam comments for reporting
 * Easy installation
 

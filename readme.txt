@@ -6,7 +6,7 @@ Requires at least: 3.0
 Tested up to: latest svn
 Stable tag: trunk
 
-WP-BlackCheck is a Blacklist Service for Wordpress blogs trying to block common Spam IPs.
+WP-BlackCheck is an Anti-Spam Solution for Wordpress blocking spam using local detection and a centralized Blacklist Service.
 
 == Description ==
 WP-BlackCheck is an attempt to reduce Spam in the comment queue of my blogs based on the
@@ -99,7 +99,7 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 * Fix issues with IPv6
 * Add throttle for spammers hitting the server quite heavy
 * Add option to decline bbCode and optionally report them automatically
-* Add option to decline comments that come in too fast and optionally report them automatically 
+* Add option to decline comments that come in too fast and optionally report them automatically
 * Exclude pingbacks/trackbacks from our checks
 
 = 1.9 =
@@ -127,14 +127,14 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 * Changed Spam count before reporting
 * Empty quarantine now supported
 
-= 1.3 = 
+= 1.3 =
 * If someone hits us 3 times, it's most likely NOT an accident
 
-= 1.2 = 
+= 1.2 =
 * Remove reported Spam to prevent double reports
 
-= 1.1 = 
+= 1.1 =
 * Add reporting
 
-= 1.0 = 
+= 1.0 =
 * Simple check against the centralized blacklist

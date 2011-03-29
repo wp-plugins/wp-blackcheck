@@ -35,6 +35,8 @@ This plugin is already translated to:
 * English
 * German
 
+If you want to see this plugin in your language, feel free to contact me.
+
 == Installation ==
 1. Upload the contents of the wp-blackcheck directory into your Wordpress plugin directory or use the plugin installer.
 2. Activate the Plugin
@@ -58,6 +60,16 @@ Spammers usually hit quite a few servers with their IPs. It's pretty uncommon th
 The plugin comes with a file named wp-blackcheck.pot which contains the messages printed. Feel free to translate it into your language and send the .mo and .po file back to me, so I can include it into the next release.
 
 == Changelog ==
+
+= 2.1.0 =
+* Add config option for speedlimit
+* Add 'reset to defaults' function
+* Add Settings to plugin-page
+* Add warning for outdated settings
+* Support wp_remote_post()
+* Split off pre-checks
+* Use WP-CSS stuff for warnings/alerts
+* Language fixes
 
 = 2.0.0 =
 * Localization

@@ -1,8 +1,8 @@
 <?php
 /**
- * @package WP-Blackcheck-Functions
+ * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 1.12
+ * @version 2.1.0
  */
 /*
  Function library used with WP-BlackCheck
@@ -60,25 +60,47 @@ function check_akismet_queue($limit='-1') {
 // Doing the check - request
 function do_request($request, $host, $path, $port = 80) {
 	global $wp_version;
-	$http_request  = "POST $path HTTP/1.0\r\n";
-	$http_request .= "Host: $host\r\n";
-	$http_request .= "Content-Type: application/x-www-form-urlencoded; charset=" . get_option('blog_charset') . "\r\n";
-	$http_request .= "Content-Length: " . strlen($request) . "\r\n";
-	$http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/" . WPBC_VERSION . "\r\n";
-	$http_request .= "\r\n";
-	$http_request .= $request;
-	
-	$response = '';
-	if( false != ( $fs = @fsockopen($host, $port, $errno, $errstr, 10) ) ) {
-		fwrite($fs, $http_request);
+
+	if ( function_exists( 'wp_remote_post' ) ) {
+		$http_args = array(
+			'body'			=> $request,
+			'headers'		=> array(
+			'Content-Type'		=> 'application/x-www-form-urlencoded; ' . 'charset=' . get_option( 'blog_charset' ),
+			'Host'			=> $host,
+			'User-Agent'		=> "WordPress/$wp_version | CheckBlack/" . WPBC_VERSION,
+		     ),
+		     'httpversion'	=> '1.0',
+		     'timeout'		=> 15
+		);
+		$myurl = 'http://' . $host . $path;
 		
-		while ( !feof($fs) )
-			$response .= fgets($fs, 1160); // One TCP-IP packet
-			fclose($fs);
-		$response = explode("\r\n\r\n", $response, 2);
+		$response = wp_remote_post( $myurl, $http_args );
+
+		if ( is_wp_error( $response ) )
+			return '';
+		
+		return array( $response['headers'], $response['body'] );
+		
+	} else {
+
+		$http_request  = "POST $path HTTP/1.0\r\n";
+		$http_request .= "Host: $host\r\n";
+		$http_request .= "Content-Type: application/x-www-form-urlencoded; charset=" . get_option('blog_charset') . "\r\n";
+		$http_request .= "Content-Length: " . strlen($request) . "\r\n";
+		$http_request .= "User-Agent: WordPress/$wp_version | CheckBlack/" . WPBC_VERSION . "\r\n";
+		$http_request .= "\r\n";
+		$http_request .= $request;
+
+		$response = '';
+		if( false != ( $fs = @fsockopen($host, $port, $errno, $errstr, 10) ) ) {
+			fwrite($fs, $http_request);
+
+			while ( !feof($fs) )
+				$response .= fgets($fs, 1160); // One TCP-IP packet
+				fclose($fs);
+			$response = explode("\r\n\r\n", $response, 2);
+		}
 	}
-	
-	
 	return $response;
 }
 
@@ -99,21 +121,45 @@ function get_http_headers() {
 		return $headers;
 }
 
+function wpbc_plugin_action_links( $links, $file ) {
+	if ( $file == plugin_basename( dirname(__FILE__).'/wp-blackcheck.php' ) ) {
+		$links[] = '<a href="options-general.php?page=wp-blackcheck/wp-blackcheck.php">'.__('Settings').'</a>';
+	}
+	
+	return $links;
+}
+
 // Installer - Option handling
 function wpbc_install() {
 	if ( !get_option('wpbc_stacksize') ) {
 		update_option('wpbc_statistics',		'on');
 		update_option('wpbc_reportstack', 		'100');
-		update_option('wpbc_ip_already_spam', 		'');
+		update_option('wpbc_ip_already_spam', 		'on');
 		update_option('wpbc_nobbcode', 			'');
 		update_option('wpbc_nobbcode_autoreport',	'');
-		update_option('wpbc_timecheck', 		'');
+		update_option('wpbc_timecheck', 		'on');
+		update_option('wpbc_timecheck_time',		'10');
 		update_option('wpbc_timecheck_autoreport',	'');
 		update_option('wpbc_linklimit',			'');
-		update_option('wpbc_linklimit_number',		'5');
+		update_option('wpbc_linklimit_number',		'2');
 		update_option('wpbc_trackback_list', 		'');
-		update_option('wpbc_trackback_check', 		'');
+		update_option('wpbc_trackback_check', 		'on');
 	}
+}
+
+function wpbc_reset() {
+	update_option('wpbc_statistics',		'on');
+	update_option('wpbc_reportstack', 		'100');
+	update_option('wpbc_ip_already_spam', 		'on');
+	update_option('wpbc_nobbcode', 			'');
+	update_option('wpbc_nobbcode_autoreport',	'');
+	update_option('wpbc_timecheck', 		'on');
+	update_option('wpbc_timecheck_time',		'10');
+	update_option('wpbc_timecheck_autoreport',	'');
+	update_option('wpbc_linklimit',			'');
+	update_option('wpbc_linklimit_number',		'2');
+	update_option('wpbc_trackback_list', 		'');
+	update_option('wpbc_trackback_check', 		'on');
 }
 
 function wpbc_textdomain() {

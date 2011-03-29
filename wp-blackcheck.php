@@ -1,21 +1,21 @@
 <?php
 /**
- * @package WP-Blackcheck
+ * @package WP-BlackCheck
  * @author Christoph "Stargazer" Bauer
- * @version 2.0.0
+ * @version 2.1.0
  */
 /*
-Plugin Name: WP-Blackcheck
+Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 2.0.0
+Version: 2.1.0
 Author URI: http://my.stargazer.at/
 
     Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -28,16 +28,18 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-define('WPBC_VERSION', '2.0.0');
+define('WPBC_VERSION', '2.1.0');
+define('WPBC_SERVER', 'www.stargazer.at');
+
 define('WPBC_LOGFILE', '');
 
 include ('functions.inc.php');
-
+include ('precheck.inc.php');
 
 // Check an IP
 function do_check($userip) {
 	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
-	$response = do_request($querystring, 'www.stargazer.at', '/blacklist/query.php');
+	$response = do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
 	return $response;
 }
 
@@ -46,7 +48,7 @@ function do_report($userip) {
 	$response = do_check($userip);
 	if ($response[1] == "NOT LISTED") {
 		$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
-		$response = do_request($querystring, 'www.stargazer.at', '/blacklist/query.php');
+		$response = do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
 		return $response;
 	}
 }
@@ -56,8 +58,8 @@ function blackcheck($comment) {
 	// IPv6 - IPv4 compatibility mode hack
 	$_SERVER['REMOTE_ADDR'] = preg_replace("/^::ffff:/", "", $_SERVER['REMOTE_ADDR']);
 	$userip = $_SERVER['REMOTE_ADDR'];
-	
-	
+
+
 	// trackbacks/pingbacks are a different topic
 	if ($comment['comment_type'] == 'trackback' || $comment['comment_type'] == 'pingback') {
 		// trackback verification happens here
@@ -66,17 +68,17 @@ function blackcheck($comment) {
 			$headers = get_http_headers();
 			if (array_key_exists('Via', $headers) || array_key_exists('Max-Forwards', $headers) || array_key_exists('X-Forwarded-For', $headers) || array_key_exists('Client-Ip', $headers)) {
 				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				wp_die( __( 'Invalid request: Proxy servers do not send trackbacks or pingbacks.', 'wp-blackcheck') );				
+				wp_die( __( 'Invalid request: Proxy servers do not send trackbacks or pingbacks.', 'wp-blackcheck') );
 			}
-			
+
 			// Proper URL?
 			if(!preg_match("/^http/", $comment['comment_author_url'])) {
 				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 				wp_die( __('Invalid url: ', 'wp-blackcheck') . $comment['comment_author_url']);
 			}
-			
+
 		}
-		
+
 		if (get_option('wpbc_trackback_list')) {
 			$response = do_check($userip);
 			if ($response[1] != "NOT LISTED") {
@@ -84,21 +86,21 @@ function blackcheck($comment) {
 				wp_die( __('Your host is blacklisted and cannot send any trackbacks.', 'wp-blackcheck') );
 			}
 		}
-		
+
 		return $comment;
-		
+
 	}
-	
-		
+
+
 	if (!is_user_logged_in()) {
-		
-		
+
+
 		// Additional checks happen here as needed/wanted
 		if (get_option('wpbc_ip_already_spam')) 	pc_already_spam($userip);
 		if (get_option('wpbc_nobbcode')) 		pc_nobbcode($comment);
 		if (get_option('wpbc_linklimit')) 		pc_linklimit($comment);
 		if (get_option('wpbc_timecheck')) 		pc_speedlimit($comment);
-		
+
 		// do the blacklist-check now
 		$response = do_check($userip);
 
@@ -116,71 +118,7 @@ function blackcheck($comment) {
 }
 
 
-// PreCheck - Do we know that IP from our SpamQueue already during the last 24 hours?
-function pc_already_spam($userip) {
-	global $wpdb;
-	// if the spammer already left a few, slow him down
-	$hitcount = $wpdb->get_var("SELECT count(comment_author_IP) as hitcount FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP = '$userip' AND comment_date > DATE_SUB( now(), INTERVAL 1 DAY");
-	if ($hitcount > 2) {
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		// we already have his spam at least 3 times - so let's just die.
-		wp_die( __('You have already submitted too many comments at once. Please wait before posting the next comment.', 'wp-blackcheck') );
-	}
-}
 
-// PreCheck - Decline bbCode
-function pc_nobbcode($comment) {
-	if (preg_match('|\[url(\=.*?)?\]|is', $comment['comment_content'])) {
-		if ( get_option('wpbc_nobbcode_autoreport') ) $response = do_report($comment->comment_author_IP);
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		wp_die( __('Your comment was rejected because it contains <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a>. This blog does not use BBCode.', 'wp-blackcheck') );
-	}
-}
-
-// PreCheck - Speed-Limit
-function pc_speedlimit($comment) {
-	if ( isset( $_POST['comment_timestamp'] )) {
-		$start = $_POST['comment_timestamp'];
-	} else {
-		// The bot could have messed with our form field.
-		if (get_option('wpbc_timecheck_autoreport')) $response = do_report($comment->comment_author_IP);
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
-	}
-
-	// Someone did change our form field for sure.
-	if (!is_numeric($start)) {
-		if (get_option('wpbc_timecheck_autoreport')) $response = do_report($comment->comment_author_IP);
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
-	}
-	
-	$finish = $_SERVER['REQUEST_TIME'];
-	$totaltime = ($finish - $start);
-
-	if(WPBC_LOGFILE != ''){
-        	$log = fopen(WPBC_LOGFILE, 'a');
-		fwrite($log, date('c') . " - comment from ".$_SERVER['REMOTE_ADDR']. " took " . $totaltime . " seconds. (start: " . $start . " end: " . $finish . ")" .PHP_EOL);
-      	}
-	
-	// 5 seconds from page load to submission is not really possible - even with prefilled form fields
-	if ($totaltime < 5) {
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		if (get_option('wpbc_timecheck_autoreport')) $response = do_report($comment->comment_author_IP);
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
-	}
-}
-
-// PreCheck - Link Limits
-function pc_linklimit($comment) {
-	$linklimit = get_option('wpbc_linklimit_number');
-	$linkCount = preg_match_all("|(href\t*?=\t*?['\"]?)?(https?:)?//|i", $comment['comment_content'], $out);
-	if ($linkCount > $linklimit) {
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		wp_die( sprintf( __("This blog has a limit of %d hyperlinks per comment.", 'wp-blackcheck'), $linklimit));
-	}
-}
 
 
 // Report-Spam button for the Spam-Queue
@@ -203,6 +141,12 @@ function blackcheck_stats() {
 	}
 }
 
+// Admin warning if our settings are outdated
+function blackcheck_warning() {
+	if ( get_option('wpbc_version') != WPBC_VERSION ) {
+		echo "<div id='wpbc-warning' class='updated fade'><p><strong>".sprintf( __('Your <a href="%s">Settings</a> for WP-BlackCheck are outdated! You should update them as soon as possible!', 'wp-blackcheck'), 'options-general.php?page=wp-blackcheck/wp-blackcheck.php') .'</strong></p></div>';
+	}
+}
 
 
 // Trigger for the reporting
@@ -218,7 +162,7 @@ function blackcheck_report($param) {
 function blackcheck_add_page() {
 	add_submenu_page('index.php', 'WP-BlackCheck', 'Report Spam', 'manage_options', __FILE__, 'blackcheck_report');
 	add_submenu_page('options-general.php', 'WP-BlackCheck', 'WP-BlackCheck', 10, __FILE__, 'do_adminpage');
-	
+
 }
 
 // extend the comment form - we want to know more
@@ -231,7 +175,7 @@ function do_extend_commentform() {
 // Call for the admin page - page actually in adminpanel.php
 function do_adminpage() {
 	global $wp_db_version;
-	
+
 	if (function_exists('current_user_can')) {
 		// Hello WP 2.x+
 		if (current_user_can('manage_options')) {
@@ -240,8 +184,11 @@ function do_adminpage() {
 	}
 }
 
+add_filter( 'plugin_action_links', 'wpbc_plugin_action_links', 10, 2 );
+
 // Action hooks here
 add_action('activity_box_end', 'blackcheck_stats');
+add_action('admin_notices', 'blackcheck_warning');
 add_action('activate_wp-blackcheck/wp-blackcheck.php', 'wpbc_install');
 add_action('admin_menu', 'blackcheck_add_page');
 add_action('comment_form', 'do_extend_commentform');

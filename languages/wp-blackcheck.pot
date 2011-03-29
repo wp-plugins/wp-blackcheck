@@ -1,10 +1,10 @@
-# Copyright (C) 2010 WP-Blackcheck
-# This file is distributed under the same license as the WP-Blackcheck package.
+# Copyright (C) 2010 WP-BlackCheck
+# This file is distributed under the same license as the WP-BlackCheck package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-Blackcheck 2.0.0\n"
+"Project-Id-Version: WP-BlackCheck 2.1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-blackcheck\n"
-"POT-Creation-Date: 2011-03-22 13:13:48+00:00\n"
+"POT-Creation-Date: 2011-03-29 21:02:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,51 +12,31 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: wp-blackcheck.php:69
+#: wp-blackcheck.php:71
 msgid "Invalid request: Proxy servers do not send trackbacks or pingbacks."
 msgstr ""
 
-#: wp-blackcheck.php:75
+#: wp-blackcheck.php:77
 msgid "Invalid url: "
 msgstr ""
 
-#: wp-blackcheck.php:84
+#: wp-blackcheck.php:86
 msgid "Your host is blacklisted and cannot send any trackbacks."
 msgstr ""
 
-#: wp-blackcheck.php:107
+#: wp-blackcheck.php:109
 msgid "The blacklist says: %s"
 msgstr ""
 
-#: wp-blackcheck.php:108
+#: wp-blackcheck.php:110
 msgid "See <a href=\"%s\">here</a> for details."
 msgstr ""
 
-#: wp-blackcheck.php:127
-msgid ""
-"You have already submitted too many comments at once. Please wait before "
-"posting the next comment."
-msgstr ""
-
-#: wp-blackcheck.php:136
-msgid ""
-"Your comment was rejected because it contains <a href=\"http://en.wikipedia."
-"org/wiki/BBCode\">BBCode</a>. This blog does not use BBCode."
-msgstr ""
-
-#: wp-blackcheck.php:148 wp-blackcheck.php:155 wp-blackcheck.php:171
-msgid "Slow down, cowboy! Speed kills."
-msgstr ""
-
-#: wp-blackcheck.php:181
-msgid "This blog has a limit of %d hyperlinks per comment."
-msgstr ""
-
-#: wp-blackcheck.php:193
+#: wp-blackcheck.php:131
 msgid "Report and Clean Spam"
 msgstr ""
 
-#: wp-blackcheck.php:202
+#: wp-blackcheck.php:140
 msgid ""
 "<a href=\"%1$s\">WP-BlackCheck</a> has protected your site from <strong>%2"
 "$s</strong> spam comments."
@@ -66,7 +46,13 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: wp-blackcheck.php:213
+#: wp-blackcheck.php:147
+msgid ""
+"Your <a href=\"%s\">Settings</a> for WP-BlackCheck are outdated! You should "
+"update them as soon as possible!"
+msgstr ""
+
+#: wp-blackcheck.php:157
 msgid "Process finished"
 msgstr ""
 
@@ -88,145 +74,188 @@ msgstr ""
 msgid "Nothing to report. Your spam queue is empty."
 msgstr ""
 
-#: adminpanel.php:59
+#: functions.inc.php:126 adminpanel.php:98
+msgid "Settings"
+msgstr ""
+
+#: adminpanel.php:91
 msgid "WP-BlackCheck - Settings"
 msgstr ""
 
-#: adminpanel.php:60
+#: adminpanel.php:92
 msgid ""
-"Welcome to the settings page of your WP-BlackCheck Plugin. You are able to "
-"configure some settings here to adapt the plugin to your needs."
+"Welcome to the settings page for WP-BlackCheck. You are able to configure "
+"the plugin to your needs. "
 msgstr ""
 
-#: adminpanel.php:61
+#: adminpanel.php:93
 msgid ""
 "For more information visit <a href=\"%s\" target=\"_blank\">this page</a>."
 msgstr ""
 
-#: adminpanel.php:63
+#: adminpanel.php:94
+msgid ""
+"If you found a bug, please report it at <a href=\"%s\" target=\"_blank"
+"\">this page</a>."
+msgstr ""
+
+#: adminpanel.php:96
 msgid "Settings updated."
 msgstr ""
 
-#: adminpanel.php:65
-msgid "Settings"
-msgstr ""
-
-#: adminpanel.php:71
+#: adminpanel.php:104
 msgid "Blacklist settings:"
 msgstr ""
 
-#: adminpanel.php:74
+#: adminpanel.php:107
 msgid "Number of IPs to report at once:"
 msgstr ""
 
-#: adminpanel.php:79
+#: adminpanel.php:112
 msgid "Enter -1 to report all the IPs at once, disabling the limit."
 msgstr ""
 
-#: adminpanel.php:83
+#: adminpanel.php:116
 msgid "Misc Spam prevention functions:"
 msgstr ""
 
-#: adminpanel.php:86
-msgid "Stop spammers having 3 comments in your queue last 12 hours:"
+#: adminpanel.php:119
+msgid ""
+"Block spammers who have 3 comments in your queue during the last 12 hours: "
 msgstr ""
 
-#: adminpanel.php:92
+#: adminpanel.php:125
 msgid "Do not accept bbCode-Links:"
 msgstr ""
 
-#: adminpanel.php:101
+#: adminpanel.php:134
 msgid "Automatically report IPs that try to send bbCode-Links:"
 msgstr ""
 
-#: adminpanel.php:109
+#: adminpanel.php:142
 msgid "Use speed-limit for comments (comment typing needs more than 5 sec):"
 msgstr ""
 
-#: adminpanel.php:118
+#: adminpanel.php:151
 msgid "Automatically report IPs that break speed-limits:"
 msgstr ""
 
-#: adminpanel.php:127
+#: adminpanel.php:156
+msgid "Minimum time for a comment:"
+msgstr ""
+
+#: adminpanel.php:166
 msgid "Block comments having too many links:"
 msgstr ""
 
-#: adminpanel.php:135
+#: adminpanel.php:174
 msgid "Maximum number of links:"
 msgstr ""
 
-#: adminpanel.php:143
+#: adminpanel.php:182
 msgid "Pingback / Trackback Settings:"
 msgstr ""
 
-#: adminpanel.php:146
+#: adminpanel.php:185
 msgid "Check Trackbacks against Blacklist (<i>not recommended</i>):"
 msgstr ""
 
-#: adminpanel.php:151
+#: adminpanel.php:190
 msgid "Validate Trackbacks"
 msgstr ""
 
-#: adminpanel.php:157
+#: adminpanel.php:196
 msgid "Statistics:"
 msgstr ""
 
-#: adminpanel.php:160
+#: adminpanel.php:199
 msgid "Show statistics on the dashboard:"
 msgstr ""
 
-#: adminpanel.php:165
+#: adminpanel.php:204
 msgid "Reset WP-BlackCheck stats"
 msgstr ""
 
-#: adminpanel.php:170
+#: adminpanel.php:209
 msgid "Reset Akismet stats"
 msgstr ""
 
-#: adminpanel.php:176
+#: adminpanel.php:214
+msgid "Factory Reset"
+msgstr ""
+
+#: adminpanel.php:217
+msgid "Drop all your custom settings and revert to the defaults."
+msgstr ""
+
+#: adminpanel.php:223
 msgid "Update Settings"
 msgstr ""
 
-#: adminpanel.php:183
+#: adminpanel.php:230
 msgid "Known problems:"
 msgstr ""
 
-#: adminpanel.php:187
+#: adminpanel.php:234
 msgid ""
 "If the number of messages in the Spam-Queue is very high, the script times "
 "out."
 msgstr ""
 
-#: adminpanel.php:188
+#: adminpanel.php:235
 msgid ""
 "Decrease the number of IPs being reported at once. The number you are "
 "reporting at once depends on your hosting environment."
 msgstr ""
 
-#: adminpanel.php:191
+#: adminpanel.php:238
 msgid "Trackbacks do not work since WP-BlackCheck checks them."
 msgstr ""
 
-#: adminpanel.php:192
+#: adminpanel.php:239
 msgid ""
 "As some blogs live on hosted environments it might have happened that the "
 "server got listed. Disable checking trackbacks against the blacklist."
 msgstr ""
 
-#: adminpanel.php:195
+#: adminpanel.php:242
 msgid ""
 "Everytime someone is trying to post a comment they see: \"Slow down, cowboy! "
 "Speed kills.\""
 msgstr ""
 
-#: adminpanel.php:196
+#: adminpanel.php:243
 msgid ""
 "A hidden validation field in your comments does not show up. Your theme "
 "might be missing the wp_footer() call."
 msgstr ""
 
+#: adminpanel.php:244
+msgid "Another possibility is that you did set your comment-time too low."
+msgstr ""
+
+#: precheck.inc.php:34
+msgid ""
+"You have already submitted too many comments at once. Please wait before "
+"posting the next comment."
+msgstr ""
+
+#: precheck.inc.php:43
+msgid ""
+"Your comment was rejected because it contains <a href=\"http://en.wikipedia."
+"org/wiki/BBCode\">BBCode</a>. This blog does not use BBCode."
+msgstr ""
+
+#: precheck.inc.php:55 precheck.inc.php:62 precheck.inc.php:79
+msgid "Slow down, cowboy! Speed kills."
+msgstr ""
+
+#: precheck.inc.php:89
+msgid "This blog has a limit of %d hyperlinks per comment."
+msgstr ""
+
 #. Plugin Name of the plugin/theme
-msgid "WP-Blackcheck"
+msgid "WP-BlackCheck"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

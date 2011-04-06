@@ -64,6 +64,9 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 
 == Changelog ==
 
+= 2.1.1 =
+* Fixed notification bug
+
 = 2.1.0 =
 * Add config option for speedlimit
 * Add 'reset to defaults' function

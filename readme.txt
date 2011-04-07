@@ -2,7 +2,7 @@
 Contributors: Stargazer
 Donate link: http://my.stargazer.at/wishlist/
 Tags: comments,spam,blacklist
-Requires at least: 3.0
+Requires at least: 2.9
 Tested up to: latest svn
 Stable tag: trunk
 
@@ -25,7 +25,6 @@ If only the patch number changes, it was a pure bugfix release.
 
 == Requirements ==
 * Wordpress >= 2.9
-* Akismet
 * PHP 5
 
 == Features ==
@@ -63,6 +62,14 @@ Spammers usually hit quite a few servers with their IPs. It's pretty uncommon th
 The plugin comes with a file named wp-blackcheck.pot which contains the messages printed. Feel free to translate it into your language and send the .mo and .po file back to me, so I can include it into the next release.
 
 == Changelog ==
+
+= 2.2.0 =
+* Prefix ALL functions with wpbc_ to avoid clashes with other plugins
+* Update Notifications
+* Checking for PHP/WP Requirements
+* Detect Akismet to work with it
+* Purge old comments
+* Make sure we meet the requirements
 
 = 2.1.1 =
 * Fixed notification bug
@@ -143,4 +150,5 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 * Add reporting
 
 = 1.0 =
+* Initial release
 * Simple check against the centralized blacklist

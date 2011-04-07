@@ -37,15 +37,15 @@ include ('functions.inc.php');
 include ('precheck.inc.php');
 
 // Check an IP
-function do_check($userip) {
+function wpbc_do_check($userip) {
 	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
 	$response = do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
 	return $response;
 }
 
 // Report an IP
-function do_report($userip) {
-	$response = do_check($userip);
+function wpbc_do_report($userip) {
+	$response = wpbc_do_check($userip);
 	if ($response[1] == "NOT LISTED") {
 		$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
 		$response = do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
@@ -54,7 +54,7 @@ function do_report($userip) {
 }
 
 // Checking a comment as we got it (hook calls us)
-function blackcheck($comment) {
+function wpbc_blackcheck($comment) {
 	// IPv6 - IPv4 compatibility mode hack
 	$_SERVER['REMOTE_ADDR'] = preg_replace("/^::ffff:/", "", $_SERVER['REMOTE_ADDR']);
 	$userip = $_SERVER['REMOTE_ADDR'];
@@ -80,7 +80,7 @@ function blackcheck($comment) {
 		}
 
 		if (get_option('wpbc_trackback_list')) {
-			$response = do_check($userip);
+			$response = wpbc_do_check($userip);
 			if ($response[1] != "NOT LISTED") {
 				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 				wp_die( __('Your host is blacklisted and cannot send any trackbacks.', 'wp-blackcheck') );
@@ -91,18 +91,17 @@ function blackcheck($comment) {
 
 	}
 
+    if ( wpbc_get_comments_approved($comment['comment_author_email'], $comment['comment_author']) > get_option('wpbc_trust_count' )) return $comment;
 
 	if (!is_user_logged_in()) {
-
-
 		// Additional checks happen here as needed/wanted
-		if (get_option('wpbc_ip_already_spam')) 	pc_already_spam($userip);
-		if (get_option('wpbc_nobbcode')) 		pc_nobbcode($comment);
-		if (get_option('wpbc_linklimit')) 		pc_linklimit($comment);
-		if (get_option('wpbc_timecheck')) 		pc_speedlimit($comment);
+		if (get_option('wpbc_ip_already_spam')) 	wpbc_pc_already_spam($userip);
+		if (get_option('wpbc_nobbcode')) 		wpbc_pc_nobbcode($comment);
+		if (get_option('wpbc_linklimit')) 		wpbc_pc_linklimit($comment);
+		if (get_option('wpbc_timecheck')) 		wpbc_pc_speedlimit($comment);
 
 		// do the blacklist-check now
-		$response = do_check($userip);
+		$response = wpbc_do_check($userip);
 
 		if ($response[1] != "NOT LISTED") {
 			update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
@@ -117,12 +116,17 @@ function blackcheck($comment) {
 	}
 }
 
-
-
+// get the number of approved comments
+function wpbc_get_comments_approved( $comment_author_email, $comment_author ) {
+	global $wpdb;
+	if ( !empty($comment_author_email) )
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->comments WHERE comment_author_email = %s AND comment_author = %s AND comment_approved = 1", $comment_author_email, $comment_author ) );
+	return 0;
+}
 
 
 // Report-Spam button for the Spam-Queue
-function report_spam_button($comment_status) {
+function wpbc_report_spam_button($comment_status) {
 	if ( $comment_status=='approved' )
                 return;
 
@@ -133,16 +137,22 @@ function report_spam_button($comment_status) {
 }
 
 // Statistics for the admin dashboard
-function blackcheck_stats() {
+function wpbc_table_end() {
 	if ( get_option('wpbc_statistics') == 'on' ) {
-		if ( !$count = get_option('blackcheck_spam_count') )
-			return;
-		echo '<p>'.sprintf( _n( '<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.','<a href="%1$s">WP-BlackCheck</a> has protected your site from <strong>%2$s</strong> spam comments.', $count , 'wp-blackcheck'), 'http://www.stargazer.at/blacklist/', number_format_i18n($count) ).'</p>';
+		$count = get_option('blackcheck_spam_count');
+		echo sprintf('<tr><td class="first b b-tags"></td><td class="t tags"></td><td class="b b-spam" style="font-size:18px">%s</td><td class="last t">%s</td></tr>', number_format_i18n($count),   __('Blocked', 'wp-blackcheck') );
+	}
+}
+function wpbc_discussion_table_end($count) {
+	if ( get_option('wpbc_statistics') == 'on' ) {
+		$count = get_option('blackcheck_spam_count');
+		echo sprintf('<tr><td class="b b-spam" style="font-size:18px">%s</td><td class="last t">%s</td></tr>', number_format_i18n($count),	__('Blocked', 'wp-blackcheck'));
 	}
 }
 
+
 // Admin warning if our settings are outdated
-function blackcheck_warning() {
+function wpbc_blackcheck_warning() {
 	if ( get_option('wpbc_version') != WPBC_VERSION ) {
 	    if( !isset($_POST['submitted'])) {
 		    echo "<div id='wpbc-warning' class='updated fade'><p><strong>".sprintf( __('Your <a href="%s">Settings</a> for WP-BlackCheck are outdated! You should update them as soon as possible!', 'wp-blackcheck'), 'options-general.php?page=wp-blackcheck/wp-blackcheck.php') .'</strong></p></div>';
@@ -152,34 +162,33 @@ function blackcheck_warning() {
 
 
 // Trigger for the reporting
-function blackcheck_report($param) {
+function wpbc_blackcheck_report($param) {
     echo '<div class="wrap"><h2>WP-BlackCheck</h2>';
     echo '<ul>';
-    check_akismet_queue(get_option('wpbc_reportstack', '-1'));
+    wpbc_check_spam_queue(get_option('wpbc_reportstack', '-1'));
     echo '</ul><p>' . __('Process finished', 'wp-blackcheck') . '.</p>';
     echo '</div>';
 }
 
 // Add our pages
-function blackcheck_add_page() {
+function wpbc_blackcheck_add_page() {
 	add_submenu_page('index.php', 'WP-BlackCheck', 'Report Spam', 'manage_options', __FILE__, 'blackcheck_report');
-	add_submenu_page('options-general.php', 'WP-BlackCheck', 'WP-BlackCheck', 10, __FILE__, 'do_adminpage');
+	add_submenu_page('options-general.php', 'WP-BlackCheck', 'WP-BlackCheck', 10, __FILE__, 'wpbc_adminpage');
 
 }
 
 // extend the comment form - we want to know more
-function do_extend_commentform() {
+function wpbc_extend_commentform() {
 	if ( get_option('wpbc_timecheck')) {
 		echo '<p style="display: none;"><input type="hidden" id="comment_timestamp" name="comment_timestamp" value="' . $_SERVER['REQUEST_TIME'] . '" /></p>';
 	}
 }
 
 // Call for the admin page - page actually in adminpanel.php
-function do_adminpage() {
+function wpbc_adminpage() {
 	global $wp_db_version;
 
 	if (function_exists('current_user_can')) {
-		// Hello WP 2.x+
 		if (current_user_can('manage_options')) {
 			include('adminpanel.php');
 		}
@@ -189,12 +198,30 @@ function do_adminpage() {
 add_filter( 'plugin_action_links', 'wpbc_plugin_action_links', 10, 2 );
 
 // Action hooks here
-add_action('activity_box_end', 'blackcheck_stats');
-add_action('admin_notices', 'blackcheck_warning');
+
+if (wpbc_min_wp('3.0')) {
+	add_action('right_now_discussion_table_end', 'wpbc_discussion_table_end' );
+} else {
+	add_action('right_now_table_end', 'wpbc_table_end' );
+}
+
+/*
+function wpbc_activation() {
+	if ( !wp_next_scheduled( 'wpbc_purge' ) ) {
+		wp_schedule_event(time(), 'daily', 'wpbc_event');
+	}
+}
+*/
+
+// add_action('wp',                    'wpbc_activation');
+// add_action('wpbc_event',            'wpbc_purge');
+add_action('admin_notices', 		'wpbc_blackcheck_warning');
+add_action('admin_notices', 		'wpbc_version');
+add_action('admin_notices', 		'wpbc_requirements');
 add_action('activate_wp-blackcheck/wp-blackcheck.php', 'wpbc_install');
-add_action('admin_menu', 'blackcheck_add_page');
-add_action('comment_form', 'do_extend_commentform');
-add_action('init', 'wpbc_textdomain');
-add_action('manage_comments_nav', 'report_spam_button');
-add_action('preprocess_comment', 'blackcheck', 1);
+add_action('admin_menu', 		    'wpbc_blackcheck_add_page');
+add_action('comment_form', 		    'wpbc_extend_commentform');
+add_action('init', 			        'wpbc_textdomain');
+add_action('manage_comments_nav',	'wpbc_report_spam_button');
+add_action('preprocess_comment', 	'wpbc_blackcheck', 1);
 ?>

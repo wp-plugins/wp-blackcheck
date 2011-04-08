@@ -39,7 +39,7 @@ include ('precheck.inc.php');
 // Check an IP
 function wpbc_do_check($userip) {
 	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
-	$response = do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
+	$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
 	return $response;
 }
 
@@ -48,7 +48,7 @@ function wpbc_do_report($userip) {
 	$response = wpbc_do_check($userip);
 	if ($response[1] == "NOT LISTED") {
 		$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
-		$response = do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
+		$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
 		return $response;
 	}
 }

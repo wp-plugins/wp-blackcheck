@@ -63,6 +63,9 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 
 == Changelog ==
 
+= 2.2.1=
+* Fix reporting function
+
 = 2.2.0 =
 * Prefix ALL functions with wpbc_ to avoid clashes with other plugins
 * Update Notifications

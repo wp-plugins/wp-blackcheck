@@ -33,7 +33,7 @@ If only the patch number changes, it was a pure bugfix release.
 * Scan your Spam comments for reporting
 * Easy installation
 
-=== This plugin is already translated to ===
+== This plugin is already translated to ==
 * English
 * German
 

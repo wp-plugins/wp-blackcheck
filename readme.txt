@@ -66,10 +66,10 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 
 == Changelog ==
 
-= 2.2.2=
+= 2.2.2 =
 * Another overlooked function.
 
-= 2.2.1=
+= 2.2.1 =
 * Fix reporting function
 
 = 2.2.0 =

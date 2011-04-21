@@ -20,7 +20,6 @@ WP-BlackCheck combines various ideas to protect your blog from spam.
 * Slows down spammers
 * Spam counter on the dashboard
 
-
 = Languages =
 * English
 * German
@@ -28,9 +27,9 @@ WP-BlackCheck combines various ideas to protect your blog from spam.
 If you want to see this plugin in your language, feel free to contact me.
 
 = Links =
-[Blog](http://my.stargazer.at/ "Authors blog")
-[Bugtracker](http://bugs.stargazer.at/ "Bugtracker")
-[Twitter](http://www.twitter.com/my_stargazer_at)
+* [Blog](http://my.stargazer.at/ "Authors blog")
+* [Bugtracker](http://bugs.stargazer.at/ "Bugtracker")
+* [Twitter](http://www.twitter.com/my_stargazer_at)
 
 = History =
 Blocking spammers via htaccess or other server settings would do the job, but that would require

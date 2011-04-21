@@ -49,7 +49,7 @@ By now many additional features have been added, making this plugin a full grown
 
 == Screenshots ==
 
-The Admin-Page: adminpanel.jpg
+1. The Admin-Page
 
 == Frequently Asked Questions ==
 = What happens if a blocked IP hits my site? =

@@ -47,6 +47,10 @@ By now many additional features have been added, making this plugin a full grown
 3. Configure the plugin to your needs
 4. Optionally report Spam
 
+== Screenshots ==
+
+The Admin-Page: adminpanel.jpg
+
 == Frequently Asked Questions ==
 = What happens if a blocked IP hits my site? =
 The Plugin does not prevent reading of your blog. But if a blocked IP tries to post a comment

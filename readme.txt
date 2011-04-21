@@ -37,10 +37,6 @@ to keep all the files in sync. So I decided to write a centralized solution that
 innocent users to remove their IP from the blacklist via removal request.
 By now many additional features have been added, making this plugin a full grown anti-spam solution.
 
-== Requirements ==
-* Wordpress >= 2.9
-* PHP 5
-
 == Installation ==
 1. Upload the contents of the wp-blackcheck directory into your Wordpress plugin directory or use the plugin installer.
 2. Activate the Plugin

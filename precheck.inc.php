@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-PreChecks
  * @author Christoph "Stargazer" Bauer
- * @version 2.2.2
+ * @version 2.3.0
  */
 /*
  * Function library used with WP-BlackCheck
@@ -47,7 +47,7 @@ function wpbc_pc_nobbcode($comment) {
 // PreCheck - Speed-Limit
 function wpbc_pc_speedlimit($comment) {
 	if ( isset( $_POST['comment_timestamp'] )) {
-		$start = $_POST['comment_timestamp'];
+		$start = base64_decode($_POST['comment_timestamp'], true);
 	} else {
 		// The bot could have messed with our form field.
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
@@ -64,20 +64,32 @@ function wpbc_pc_speedlimit($comment) {
 
 	$finish = $_SERVER['REQUEST_TIME'];
 	$totaltime = ($finish - $start);
+	$charnum = strlen($comment['comment_content']);
 
-	if(WPBC_LOGFILE != ''){
-		$log = fopen(WPBC_LOGFILE, 'a');
-		fwrite($log, date('c') . " - comment from ".$_SERVER['REMOTE_ADDR']. " took " . $totaltime . " seconds. (start: " . $start . " end: " . $finish . ")" .PHP_EOL);
-	}
 
-	// 5 seconds from page load to submission is not really possible - even with prefilled form fields
-	if ( !get_option('wpbc_timecheck_time') ) update_option('wpbc_timecheck_time', '10');
-	if ($totaltime < get_option('wpbc_timecheck_time') ) {
+	// Let's assume a good typer does 6 keystrokes per second...
+	if ($totaltime < ($charnum / 6) ) {
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
+
+		if(WPBC_LOGFILE != ''){
+			$log = fopen(WPBC_LOGFILE, 'a');
+			fwrite($log, date('c') . " - BLOCKD fast comment from ".$_SERVER['REMOTE_ADDR']. " took " . $totaltime . " seconds instead of more than " . $charnum / 6 . ". (start: " . $start . " end: " . $finish . ")" .PHP_EOL);
+		}
+
 		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
+
+	// Speed limit into the other direction
+	if ($totaltime > ($charnum * 20)) {
+		if(WPBC_LOGFILE != ''){
+                	$log = fopen(WPBC_LOGFILE, 'a');
+                	fwrite($log, date('c') . " - SLOW comment from ".$_SERVER['REMOTE_ADDR']. " took " . $totaltime . " seconds. Content Length: " . $charnum / 6 . " (start: " . $start . " end: " . $finish . ")" .PHP_EOL);
+        	}
+		// wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
+	}
+
 }
 
 // PreCheck - Link Limits

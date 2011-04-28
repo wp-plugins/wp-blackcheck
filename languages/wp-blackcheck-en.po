@@ -1,0 +1,340 @@
+# Copyright (C) 2010 WP-BlackCheck
+# This file is distributed under the same license as the WP-BlackCheck package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP-BlackCheck\n"
+"Report-Msgid-Bugs-To: http://bugs.stargazer.at/\n"
+"POT-Creation-Date: 2011-04-07 12:33:33+00:00\n"
+"PO-Revision-Date: 2011-04-28 07:45+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: precheck.inc.php:34
+msgid ""
+"You have already submitted too many comments at once. Please wait before "
+"posting the next comment."
+msgstr ""
+"You have already submitted too many comments at once. Please wait before "
+"posting the next comment."
+
+#: precheck.inc.php:43
+msgid ""
+"Your comment was rejected because it contains <a "
+"href=\"http://en.wikipedia.org/wiki/BBCode\">BBCode</a>. This blog does not "
+"use BBCode."
+msgstr ""
+"Your comment was rejected because it contains <a "
+"href=\"http://en.wikipedia.org/wiki/BBCode\">BBCode</a>. This blog does not "
+"use BBCode."
+
+#: precheck.inc.php:55 precheck.inc.php:62 precheck.inc.php:79
+msgid "Slow down, cowboy! Speed kills."
+msgstr "Slow down, cowboy! Speed kills."
+
+#: precheck.inc.php:89
+msgid "This blog has a limit of %d hyperlinks per comment."
+msgstr "This blog has a limit of %d hyperlinks per comment."
+
+#: adminpanel.php:95
+msgid "WP-BlackCheck - Settings"
+msgstr "WP-BlackCheck - Settings"
+
+#: adminpanel.php:96
+msgid ""
+"Welcome to the settings page for WP-BlackCheck. You are able to configure "
+"the plugin to your needs. "
+msgstr ""
+"Welcome to the settings page for WP-BlackCheck. You are able to configure "
+"the plugin to your needs. "
+
+#: adminpanel.php:97
+msgid "For more information visit <a href=\"%s\" target=\"_blank\">this page</a>."
+msgstr "For more information visit <a href=\"%s\" target=\"_blank\">this page</a>."
+
+#: adminpanel.php:98
+msgid ""
+"If you found a bug, please report it at <a href=\"%s\" "
+"target=\"_blank\">this page</a>."
+msgstr ""
+"If you found a bug, please report it at <a href=\"%s\" "
+"target=\"_blank\">this page</a>."
+
+#: adminpanel.php:100
+msgid "Settings updated."
+msgstr "Settings updated."
+
+#: adminpanel.php:102 functions.inc.php:163
+msgid "Settings"
+msgstr "Settings"
+
+#: adminpanel.php:108
+msgid "Blacklist settings:"
+msgstr "Blacklist settings:"
+
+#: adminpanel.php:111
+msgid "Number of IPs to report at once:"
+msgstr "Number of IPs to report at once:"
+
+#: adminpanel.php:116
+msgid "Enter -1 to report all the IPs at once, disabling the limit."
+msgstr "Enter -1 to report all the IPs at once, disabling the limit."
+
+#: adminpanel.php:120
+msgid "Misc Spam prevention functions:"
+msgstr "Misc Spam prevention functions:"
+
+#: adminpanel.php:123
+msgid ""
+"Block spammers who have 3 comments in your queue during the last 12 hours: "
+msgstr ""
+"Block spammers who have 3 comments in your queue during the last 12 hours: "
+
+#: adminpanel.php:129
+msgid "Do not accept bbCode-Links:"
+msgstr "Do not accept bbCode-Links:"
+
+#: adminpanel.php:138
+msgid "Automatically report IPs that try to send bbCode-Links:"
+msgstr "Automatically report IPs that try to send bbCode-Links:"
+
+#: adminpanel.php:146
+msgid "Use speed-limit for comments (comment typing needs more than 5 sec):"
+msgstr "Use speed-limit for comments (comment typing needs more than 5 sec):"
+
+#: adminpanel.php:155
+msgid "Automatically report IPs that break speed-limits:"
+msgstr "Automatically report IPs that break speed-limits:"
+
+#: adminpanel.php:160
+msgid "Minimum time for a comment:"
+msgstr "Minimum time for a comment:"
+
+#: adminpanel.php:170
+msgid "Block comments having too many links:"
+msgstr "Block comments having too many links:"
+
+#: adminpanel.php:178
+msgid "Maximum number of links:"
+msgstr "Maximum number of links:"
+
+#: adminpanel.php:186
+msgid "Bypass spam check if user's approved comments are greater than:"
+msgstr "Bypass spam check if user's approved comments are greater than:"
+
+#: adminpanel.php:191
+msgid "Purge spam comments older than 2 weeks:"
+msgstr "Purge spam comments older than 2 weeks:"
+
+#: adminpanel.php:196
+msgid "Pingback / Trackback Settings:"
+msgstr "Pingback / Trackback Settings:"
+
+#: adminpanel.php:199
+msgid "Check Trackbacks against Blacklist (<i>not recommended</i>):"
+msgstr "Check Trackbacks against Blacklist (<i>not recommended</i>):"
+
+#: adminpanel.php:204
+msgid "Validate Trackbacks"
+msgstr "Validate Trackbacks"
+
+#: adminpanel.php:210
+msgid "Statistics:"
+msgstr "Statistics:"
+
+#: adminpanel.php:213
+msgid "Show statistics on the dashboard:"
+msgstr "Show statistics on the dashboard:"
+
+#: adminpanel.php:218
+msgid "Reset WP-BlackCheck stats"
+msgstr "Reset WP-BlackCheck stats"
+
+#: adminpanel.php:224
+msgid "Reset Akismet stats"
+msgstr "Reset Akismet stats"
+
+#: adminpanel.php:230
+msgid "Factory Reset"
+msgstr "Factory Reset"
+
+#: adminpanel.php:233
+msgid "Drop all your custom settings and revert to the defaults."
+msgstr "Drop all your custom settings and revert to the defaults."
+
+#: adminpanel.php:239
+msgid "Update Settings"
+msgstr "Update Settings"
+
+#: adminpanel.php:246
+msgid "Known problems:"
+msgstr "Known problems:"
+
+#: adminpanel.php:250
+msgid ""
+"If the number of messages in the Spam-Queue is very high, the script times "
+"out."
+msgstr ""
+"If the number of messages in the Spam-Queue is very high, the script times "
+"out."
+
+#: adminpanel.php:251
+msgid ""
+"Decrease the number of IPs being reported at once. The number you are "
+"reporting at once depends on your hosting environment."
+msgstr ""
+"Decrease the number of IPs being reported at once. The number you are "
+"reporting at once depends on your hosting environment."
+
+#: adminpanel.php:254
+msgid "Trackbacks do not work since WP-BlackCheck checks them."
+msgstr "Trackbacks do not work since WP-BlackCheck checks them."
+
+#: adminpanel.php:255
+msgid ""
+"As some blogs live on hosted environments it might have happened that the "
+"server got listed. Disable checking trackbacks against the blacklist."
+msgstr ""
+"As some blogs live on hosted environments it might have happened that the "
+"server got listed. Disable checking trackbacks against the blacklist."
+
+#: adminpanel.php:258
+msgid ""
+"Everytime someone is trying to post a comment they see: \"Slow down, cowboy!"
+" Speed kills.\""
+msgstr ""
+"Everytime someone is trying to post a comment they see: \"Slow down, cowboy!"
+" Speed kills.\""
+
+#: adminpanel.php:259
+msgid ""
+"A hidden validation field in your comments does not show up. Your theme "
+"might be missing the wp_footer() call."
+msgstr ""
+"A hidden validation field in your comments does not show up. Your theme "
+"might be missing the wp_footer() call."
+
+#: adminpanel.php:260
+msgid "Another possibility is that you did set your comment-time too low."
+msgstr "Another possibility is that you did set your comment-time too low."
+
+#: functions.inc.php:45
+msgid "Reported new:"
+msgstr "Reported new:"
+
+#: functions.inc.php:47
+msgid "Already known:"
+msgstr "Already known:"
+
+#: functions.inc.php:53
+msgid ""
+"There are still some spam comments in your queue. Click <a "
+"href=\"index.php?page=wp-blackcheck/wp-blackcheck.php\">here</a> to process "
+"the next batch."
+msgstr ""
+"There are still some spam comments in your queue. Click <a "
+"href=\"index.php?page=wp-blackcheck/wp-blackcheck.php\">here</a> to process "
+"the next batch."
+
+#: functions.inc.php:56
+msgid "Nothing to report. Your spam queue is empty."
+msgstr "Nothing to report. Your spam queue is empty."
+
+#: functions.inc.php:68
+msgid ""
+"There is a new version of WP-BlackCheck available. It offers a ton of new "
+"features."
+msgstr ""
+"There is a new version of WP-BlackCheck available. It offers a ton of new "
+"features."
+
+#: functions.inc.php:72
+msgid ""
+"There is a new version of WP-BlackCheck available which offers some "
+"enhancements!"
+msgstr ""
+"There is a new version of WP-BlackCheck available which offers some "
+"enhancements!"
+
+#: functions.inc.php:76
+msgid ""
+"There is a new version of WP-BlackCheck available which fixes some bugs!"
+msgstr ""
+"There is a new version of WP-BlackCheck available which fixes some bugs!"
+
+#: functions.inc.php:90
+msgid ""
+"Your WordPress installation does not meet the minimum requirements for "
+"running WP-BlackCheck!"
+msgstr ""
+"Your WordPress installation does not meet the minimum requirements for "
+"running WP-BlackCheck!"
+
+#: functions.inc.php:91
+msgid "WP-BlackCheck needs at least PHP 5 and WordPress 2.9!"
+msgstr "WP-BlackCheck needs at least PHP 5 and WordPress 2.9!"
+
+#: wp-blackcheck.php:71
+msgid "Invalid request: Proxy servers do not send trackbacks or pingbacks."
+msgstr "Invalid request: Proxy servers do not send trackbacks or pingbacks."
+
+#: wp-blackcheck.php:77
+msgid "Invalid url: "
+msgstr "Invalid url: "
+
+#: wp-blackcheck.php:86
+msgid "Your host is blacklisted and cannot send any trackbacks."
+msgstr "Your host is blacklisted and cannot send any trackbacks."
+
+#: wp-blackcheck.php:108
+msgid "The blacklist says: %s"
+msgstr "The blacklist says: %s"
+
+#: wp-blackcheck.php:109
+msgid "See <a href=\"%s\">here</a> for details."
+msgstr "See <a href=\"%s\">here</a> for details."
+
+#: wp-blackcheck.php:135
+msgid "Report and Clean Spam"
+msgstr "Report and Clean Spam"
+
+#: wp-blackcheck.php:143 wp-blackcheck.php:149
+msgid "Blocked"
+msgstr "Blocked"
+
+#: wp-blackcheck.php:158
+msgid ""
+"Your <a href=\"%s\">Settings</a> for WP-BlackCheck are outdated! You should "
+"update them as soon as possible!"
+msgstr ""
+"Your <a href=\"%s\">Settings</a> for WP-BlackCheck are outdated! You should "
+"update them as soon as possible!"
+
+#: wp-blackcheck.php:169
+msgid "Process finished"
+msgstr "Process finished"
+
+#. Plugin Name of the plugin/theme
+msgid "WP-BlackCheck"
+msgstr "WP-BlackCheck"
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.stargazer.at/projects#"
+msgstr "http://www.stargazer.at/projects#"
+
+#. Description of the plugin/theme
+msgid "This plugin is a simple blacklisting checker that works with our hosts"
+msgstr ""
+"This plugin is a simple blacklisting checker that works with our hosts"
+
+#. Author of the plugin/theme
+msgid "Christoph \"Stargazer\" Bauer"
+msgstr "Christoph \"Stargazer\" Bauer"
+
+#. Author URI of the plugin/theme
+msgid "http://my.stargazer.at/"
+msgstr "http://my.stargazer.at/"

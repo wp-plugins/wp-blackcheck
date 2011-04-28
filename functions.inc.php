@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 2.2.2
+ * @version 2.3.0
  */
 /*
  Function library used with WP-BlackCheck
@@ -195,13 +195,11 @@ function wpbc_install() {
 		update_option('wpbc_nobbcode', 			'');
 		update_option('wpbc_nobbcode_autoreport',	'');
 		update_option('wpbc_timecheck', 		'on');
-		update_option('wpbc_timecheck_time',		'10');
 		update_option('wpbc_timecheck_autoreport',	'');
 		update_option('wpbc_linklimit',			'');
 		update_option('wpbc_linklimit_number',		'2');
 		update_option('wpbc_trackback_list', 		'');
 		update_option('wpbc_trackback_check', 		'on');
-		update_option('wpbc_trust_count',           '2');
 		update_option('wpbc_autopurge',           '');
 	}
 }
@@ -213,13 +211,11 @@ function wpbc_reset() {
 	update_option('wpbc_nobbcode', 			'');
 	update_option('wpbc_nobbcode_autoreport',	'');
 	update_option('wpbc_timecheck', 		'on');
-	update_option('wpbc_timecheck_time',		'10');
 	update_option('wpbc_timecheck_autoreport',	'');
 	update_option('wpbc_linklimit',			'');
 	update_option('wpbc_linklimit_number',		'2');
 	update_option('wpbc_trackback_list', 		'');
 	update_option('wpbc_trackback_check', 		'on');
-	update_option('wpbc_trust_count',           '2');
 	update_option('wpbc_autopurge',           '');
 }
 

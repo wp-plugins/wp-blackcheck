@@ -2,7 +2,7 @@
 /**
  * @package WP-Blackcheck-Admin
  * @author Christoph "Stargazer" Bauer
- * @version 2.2.2
+ * @version 2.3.0
  */
 /*
  * Function library used with WP-BlackCheck
@@ -35,8 +35,6 @@ if(isset($_POST['submitted'])) {
 	update_option('wpbc_linklimit', $_POST['wpbc_linklimit']);
 	update_option('wpbc_trackback_list', $_POST['wpbc_trackback_list']);
 	update_option('wpbc_trackback_check', $_POST['wpbc_trackback_check']);
-	update_option('wpbc_timecheck_time', $_POST['wpbc_timecheck_time']);
-	update_option('wpbc_trust_count', $_POST['wpbc_trust_count']);
 	update_option('wpbc_autopurge', $_POST['wpbc_autopurge']);
 	update_option('wpbc_version', WPBC_VERSION);
 
@@ -83,9 +81,7 @@ $wpbc_linklimit			= get_option('wpbc_linklimit');
 $wpbc_linklimit_number		= get_option('wpbc_linklimit_number');
 $wpbc_trackback_list		= get_option('wpbc_trackback_list');
 $wpbc_trackback_check		= get_option('wpbc_trackback_check');
-$wpbc_timecheck_time		= get_option('wpbc_timecheck_time');
 $wpbc_version			= get_option('wpbc_version');
-$wpbc_trust_count       = get_option('wpbc_trust_count');
 $wpbc_autopurge         = get_option('wpbc_autopurge');
 ?>
 
@@ -143,7 +139,7 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 		}
 		?>
 		<tr>
-			<td><?php _e('Use speed-limit for comments (comment typing needs more than 5 sec):', 'wp-blackcheck'); ?></td>
+			<td><?php _e('Use speed-limit for comments (Check keystrokes per second):', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_timecheck" type="checkbox" value="on" <?php if($wpbc_timecheck == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
@@ -155,11 +151,6 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 			<td><?php _e('Automatically report IPs that break speed-limits:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_timecheck_autoreport" type="checkbox" value="on" <?php if($wpbc_timecheck_autoreport == 'on') { echo "checked=\"checked\""; } ?> /></td>
-		</tr>
-		<tr>
-			<td><?php _e('Minimum time for a comment:', 'wp-blackcheck'); ?></td>
-			<td>&nbsp;</td>
-			<td><input name="wpbc_timecheck_time" type="text" size="5" maxlength="2" value="<?php echo $wpbc_timecheck_time; ?>"/></td>
 		</tr>
 
 		<?php
@@ -182,11 +173,6 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 		<?php
 		}
 		?>
-		<tr>
-			<td><?php _e("Bypass spam check if user's approved comments are greater than:", 'wp-blackcheck'); ?></td>
-			<td>&nbsp;</td>
-			<td><input name="wpbc_trust_count" type="text" size="5" maxlength="2" value="<?php echo $wpbc_trust_count; ?>"/></td>
-		</tr>
 		<tr>
 			<td><?php _e('Purge spam comments older than 2 weeks:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>

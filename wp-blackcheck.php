@@ -2,14 +2,14 @@
 /**
  * @package WP-BlackCheck
  * @author Christoph "Stargazer" Bauer
- * @version 2.2.2
+ * @version 2.3.0
  */
 /*
 Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 2.2.2
+Version: 2.3.0
 Author URI: http://my.stargazer.at/
 
     Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
@@ -32,6 +32,7 @@ define('WPBC_VERSION', '2.2.2');
 define('WPBC_SERVER', 'www.stargazer.at');
 
 define('WPBC_LOGFILE', '');
+// define('WPBC_LOGFILE', 'wpbclog.txt');
 
 include ('functions.inc.php');
 include ('precheck.inc.php');
@@ -91,7 +92,11 @@ function wpbc_blackcheck($comment) {
 
 	}
 
-    if ( wpbc_get_comments_approved($comment['comment_author_email'], $comment['comment_author']) > get_option('wpbc_trust_count' )) return $comment;
+    if ( get_option('comment_whitelist') == 1 ) {
+	 if ($comment['comment_type'] != 'trackback' || $comment['comment_type'] != 'pingback') {
+	 	if ( wpbc_get_comments_approved($comment['comment_author_email'], $comment['comment_author']) == 1 ) return $comment;
+	 }
+    }
 
 	if (!is_user_logged_in()) {
 		// Additional checks happen here as needed/wanted
@@ -120,7 +125,7 @@ function wpbc_blackcheck($comment) {
 function wpbc_get_comments_approved( $comment_author_email, $comment_author ) {
 	global $wpdb;
 	if ( !empty($comment_author_email) )
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->comments WHERE comment_author_email = %s AND comment_author = %s AND comment_approved = 1", $comment_author_email, $comment_author ) );
+		return $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$comment_author' AND comment_author_email = 'comment_author_email' and comment_approved = '1' LIMIT 1");
 	return 0;
 }
 
@@ -180,7 +185,7 @@ function wpbc_blackcheck_add_page() {
 // extend the comment form - we want to know more
 function wpbc_extend_commentform() {
 	if ( get_option('wpbc_timecheck')) {
-		echo '<p style="display: none;"><input type="hidden" id="comment_timestamp" name="comment_timestamp" value="' . $_SERVER['REQUEST_TIME'] . '" /></p>';
+		echo '<p style="display: none;"><input type="hidden" id="comment_timestamp" name="comment_timestamp" value="' . base64_encode($_SERVER['REQUEST_TIME']) . '" /></p>';
 	}
 }
 

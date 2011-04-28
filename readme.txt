@@ -66,6 +66,11 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 
 == Changelog ==
 
+= 2.3.0 =
+* Honor previously approved comment settings from WordPress (whitelist)
+* Replace comment time with type rate (keystrokes per second via comment length)
+* Encrypt timestamp to make it less obvious
+
 = 2.2.2 =
 * Another overlooked function.
 

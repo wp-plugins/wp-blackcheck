@@ -1,5 +1,6 @@
 # Copyright (C) 2010 WP-BlackCheck
 # This file is distributed under the same license as the WP-BlackCheck package.
+# Christoph Bauer <transifex@stargazer.at>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-BlackCheck\n"
@@ -341,3 +342,5 @@ msgstr "Christoph \"Stargazer\" Bauer"
 #. Author URI of the plugin/theme
 msgid "http://my.stargazer.at/"
 msgstr "http://my.stargazer.at/"
+
+

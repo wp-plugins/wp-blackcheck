@@ -69,6 +69,7 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 = 2.4.0 =
 * Update notification optional
 * E-Mail notification
+* Known problems -> FAQ
 
 = 2.3.0 =
 * Honor previously approved comment settings from WordPress (whitelist)

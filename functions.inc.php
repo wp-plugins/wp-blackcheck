@@ -59,7 +59,7 @@ function wpbc_check_spam_queue($limit='-1') {
 
 // Version check
 function wpbc_version() {
-	if (get_option('wpbc_updatenotice') {
+	if (get_option('wpbc_updatenotice') == 'on') {
 		$querystring = 'mode=wp-plugver&bloghost='.urlencode(get_option('home'));
 		$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
 		$serverversion = explode('.', (string)$response[1]);

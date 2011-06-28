@@ -2,17 +2,17 @@
 /**
  * @package WP-BlackCheck
  * @author Christoph "Stargazer" Bauer
- * @version 2.3.0
+ * @version 2.4.0
  */
 /*
 Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 2.3.0
+Version: 2.4.0
 Author URI: http://my.stargazer.at/
 
-    Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
+    Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as
@@ -28,7 +28,7 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-define('WPBC_VERSION', '2.3.0');
+define('WPBC_VERSION', '2.4.0');
 define('WPBC_SERVER', 'www.stargazer.at');
 
 define('WPBC_LOGFILE', '');
@@ -158,7 +158,7 @@ function wpbc_discussion_table_end($count) {
 
 // Admin warning if our settings are outdated
 function wpbc_blackcheck_warning() {
-	if ( get_option('wpbc_version') != WPBC_VERSION ) {
+	if ( get_option('wpbc_version') != WPBC_VERSION && get_option('wpbc_updatenotice') == 'on') {
 	    if( !isset($_POST['submitted'])) {
 		    echo "<div id='wpbc-warning' class='updated fade'><p><strong>".sprintf( __('Your <a href="%s">Settings</a> for WP-BlackCheck are outdated! You should update them as soon as possible!', 'wp-blackcheck'), 'options-general.php?page=wp-blackcheck/wp-blackcheck.php') .'</strong></p></div>';
 		}

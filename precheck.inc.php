@@ -2,12 +2,12 @@
 /**
  * @package WP-BlackCheck-PreChecks
  * @author Christoph "Stargazer" Bauer
- * @version 2.3.0
+ * @version 2.4.0
  */
 /*
  * Function library used with WP-BlackCheck
  *
- * Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
+ * Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as

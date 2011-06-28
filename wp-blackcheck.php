@@ -114,6 +114,9 @@ function wpbc_blackcheck($comment) {
 			$diemsg .= sprintf( __('See <a href="%s">here</a> for details.', 'wp-blackcheck'), 'http://www.stargazer.at/blacklist/?ip='.urlencode($userip) );
 			wp_die($diemsg);
 		} else {
+			if ( get_option( 'wpbc_emailnotify' ) == 'on' && $comment->comment_type == 'spam') {
+				wp_notify_moderator($comment->comment_ID);
+			}
 			return $comment;
 		}
 	} else {

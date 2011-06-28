@@ -118,6 +118,23 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 		<tr>
 			<td colspan="3"><small><?php _e('Enter -1 to report all the IPs at once, disabling the limit.', 'wp-blackcheck'); ?></smalL></td>
 		</tr>
+		<tr>
+			<td><?php _e('Purge spam comments older than 2 weeks:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_autopurge" type="checkbox" value="on" <?php if($wpbc_autopurge == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+
+		<tr>
+			<td><?php _e('Show update notice:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_updatenotice" type="checkbox" value="on" <?php if($wpbc_updatenotice == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+		<tr>
+			<td><?php _e('Notify on new (spam) comments:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_emailnotice" type="checkbox" value="on" <?php if($wpbc_emailnotice == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+
 
 		<tr height="30px">
 			<td colspan="3"><strong><?php _e('Misc Spam prevention functions:', 'wp-blackcheck'); ?></strong></td>
@@ -180,24 +197,6 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 		<?php
 		}
 		?>
-		<tr>
-			<td><?php _e('Purge spam comments older than 2 weeks:', 'wp-blackcheck'); ?></td>
-			<td>&nbsp;</td>
-			<td><input name="wpbc_autopurge" type="checkbox" value="on" <?php if($wpbc_autopurge == 'on') { echo "checked=\"checked\""; } ?> /></td>
-		</tr>
-
-		<tr>
-			<td><?php _e('Show update notice:', 'wp-blackcheck'); ?></td>
-			<td>&nbsp;</td>
-			<td><input name="wpbc_updatenotice" type="checkbox" value="on" <?php if($wpbc_updatenotice == 'on') { echo "checked=\"checked\""; } ?> /></td>
-		</tr>
-		<tr>
-			<td><?php _e('Notify on new (spam) comments:', 'wp-blackcheck'); ?></td>
-			<td>&nbsp;</td>
-			<td><input name="wpbc_emailnotice" type="checkbox" value="on" <?php if($wpbc_emailnotice == 'on') { echo "checked=\"checked\""; } ?> /></td>
-		</tr>
-
-
 
 		<tr height="30px">
 			<td colspan="3"><strong><?php _e('Pingback / Trackback Settings:', 'wp-blackcheck'); ?></strong></td>

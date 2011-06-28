@@ -2,12 +2,12 @@
 /**
  * @package WP-Blackcheck-Admin
  * @author Christoph "Stargazer" Bauer
- * @version 2.3.0
+ * @version 2.4.0
  */
 /*
  * Function library used with WP-BlackCheck
  *
- * Copyright 2010 Christoph Bauer  (email : cbauer@stargazer.at)
+ * Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -28,15 +28,19 @@ if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 if(isset($_POST['submitted'])) {
 
 	// Checkbox handling
-	update_option('wpbc_statistics', $_POST['wpbc_statistics']);
-	update_option('wpbc_ip_already_spam', $_POST['wpbc_ip_already_spam']);
-	update_option('wpbc_nobbcode', $_POST['wpbc_nobbcode']);
-	update_option('wpbc_timecheck', $_POST['wpbc_timecheck']);
-	update_option('wpbc_linklimit', $_POST['wpbc_linklimit']);
-	update_option('wpbc_trackback_list', $_POST['wpbc_trackback_list']);
-	update_option('wpbc_trackback_check', $_POST['wpbc_trackback_check']);
-	update_option('wpbc_autopurge', $_POST['wpbc_autopurge']);
-	update_option('wpbc_version', WPBC_VERSION);
+	update_option('wpbc_statistics', 	$_POST['wpbc_statistics']);
+	update_option('wpbc_ip_already_spam', 	$_POST['wpbc_ip_already_spam']);
+	update_option('wpbc_nobbcode', 		$_POST['wpbc_nobbcode']);
+	update_option('wpbc_timecheck', 	$_POST['wpbc_timecheck']);
+	update_option('wpbc_linklimit', 	$_POST['wpbc_linklimit']);
+	update_option('wpbc_trackback_list', 	$_POST['wpbc_trackback_list']);
+	update_option('wpbc_trackback_check', 	$_POST['wpbc_trackback_check']);
+	update_option('wpbc_autopurge', 	$_POST['wpbc_autopurge']);
+	update_option('wpbc_updatenotice',  	$_POST['wpbc_updatenotice']);
+	update_option('wpbc_emailnotice',  	$_POST['wpbc_emailnotice']);
+
+	update_option('wpbc_version', 		WPBC_VERSION);
+
 
 	// Special option treatment
 	if ( $_POST['wpbc_nobbcode'] == 'on') {
@@ -54,6 +58,7 @@ if(isset($_POST['submitted'])) {
 	} else {
 		update_option('wpbc_linklimit_number', '-1');
 	}
+
 	// Values here
 	if ($_POST['wpbc_reportstack']) update_option('wpbc_reportstack', $_POST['wpbc_reportstack']);
 
@@ -82,7 +87,9 @@ $wpbc_linklimit_number		= get_option('wpbc_linklimit_number');
 $wpbc_trackback_list		= get_option('wpbc_trackback_list');
 $wpbc_trackback_check		= get_option('wpbc_trackback_check');
 $wpbc_version			= get_option('wpbc_version');
-$wpbc_autopurge         = get_option('wpbc_autopurge');
+$wpbc_autopurge         	= get_option('wpbc_autopurge');
+$wpbc_updatenotice		= get_option('wpbc_updatenotice');
+$wpbc_emailnotice		= get_option('wpbc_updatenotice');
 ?>
 
 
@@ -178,6 +185,20 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 			<td>&nbsp;</td>
 			<td><input name="wpbc_autopurge" type="checkbox" value="on" <?php if($wpbc_autopurge == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
+
+		<tr>
+			<td><?php _e('Show update notice:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_updatenotice" type="checkbox" value="on" <?php if($wpbc_updatenotice == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+		<tr>
+			<td><?php _e('Notify on new (spam) comments:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_emailnotice" type="checkbox" value="on" <?php if($wpbc_emailnotice == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+
+
+
 		<tr height="30px">
 			<td colspan="3"><strong><?php _e('Pingback / Trackback Settings:', 'wp-blackcheck'); ?></strong></td>
 		</tr>

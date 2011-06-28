@@ -59,21 +59,23 @@ function wpbc_check_spam_queue($limit='-1') {
 
 // Version check
 function wpbc_version() {
-	$querystring = 'mode=wp-plugver&bloghost='.urlencode(get_option('home'));
-	$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
-	$serverversion = explode('.', (string)$response[1]);
-	$plugversion = explode('.', WPBC_VERSION);
+	if (get_option('wpbc_updatenotice') {
+		$querystring = 'mode=wp-plugver&bloghost='.urlencode(get_option('home'));
+		$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
+		$serverversion = explode('.', (string)$response[1]);
+		$plugversion = explode('.', WPBC_VERSION);
 
-	if ( $serverversion[0] > $plugversion[0]) {
-		echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available. It offers a ton of new features.', 'wp-blackcheck') . '</strong></p></div>';
-	}
+		if ( $serverversion[0] > $plugversion[0]) {
+			echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available. It offers a ton of new features.', 'wp-blackcheck') . '</strong></p></div>';
+		}
 
-	if ($serverversion[1] > $plugversion[1]) {
-		echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which offers some enhancements!', 'wp-blackcheck') . '</strong></p></div>';
-	}
+		if ($serverversion[1] > $plugversion[1]) {
+			echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which offers some enhancements!', 'wp-blackcheck') . '</strong></p></div>';
+		}
 
-	if ( $serverversion[2] > $plugversion[2]) {
-		echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which fixes some bugs!', 'wp-blackcheck') . '</strong></p></div>';
+		if ( $serverversion[2] > $plugversion[2]) {
+			echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which fixes some bugs!', 'wp-blackcheck') . '</strong></p></div>';
+		}
 	}
 }
 

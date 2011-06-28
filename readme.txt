@@ -24,7 +24,7 @@ WP-BlackCheck combines various ideas to protect your blog from spam.
 * English
 * German
 
-If you want to see this plugin in your language, feel free to contact me.
+If you want to see this plugin in your language, feel free to contact me or use [transifex.net](https://www.transifex.net/projects/p/wpbc/resource/plugin/) to contribute.
 
 = Links =
 * [Blog](http://my.stargazer.at/ "Authors blog")
@@ -65,6 +65,10 @@ Spammers usually hit quite a few servers with their IPs. It's pretty uncommon th
 The plugin comes with a file named wp-blackcheck.pot which contains the messages printed. Feel free to translate it into your language and send the .mo and .po file back to me, so I can include it into the next release.
 
 == Changelog ==
+
+= 2.4.0 =
+* Update notification optional
+* E-Mail notification
 
 = 2.3.0 =
 * Honor previously approved comment settings from WordPress (whitelist)

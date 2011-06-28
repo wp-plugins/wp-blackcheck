@@ -219,7 +219,15 @@ function wpbc_activation() {
 		wp_schedule_event(time(), 'daily', 'wpbc_event');
 	}
 }
+
+function wpbc_deactivation() {
+	wp_clear_scheduled_hook('wpbc_event');
+}
+
+
 register_activation_hook(__FILE__, 'wpbc_activation');
+register_deactivation_hook(__FILE__, 'wpbc_deactivation');
+
 add_action('wp',			'wpbc_activation');
 add_action('wpbc_event',		'wpbc_purge');
 add_action('admin_notices',		'wpbc_blackcheck_warning');

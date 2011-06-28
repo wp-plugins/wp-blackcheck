@@ -95,7 +95,7 @@ $wpbc_emailnotice		= get_option('wpbc_updatenotice');
 
 <div class="wrap">
 <?php
-echo '<h2>' . __('WP-BlackCheck - Settings', 'wp-blackcheck') . '</h2>';
+echo '<div id="icon-options-general" class="icon32"><br /></div><h2>' . __('WP-BlackCheck - Settings', 'wp-blackcheck') . '</h2>';
 echo '<p>' . __('Welcome to the settings page for WP-BlackCheck. You are able to configure the plugin to your needs. ', 'wp-blackcheck') . '<br />';
 echo sprintf ( __('For more information visit <a href="%s" target="_blank">this page</a>.', 'wp-blackcheck'), 'http://my.stargazer.at/tag/wp-blackcheck/' ) . ' ';
 echo sprintf ( __('If you found a bug, please report it at <a href="%s" target="_blank">this page</a>.', 'wp-blackcheck'), 'http://bugs.stargazer.at/' ) . '</p>';

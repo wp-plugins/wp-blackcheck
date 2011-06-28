@@ -213,17 +213,16 @@ if (wpbc_min_wp('3.0')) {
 	add_action('right_now_table_end', 'wpbc_table_end' );
 }
 
-/*
+
 function wpbc_activation() {
-	if ( !wp_next_scheduled( 'wpbc_purge' ) ) {
+	if ( !wp_next_scheduled( 'wpbc_event' ) ) {
 		wp_schedule_event(time(), 'daily', 'wpbc_event');
 	}
 }
-*/
 
-// add_action('wp',                    'wpbc_activation');
-// add_action('wpbc_event',            'wpbc_purge');
-add_action('admin_notices', 		'wpbc_blackcheck_warning');
+add_action('wp',			'wpbc_activation');
+add_action('wpbc_event',		'wpbc_purge');
+add_action('admin_notices',		'wpbc_blackcheck_warning');
 add_action('admin_notices', 		'wpbc_version');
 add_action('admin_notices', 		'wpbc_requirements');
 add_action('activate_wp-blackcheck/wp-blackcheck.php', 'wpbc_install');

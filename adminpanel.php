@@ -249,7 +249,7 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 	</form>
 
 <?php
-echo '<h3>' . __('Known problems:', 'wp-blackcheck') . '</h3>';
+echo '<h3>' . __('Frequently Asked Questions (FAQ):', 'wp-blackcheck') . '</h3>';
 ?>
 
 	<p>

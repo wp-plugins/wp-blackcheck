@@ -17,8 +17,8 @@ WP-BlackCheck combines various ideas to protect your blog from spam.
 * Block known spammers
 * Block Trackback/Pingback spam
 * No need to adjust default templates
-* Slows down spammers
 * Spam counter on the dashboard
+* Statistics
 
 = Languages =
 * English
@@ -34,7 +34,8 @@ If you want to see this plugin in your language, feel free to contact me or use 
 = History =
 Blocking spammers via htaccess or other server settings would do the job, but that would require
 to keep all the files in sync. So I decided to write a centralized solution that enables
-innocent users to remove their IP from the blacklist via removal request.
+innocent users to remove their IP from the blacklist via removal request. As a blacklist gets queried
+way too often, I added some local detection of spammers to reduce load at my side.
 By now many additional features have been added, making this plugin a full grown anti-spam solution.
 
 == Installation ==
@@ -65,6 +66,18 @@ Spammers usually hit quite a few servers with their IPs. It's pretty uncommon th
 The plugin comes with a file named wp-blackcheck.pot which contains the messages printed. Feel free to translate it into your language and send the .mo and .po file back to me, so I can include it into the next release.
 
 == Changelog ==
+
+= 2.5.0 =
+* Add Icon to reporting
+* Adjust speedcheck to more realistic values
+* Add another Spam trap (dummy field)
+* Relocate 'Report Spam' as it belongs to 'tools'
+* Update translations
+* Add statistics
+* Fixed bug with the blocked spam counter
+* Fixed bug with header checks
+* Reorder spam checks to be more effective
+* Some cosmetic changes
 
 = 2.4.0 =
 * Update notification optional

@@ -2,7 +2,7 @@
 /**
  * @package WP-Blackcheck-Admin
  * @author Christoph "Stargazer" Bauer
- * @version 2.4.0
+ * @version 2.5.0
  */
 /*
  * Function library used with WP-BlackCheck
@@ -27,6 +27,8 @@ if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 // Option handling - Write values
 if(isset($_POST['submitted'])) {
 
+	update_option('wpbc_version', 		WPBC_VERSION);
+
 	// Checkbox handling
 	update_option('wpbc_statistics', 	$_POST['wpbc_statistics']);
 	update_option('wpbc_ip_already_spam', 	$_POST['wpbc_ip_already_spam']);
@@ -38,8 +40,7 @@ if(isset($_POST['submitted'])) {
 	update_option('wpbc_autopurge', 	$_POST['wpbc_autopurge']);
 	update_option('wpbc_updatenotice',  	$_POST['wpbc_updatenotice']);
 	update_option('wpbc_emailnotice',  	$_POST['wpbc_emailnotice']);
-
-	update_option('wpbc_version', 		WPBC_VERSION);
+	update_option('wpbc_trapfield',		$_POST['wpbc_trapfield']);
 
 
 	// Special option treatment
@@ -63,7 +64,17 @@ if(isset($_POST['submitted'])) {
 	if ($_POST['wpbc_reportstack']) update_option('wpbc_reportstack', $_POST['wpbc_reportstack']);
 
 	// Clear statistics if requested
-	if ($_POST['wpbc_clear_wpbc_stats']) update_option('blackcheck_spam_count', '0');
+	if ($_POST['wpbc_clear_wpbc_stats']) {
+		update_option('blackcheck_spam_count', '0');
+		update_option('wpbc_counter_blacklist', '0');
+		update_option('wpbc_counter_spamqueue', '0');
+		update_option('wpbc_counter_bbcode', '0');
+		update_option('wpbc_counter_trap', '0');
+		update_option('wpbc_counter_speed', '0');
+		update_option('wpbc_counter_link', '0');
+		update_option('wpbc_counter_tbvia', '0');
+		update_option('wpbc_counter_tburl', '0');
+	}
 	if ($_POST['wpbc_clear_akismet_stats']) update_option('akismet_spam_count', '0');
 
 	// FACTORY RESET
@@ -90,6 +101,7 @@ $wpbc_version			= get_option('wpbc_version');
 $wpbc_autopurge         	= get_option('wpbc_autopurge');
 $wpbc_updatenotice		= get_option('wpbc_updatenotice');
 $wpbc_emailnotice		= get_option('wpbc_updatenotice');
+$wpbc_trapfield			= get_option('wpbc_trapfield');
 ?>
 
 
@@ -97,7 +109,7 @@ $wpbc_emailnotice		= get_option('wpbc_updatenotice');
 <?php
 echo '<div id="icon-options-general" class="icon32"><br /></div><h2>' . __('WP-BlackCheck - Settings', 'wp-blackcheck') . '</h2>';
 echo '<p>' . __('Welcome to the settings page for WP-BlackCheck. You are able to configure the plugin to your needs. ', 'wp-blackcheck') . '<br />';
-echo sprintf ( __('For more information visit <a href="%s" target="_blank">this page</a>.', 'wp-blackcheck'), 'http://my.stargazer.at/tag/wp-blackcheck/' ) . ' ';
+echo sprintf ( __('For more information visit <a href="%s" target="_blank">this page</a>.', 'wp-blackcheck'), 'http://my.stargazer.at/tag/wp-blackcheck/?pk_campaign=BlackCheck%20Plugin' ) . ' ';
 echo sprintf ( __('If you found a bug, please report it at <a href="%s" target="_blank">this page</a>.', 'wp-blackcheck'), 'http://bugs.stargazer.at/' ) . '</p>';
 
 if(isset($_POST['submitted'])) echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('Settings updated.', 'wp-blackcheck') . '</strong></p></div>';
@@ -162,6 +174,12 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 		<?php
 		}
 		?>
+		<tr>
+			<td><?php _e('Add a hidden form field and check for if it stays empty:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_trapfield" type="checkbox" value="on" <?php if($wpbc_trapfield == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+
 		<tr>
 			<td><?php _e('Use speed-limit for comments (Check keystrokes per second):', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>

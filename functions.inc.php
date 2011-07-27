@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 2.4.0
+ * @version 2.5.0
  */
 /*
  Function library used with WP-BlackCheck
@@ -205,6 +205,19 @@ function wpbc_install() {
 		update_option('wpbc_autopurge',           	'');
 		update_option('wpbc_emailnotice',           	'');
 		update_option('wpbc_updatenotice',           	'on');
+		update_option('wpbc_trapfield',           	'on');
+
+		// Zero stats
+		update_option('blackcheck_spam_count', '0');
+                update_option('wpbc_counter_blacklist', '0');
+                update_option('wpbc_counter_spamqueue', '0');
+                update_option('wpbc_counter_bbcode', '0');
+                update_option('wpbc_counter_trap', '0');
+                update_option('wpbc_counter_speed', '0');
+                update_option('wpbc_counter_link', '0');
+                update_option('wpbc_counter_tbvia', '0');
+                update_option('wpbc_counter_tburl', '0');
+
 	}
 }
 
@@ -223,6 +236,7 @@ function wpbc_reset() {
 	update_option('wpbc_autopurge',			'');
 	update_option('wpbc_emailnotice',           	'');
 	update_option('wpbc_updatenotice',           	'on');
+	update_option('wpbc_trapfield',           	'on');
 }
 
 // Locales loading

@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-PreChecks
  * @author Christoph "Stargazer" Bauer
- * @version 2.4.0
+ * @version 2.5.0
  */
 /*
  * Function library used with WP-BlackCheck
@@ -29,6 +29,7 @@ function wpbc_pc_already_spam($userip) {
 	// if the spammer already left a few, slow him down
 	$hitcount = $wpdb->get_var("SELECT count(comment_author_IP) as hitcount FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_author_IP = '$userip' AND comment_date > DATE_SUB( now(), INTERVAL 1 DAY");
 	if ($hitcount > 2) {
+		update_option( 'wpbc_counter_spamqueue', get_option('wpbc_counter_spamqueue') + 1 );
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		// we already have his spam at least 3 times - so let's just die.
 		wp_die( __('You have already submitted too many comments at once. Please wait before posting the next comment.', 'wp-blackcheck') );
@@ -39,8 +40,20 @@ function wpbc_pc_already_spam($userip) {
 function wpbc_pc_nobbcode($comment) {
 	if (preg_match('|\[url(\=.*?)?\]|is', $comment['comment_content'])) {
 		if ( get_option('wpbc_nobbcode_autoreport') ) $response = wpbc_do_report($comment->comment_author_IP);
+		update_option( 'wpbc_counter_bbcode', get_option('wpbc_counter_bbcode') + 1 );
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		wp_die( __('Your comment was rejected because it contains <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a>. This blog does not use BBCode.', 'wp-blackcheck') );
+	}
+}
+
+// PreCheck - Trap-Field empty?
+function wpbc_pc_trapfield($comment) {
+	if ( trim($comment['comment_empty']) ) {
+		update_option( 'wpbc_counter_trap', get_option('wpbc_counter_trap') + 1 );
+		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
+		 wp_die( __('Your comment was rejected.', 'wp-blackcheck') );
+	} else {
+		return $comment;
 	}
 }
 
@@ -51,6 +64,7 @@ function wpbc_pc_speedlimit($comment) {
 	} else {
 		// The bot could have messed with our form field.
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
+		update_option( 'wpbc_counter_speed', get_option('wpbc_counter_speed') + 1 );
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
@@ -58,6 +72,7 @@ function wpbc_pc_speedlimit($comment) {
 	// Someone did change our form field for sure.
 	if (!is_numeric($start)) {
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
+		update_option( 'wpbc_counter_speed', get_option('wpbc_counter_speed') + 1 );
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
@@ -67,11 +82,11 @@ function wpbc_pc_speedlimit($comment) {
 	$charnum = strlen($comment['comment_content']);
 
 
-	// Let's assume a good typer does 6 keystrokes per second...
-	if ($totaltime < ($charnum / 6) ) {
+	// Let's assume a good typer does 4 keystrokes per second...
+	if ($totaltime < ($charnum / 4) ) {
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
+		update_option( 'wpbc_counter_speed', get_option('wpbc_counter_speed') + 1 );
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 
 		if(WPBC_LOGFILE != ''){
 			$log = fopen(WPBC_LOGFILE, 'a');
@@ -81,15 +96,6 @@ function wpbc_pc_speedlimit($comment) {
 		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
 
-	// Speed limit into the other direction
-	if ($totaltime > ($charnum * 20)) {
-		if(WPBC_LOGFILE != ''){
-                	$log = fopen(WPBC_LOGFILE, 'a');
-                	fwrite($log, date('c') . " - SLOW comment from ".$_SERVER['REMOTE_ADDR']. " took " . $totaltime . " seconds. Content Length: " . $charnum / 6 . " (start: " . $start . " end: " . $finish . ")" .PHP_EOL);
-        	}
-		// wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
-	}
-
 }
 
 // PreCheck - Link Limits
@@ -97,6 +103,7 @@ function wpbc_pc_linklimit($comment) {
 	$linklimit = get_option('wpbc_linklimit_number');
 	$linkCount = preg_match_all("|(href\t*?=\t*?['\"]?)?(https?:)?//|i", $comment['comment_content'], $out);
 	if ($linkCount > $linklimit) {
+		update_option( 'wpbc_counter_link', get_option('wpbc_counter_link') + 1 );
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		wp_die( sprintf( __("This blog has a limit of %d hyperlinks per comment.", 'wp-blackcheck'), $linklimit));
 	}

@@ -3,7 +3,7 @@ Contributors: Stargazer
 Donate link: http://my.stargazer.at/wishlist/
 Tags: comments,spam,blacklist
 Requires at least: 2.9
-Tested up to: latest svn
+Tested up to: 3.2.1
 Stable tag: trunk
 
 WP-BlackCheck is an Anti-Spam Solution for Wordpress blocking spam using local detection and a centralized Blacklist Service.

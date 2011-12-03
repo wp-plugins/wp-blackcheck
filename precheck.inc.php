@@ -83,7 +83,7 @@ function wpbc_pc_speedlimit($comment) {
 
 
 	// Let's assume a good typer does 5 keystrokes per second...
-	if ($totaltime < ($charnum / 5) ) {
+	if ($totaltime < ($charnum / 6) ) {
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		update_option( 'wpbc_counter_speed', get_option('wpbc_counter_speed') + 1 );
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);

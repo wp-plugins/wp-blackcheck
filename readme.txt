@@ -67,6 +67,10 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 
 == Changelog ==
 
+= 2.5.1 =
+* Fix typo in function name
+* adjust speed check
+
 = 2.5.0 =
 * Add Icon to reporting
 * Adjust speedcheck to more realistic values

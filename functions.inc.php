@@ -155,7 +155,7 @@ function wpbc_get_http_headers() {
 	$headers = array();
 	foreach ($_SERVER as $h => $v)
 		if (preg_match('/HTTP_(.+)/', $h, $hp))
-			$headers[str_replace("_", "-", ucase_all($hp[1]))] = $v;
+			$headers[str_replace("_", "-", wpbc_ucase_all($hp[1]))] = $v;
 		return $headers;
 }
 

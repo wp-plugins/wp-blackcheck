@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 2.5.1
+ * @version 2.6.0
  */
 /*
  Function library used with WP-BlackCheck
@@ -249,4 +249,16 @@ function wpbc_textdomain() {
 		}
 	}
 }
+
+// Extract domain name from URL
+function wpbc_get_domainname($url) {
+    $exp1 = '/^(http|https|ftp)?(:\/\/)?([^\/]+)/i';
+	preg_match($exp1, $uri, $matches);
+	if (isset($matches[3])) {
+		return $matches[3];
+    } else {
+		return '';
+	}
+}
+
 ?>

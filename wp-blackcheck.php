@@ -2,14 +2,14 @@
 /**
  * @package WP-BlackCheck
  * @author Christoph "Stargazer" Bauer
- * @version 2.5.1
+ * @version 2.6.0
  */
 /*
 Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 2.5.1
+Version: 2.6.0
 Author URI: http://my.stargazer.at/
 
     Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
@@ -28,7 +28,7 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-define('WPBC_VERSION', '2.5.1');
+define('WPBC_VERSION', '2.6.0');
 define('WPBC_SERVER', 'www.stargazer.at');
 
 define('WPBC_LOGFILE', '');
@@ -79,6 +79,11 @@ function wpbc_blackcheck($comment) {
 				update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
 				wp_die( __('Invalid url: ', 'wp-blackcheck') . $comment['comment_author_url']);
 			}
+
+			// Validate IP Address
+			$sender_IP = preg_replace('/[^0-9.]/', '', $_SERVER['REMOTE_ADDR'] );
+			$trackback_IP = preg_replace('/[^0-9.]/', '', gethostbyname(wpbc_get_domainname($comment['comment_author_url'])) );
+			if ($sender_IP != $trackback_IP) wp_die( __('Sender IP does not match trackback IP.') );
 
 		}
 

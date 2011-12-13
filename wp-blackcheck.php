@@ -83,6 +83,7 @@ function wpbc_blackcheck($comment) {
 			// Validate IP Address
 			$sender_IP = preg_replace('/[^0-9.]/', '', $_SERVER['REMOTE_ADDR'] );
 			$trackback_IP = preg_replace('/[^0-9.]/', '', gethostbyname( wpbc_get_domainname($comment['comment_author_url']) ));
+
 			if ($sender_IP != $trackback_IP) {
 				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 				update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
@@ -95,13 +96,20 @@ function wpbc_blackcheck($comment) {
 				$wpbc_snoopy->fetchlinks($comment['comment_author_url']);
 				$remoteLinks = $wpbc_snoopy->results;
 				if ( is_array($remoteLinks) ) {
+
+					$wpbcBackLink = false;
+
 					// We found some links at the other end
 					foreach ($remoteLinks as $loopLink) {
 						$loopLink = preg_replace('/(\/|\/trackback|\/trackback\/)$/', '', $loopLink);
-						if(WPBC_LOGFILE != ''){
-							$log = fopen(WPBC_LOGFILE, 'a');
-							fwrite($log, date('c') . " - Snoopy found Link: " . $loopLink );
-						}
+						$BlogLink = get_bloginfo('siteurl');
+						if ( strrpos( $loopLink, $BlogLink ) !== false ) $wpbcBackLink = true;
+						
+					}
+					if ($wpbcBackLink == false) {
+						update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
+						update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
+						wp_die( __('Backlink not found.') );
 					}
 
 				} else {
@@ -112,6 +120,7 @@ function wpbc_blackcheck($comment) {
 					}
 
 				}
+				unset($wpbc_snoopy);
 
 
 		}

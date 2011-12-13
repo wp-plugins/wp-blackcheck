@@ -249,13 +249,8 @@ function wpbc_textdomain() {
 
 // Extract domain name from URL
 function wpbc_get_domainname($url) {
-    $exp1 = '/^(http|https|ftp)?(:\/\/)?([^\/]+)/i';
-	preg_match($exp1, $uri, $matches);
-	if (isset($matches[3])) {
-		return $matches[3];
-    } else {
-		return '';
-	}
+	preg_match('@^(?:http://)?([^/]+)@i',$url, $matches);
+	return $matches[1];
 }
 
 ?>

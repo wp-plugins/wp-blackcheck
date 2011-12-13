@@ -74,22 +74,22 @@ window.onload = function() {
 	ctx.fillText("Speed limit:",  0, 115);
 	ctx.fillText("<?php echo get_option('wpbc_counter_speed'); ?>",  210, 115);
 	ctx.fillText("Blacklist:",  0, 135);
-	ctx.fillText("<?php echo get_option('wpbc_counter_blacklist'); ?>",  210, 155);
-	ctx.fillText("Total:",  0, 175);
-	ctx.fillText("<?php echo get_option('blackcheck_spam_count'); ?>",  210, 175);
+	ctx.fillText("<?php echo get_option('wpbc_counter_blacklist'); ?>",  210, 135);
+	ctx.fillText("Total:",  0, 155);
+	ctx.fillText("<?php echo get_option('blackcheck_spam_count'); ?>",  210, 155);
 
 
 	ctx.fillStyle = "rgb(200,0,0)";
-	ctx.fillRect (233, 6, 	<?php echo wpbc_percentage_bar('wpbc_counter_tbvia'); ?>, 10);
-	ctx.fillRect (233, 26,  <?php echo wpbc_percentage_bar('wpbc_counter_tburl'); ?>, 10);
-	ctx.fillRect (233, 46,  <?php echo wpbc_percentage_bar('wpbc_counter_spamqueue'); ?>, 10);
-	ctx.fillRect (233, 66,  <?php echo wpbc_percentage_bar('wpbc_counter_bbcode'); ?>, 10);
-	ctx.fillRect (233, 86,  <?php echo wpbc_percentage_bar('wpbc_counter_link'); ?>, 10);
-	ctx.fillRect (233, 106, <?php echo wpbc_percentage_bar('wpbc_counter_speed'); ?>, 10);
-	ctx.fillRect (233, 126, <?php echo wpbc_percentage_bar('wpbc_counter_blacklist'); ?>, 10);
+	ctx.fillRect (237, 6, 	<?php echo wpbc_percentage_bar('wpbc_counter_tbvia'); ?>, 10);
+	ctx.fillRect (237, 26,  <?php echo wpbc_percentage_bar('wpbc_counter_tburl'); ?>, 10);
+	ctx.fillRect (237, 46,  <?php echo wpbc_percentage_bar('wpbc_counter_spamqueue'); ?>, 10);
+	ctx.fillRect (237, 66,  <?php echo wpbc_percentage_bar('wpbc_counter_bbcode'); ?>, 10);
+	ctx.fillRect (237, 86,  <?php echo wpbc_percentage_bar('wpbc_counter_link'); ?>, 10);
+	ctx.fillRect (237, 106, <?php echo wpbc_percentage_bar('wpbc_counter_speed'); ?>, 10);
+	ctx.fillRect (237, 126, <?php echo wpbc_percentage_bar('wpbc_counter_blacklist'); ?>, 10);
 
 	ctx.fillStyle = "rgb(0,0,0)";
-	ctx.fillRect (0, 160, 400, 2);
+	ctx.fillRect (0, 140, 400, 2);
 
 	ctx.fillStyle = "rgb(200,0,0)";
 

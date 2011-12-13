@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 2.5.1
+ * @version 2.6.0
  */
 /*
  Function library used with WP-BlackCheck
@@ -73,8 +73,8 @@ function wpbc_version() {
 			echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which offers some enhancements!', 'wp-blackcheck') . '</strong></p></div>';
 		}
 
-		if ( $serverversion[2] > $plugversion[2]) {
-			echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which fixes some bugs!', 'wp-blackcheck') . '</strong></p></div>';
+		if ( $serverversion[2] > $plugversion[2] ) {
+			if ($serverversion[1] == $plugversion[1]) echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which fixes some bugs!', 'wp-blackcheck') . '</strong></p></div>';
 		}
 	}
 }
@@ -205,14 +205,12 @@ function wpbc_install() {
 		update_option('wpbc_autopurge',           	'');
 		update_option('wpbc_emailnotice',           	'');
 		update_option('wpbc_updatenotice',           	'on');
-		update_option('wpbc_trapfield',           	'on');
 
 		// Zero stats
 		update_option('blackcheck_spam_count', '0');
                 update_option('wpbc_counter_blacklist', '0');
                 update_option('wpbc_counter_spamqueue', '0');
                 update_option('wpbc_counter_bbcode', '0');
-                update_option('wpbc_counter_trap', '0');
                 update_option('wpbc_counter_speed', '0');
                 update_option('wpbc_counter_link', '0');
                 update_option('wpbc_counter_tbvia', '0');
@@ -236,7 +234,6 @@ function wpbc_reset() {
 	update_option('wpbc_autopurge',			'');
 	update_option('wpbc_emailnotice',           	'');
 	update_option('wpbc_updatenotice',           	'on');
-	update_option('wpbc_trapfield',           	'on');
 }
 
 // Locales loading
@@ -249,4 +246,42 @@ function wpbc_textdomain() {
 		}
 	}
 }
+
+// Extract domain name from URL
+function wpbc_get_domainname($url) {
+	preg_match('@^(?:http://)?([^/]+)@i',$url, $matches);
+	return $matches[1];
+}
+
+
+// Update counters in one place
+function wpbc_counter($counter) {
+	update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
+
+	switch($counter) {
+		case 'tbvia':
+			update_option( 'wpbc_counter_tbvia', get_option('wpbc_counter_tbvia') + 1 );
+			break;
+		case 'tburl':
+			update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
+			break;
+		case 'list':
+			update_option( 'wpbc_counter_blacklist', get_option('wpbc_counter_blacklist') + 1 );
+			break;
+		case 'squeue':
+			update_option( 'wpbc_counter_spamqueue', get_option('wpbc_counter_spamqueue') + 1 );
+			break;
+		case 'bbCode':
+			update_option( 'wpbc_counter_bbcode', get_option('wpbc_counter_bbcode') + 1 );
+			break;
+		case 'speed':
+			update_option( 'wpbc_counter_speed', get_option('wpbc_counter_speed') + 1 );
+			break;
+		case 'link':
+			update_option( 'wpbc_counter_link', get_option('wpbc_counter_link') + 1 );
+			break;
+	}
+}
+
+
 ?>

@@ -2,14 +2,14 @@
 /**
  * @package WP-BlackCheck
  * @author Christoph "Stargazer" Bauer
- * @version 2.5.1
+ * @version 2.6.0
  */
 /*
 Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 2.5.1
+Version: 2.6.0
 Author URI: http://my.stargazer.at/
 
     Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
@@ -28,11 +28,11 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-define('WPBC_VERSION', '2.5.1');
+define('WPBC_VERSION', '2.6.0');
 define('WPBC_SERVER', 'www.stargazer.at');
 
-define('WPBC_LOGFILE', '');
-// define('WPBC_LOGFILE', 'wpbclog.txt');
+// define('WPBC_LOGFILE', '');
+define('WPBC_LOGFILE', 'wpbclog.txt');
 
 include ('functions.inc.php');
 include ('precheck.inc.php');
@@ -68,25 +68,62 @@ function wpbc_blackcheck($comment) {
 			// Proxy servers do not send trackbacks
 			$headers = wpbc_get_http_headers();
 			if (array_key_exists('Via', $headers) || array_key_exists('Max-Forwards', $headers) || array_key_exists('X-Forwarded-For', $headers) || array_key_exists('Client-Ip', $headers)) {
-				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				update_option( 'wpbc_counter_tbvia', get_option('wpbc_counter_tbvia') + 1 );
+				wpbc_counter('tbvia');
 				wp_die( __( 'Invalid request: Proxy servers do not send trackbacks or pingbacks.', 'wp-blackcheck') );
 			}
 
 			// Proper URL?
 			if(!preg_match("/^http/", $comment['comment_author_url'])) {
-				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
+				wpbc_counter('tburl');
 				wp_die( __('Invalid url: ', 'wp-blackcheck') . $comment['comment_author_url']);
 			}
+
+			// Validate IP Address
+			$sender_IP = preg_replace('/[^0-9.]/', '', $_SERVER['REMOTE_ADDR'] );
+			$trackback_IP = preg_replace('/[^0-9.]/', '', gethostbyname( wpbc_get_domainname($comment['comment_author_url']) ));
+
+			if ($sender_IP != $trackback_IP) {
+				wpbc_counter('tburl');
+				wp_die( __('Sender IP does not match trackback IP.') );
+			}
+
+			// Make use of WP's Snoopy Class
+			include_once( ABSPATH . WPINC . '/class-snoopy.php' );
+				$wpbc_snoopy = new Snoopy;
+				$wpbc_snoopy->fetchlinks($comment['comment_author_url']);
+				$remoteLinks = $wpbc_snoopy->results;
+				if ( is_array($remoteLinks) ) {
+
+					$wpbcBackLink = false;
+
+					// We found some links at the other end
+					foreach ($remoteLinks as $loopLink) {
+						$loopLink = preg_replace('/(\/|\/trackback|\/trackback\/)$/', '', $loopLink);
+						$BlogLink = get_bloginfo('siteurl');
+						if ( strrpos( $loopLink, $BlogLink ) !== false ) $wpbcBackLink = true;						
+					}
+					if ($wpbcBackLink == false) {
+						wpbc_counter('tburl');
+						wp_die( __('Backlink not found.') );
+					}
+
+				} else {
+					// Problem? Logging?
+					if(WPBC_LOGFILE != ''){
+						$log = fopen(WPBC_LOGFILE, 'a');
+						fwrite($log, date('c') . " - Snoopy: Problem: Request from ".$_SERVER['REMOTE_ADDR']);
+					}
+
+				}
+				unset($wpbc_snoopy);
+
 
 		}
 
 		if (get_option('wpbc_trackback_list')) {
 			$response = wpbc_do_check($userip);
 			if ($response[1] != "NOT LISTED") {
-				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				update_option( 'wpbc_counter_blacklist', get_option('wpbc_counter_blacklist') + 1 );
+				wpbc_counter('list');
 				wp_die( __('Your host is blacklisted and cannot send any trackbacks.', 'wp-blackcheck') );
 			}
 		}
@@ -107,15 +144,13 @@ function wpbc_blackcheck($comment) {
 		if (get_option('wpbc_timecheck')) 		wpbc_pc_speedlimit($comment);
 		if (get_option('wpbc_linklimit')) 		wpbc_pc_linklimit($comment);
 		if (get_option('wpbc_nobbcode')) 		wpbc_pc_nobbcode($comment);
-		if (get_option('wpbc_trapfield'))		wpbc_pc_trapfield($comment);
 		// last resort if other anti spam plugins got the bugger into the queue already
 		if (get_option('wpbc_ip_already_spam')) 	wpbc_pc_already_spam($userip);
 		// do the blacklist-check now
 		$response = wpbc_do_check($userip);
 
 		if ($response[1] != "NOT LISTED") {
-			update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-			update_option( 'wpbc_counter_blacklist', get_option('wpbc_counter_blacklist') + 1 );
+			wpbc_counter('list');
 			$diemsg  = '<h1>'. sprintf( __('The blacklist says: %s', 'wp-blackcheck'), $response[1]) ."</h1>\n<br />";
 			$diemsg .= sprintf( __('See <a href="%s">here</a> for details.', 'wp-blackcheck'), 'http://www.stargazer.at/blacklist/?ip='.urlencode($userip) );
 			wp_die($diemsg);
@@ -195,10 +230,6 @@ function wpbc_extend_commentform() {
 	// timecode
 	if ( get_option('wpbc_timecheck')) {
 		echo '<p style="display: none;"><input type="hidden" id="comment_timestamp" name="comment_timestamp" value="' . base64_encode($_SERVER['REQUEST_TIME']) . '" /></p>';
-	}
-	// add a trap field
-	if ( get_option('wpbc_trapfield')) {
-		echo '<p style="display: none;"><input type="hidden" id="comment_empty" name="comment_empty" value="" /></p>';
 	}
 }
 

@@ -68,15 +68,13 @@ function wpbc_blackcheck($comment) {
 			// Proxy servers do not send trackbacks
 			$headers = wpbc_get_http_headers();
 			if (array_key_exists('Via', $headers) || array_key_exists('Max-Forwards', $headers) || array_key_exists('X-Forwarded-For', $headers) || array_key_exists('Client-Ip', $headers)) {
-				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				update_option( 'wpbc_counter_tbvia', get_option('wpbc_counter_tbvia') + 1 );
+				wpbc_counter('tbvia');
 				wp_die( __( 'Invalid request: Proxy servers do not send trackbacks or pingbacks.', 'wp-blackcheck') );
 			}
 
 			// Proper URL?
 			if(!preg_match("/^http/", $comment['comment_author_url'])) {
-				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
+				wpbc_counter('tburl');
 				wp_die( __('Invalid url: ', 'wp-blackcheck') . $comment['comment_author_url']);
 			}
 
@@ -85,8 +83,7 @@ function wpbc_blackcheck($comment) {
 			$trackback_IP = preg_replace('/[^0-9.]/', '', gethostbyname( wpbc_get_domainname($comment['comment_author_url']) ));
 
 			if ($sender_IP != $trackback_IP) {
-				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
+				wpbc_counter('tburl');
 				wp_die( __('Sender IP does not match trackback IP.') );
 			}
 
@@ -103,12 +100,10 @@ function wpbc_blackcheck($comment) {
 					foreach ($remoteLinks as $loopLink) {
 						$loopLink = preg_replace('/(\/|\/trackback|\/trackback\/)$/', '', $loopLink);
 						$BlogLink = get_bloginfo('siteurl');
-						if ( strrpos( $loopLink, $BlogLink ) !== false ) $wpbcBackLink = true;
-						
+						if ( strrpos( $loopLink, $BlogLink ) !== false ) $wpbcBackLink = true;						
 					}
 					if ($wpbcBackLink == false) {
-						update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-						update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
+						wpbc_counter('tburl');
 						wp_die( __('Backlink not found.') );
 					}
 
@@ -128,8 +123,7 @@ function wpbc_blackcheck($comment) {
 		if (get_option('wpbc_trackback_list')) {
 			$response = wpbc_do_check($userip);
 			if ($response[1] != "NOT LISTED") {
-				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-				update_option( 'wpbc_counter_blacklist', get_option('wpbc_counter_blacklist') + 1 );
+				wpbc_counter('list');
 				wp_die( __('Your host is blacklisted and cannot send any trackbacks.', 'wp-blackcheck') );
 			}
 		}
@@ -156,8 +150,7 @@ function wpbc_blackcheck($comment) {
 		$response = wpbc_do_check($userip);
 
 		if ($response[1] != "NOT LISTED") {
-			update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-			update_option( 'wpbc_counter_blacklist', get_option('wpbc_counter_blacklist') + 1 );
+			wpbc_counter('list');
 			$diemsg  = '<h1>'. sprintf( __('The blacklist says: %s', 'wp-blackcheck'), $response[1]) ."</h1>\n<br />";
 			$diemsg .= sprintf( __('See <a href="%s">here</a> for details.', 'wp-blackcheck'), 'http://www.stargazer.at/blacklist/?ip='.urlencode($userip) );
 			wp_die($diemsg);

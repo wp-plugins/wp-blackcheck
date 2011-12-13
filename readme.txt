@@ -69,6 +69,8 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 
 = 2.6.0 =
 * Improve trackback/pingback checks
+* Remove obsolete trap field
+* Fix update notifications
 
 = 2.5.1 =
 * Fix typo in function name

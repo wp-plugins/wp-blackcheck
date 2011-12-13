@@ -40,7 +40,6 @@ if(isset($_POST['submitted'])) {
         update_option('wpbc_counter_blacklist', '0');
         update_option('wpbc_counter_spamqueue', '0');
         update_option('wpbc_counter_bbcode', '0');
-        update_option('wpbc_counter_trap', '0');
         update_option('wpbc_counter_speed', '0');
         update_option('wpbc_counter_link', '0');
         update_option('wpbc_counter_tbvia', '0');
@@ -74,9 +73,7 @@ window.onload = function() {
 	ctx.fillText("<?php echo get_option('wpbc_counter_link'); ?>",  210, 95);
 	ctx.fillText("Speed limit:",  0, 115);
 	ctx.fillText("<?php echo get_option('wpbc_counter_speed'); ?>",  210, 115);
-	ctx.fillText("Trap field:",  0, 135);
-	ctx.fillText("<?php echo get_option('wpbc_counter_trap'); ?>",  210, 135);
-	ctx.fillText("Blacklist:",  0, 155);
+	ctx.fillText("Blacklist:",  0, 135);
 	ctx.fillText("<?php echo get_option('wpbc_counter_blacklist'); ?>",  210, 155);
 	ctx.fillText("Total:",  0, 175);
 	ctx.fillText("<?php echo get_option('blackcheck_spam_count'); ?>",  210, 175);
@@ -89,8 +86,7 @@ window.onload = function() {
 	ctx.fillRect (233, 66,  <?php echo wpbc_percentage_bar('wpbc_counter_bbcode'); ?>, 10);
 	ctx.fillRect (233, 86,  <?php echo wpbc_percentage_bar('wpbc_counter_link'); ?>, 10);
 	ctx.fillRect (233, 106, <?php echo wpbc_percentage_bar('wpbc_counter_speed'); ?>, 10);
-	ctx.fillRect (233, 126, <?php echo wpbc_percentage_bar('wpbc_counter_trap'); ?>, 10);
-	ctx.fillRect (233, 146, <?php echo wpbc_percentage_bar('wpbc_counter_blacklist'); ?>, 10);
+	ctx.fillRect (233, 126, <?php echo wpbc_percentage_bar('wpbc_counter_blacklist'); ?>, 10);
 
 	ctx.fillStyle = "rgb(0,0,0)";
 	ctx.fillRect (0, 160, 400, 2);
@@ -107,7 +103,6 @@ window.onload = function() {
         if (!get_option('wpbc_nobbcode'))  echo 'ctx.fillRect (0, 70, 230, 2);';
         if (!get_option('wpbc_linklimit')) echo 'ctx.fillRect (0, 90, 230, 2);';
         if (!get_option('wpbc_timecheck')) echo 'ctx.fillRect (0, 110, 230, 2);';
-	if (!get_option('wpbc_trapfield')) echo 'ctx.fillRect (0, 130, 230, 2);';
 	?>
 
 }

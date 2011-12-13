@@ -137,7 +137,6 @@ function wpbc_blackcheck($comment) {
 		if (get_option('wpbc_timecheck')) 		wpbc_pc_speedlimit($comment);
 		if (get_option('wpbc_linklimit')) 		wpbc_pc_linklimit($comment);
 		if (get_option('wpbc_nobbcode')) 		wpbc_pc_nobbcode($comment);
-		if (get_option('wpbc_trapfield'))		wpbc_pc_trapfield($comment);
 		// last resort if other anti spam plugins got the bugger into the queue already
 		if (get_option('wpbc_ip_already_spam')) 	wpbc_pc_already_spam($userip);
 		// do the blacklist-check now
@@ -225,10 +224,6 @@ function wpbc_extend_commentform() {
 	// timecode
 	if ( get_option('wpbc_timecheck')) {
 		echo '<p style="display: none;"><input type="hidden" id="comment_timestamp" name="comment_timestamp" value="' . base64_encode($_SERVER['REQUEST_TIME']) . '" /></p>';
-	}
-	// add a trap field
-	if ( get_option('wpbc_trapfield')) {
-		echo '<p style="display: none;"><input type="hidden" id="comment_empty" name="comment_empty" value="" /></p>';
 	}
 }
 

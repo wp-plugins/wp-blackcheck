@@ -40,7 +40,6 @@ if(isset($_POST['submitted'])) {
 	update_option('wpbc_autopurge', 	$_POST['wpbc_autopurge']);
 	update_option('wpbc_updatenotice',  	$_POST['wpbc_updatenotice']);
 	update_option('wpbc_emailnotice',  	$_POST['wpbc_emailnotice']);
-	update_option('wpbc_trapfield',		$_POST['wpbc_trapfield']);
 
 
 	// Special option treatment
@@ -69,7 +68,6 @@ if(isset($_POST['submitted'])) {
 		update_option('wpbc_counter_blacklist', '0');
 		update_option('wpbc_counter_spamqueue', '0');
 		update_option('wpbc_counter_bbcode', '0');
-		update_option('wpbc_counter_trap', '0');
 		update_option('wpbc_counter_speed', '0');
 		update_option('wpbc_counter_link', '0');
 		update_option('wpbc_counter_tbvia', '0');
@@ -101,7 +99,6 @@ $wpbc_version			= get_option('wpbc_version');
 $wpbc_autopurge         	= get_option('wpbc_autopurge');
 $wpbc_updatenotice		= get_option('wpbc_updatenotice');
 $wpbc_emailnotice		= get_option('wpbc_updatenotice');
-$wpbc_trapfield			= get_option('wpbc_trapfield');
 ?>
 
 
@@ -174,11 +171,6 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 		<?php
 		}
 		?>
-		<tr>
-			<td><?php _e('Add a hidden form field and check for if it stays empty:', 'wp-blackcheck'); ?></td>
-			<td>&nbsp;</td>
-			<td><input name="wpbc_trapfield" type="checkbox" value="on" <?php if($wpbc_trapfield == 'on') { echo "checked=\"checked\""; } ?> /></td>
-		</tr>
 
 		<tr>
 			<td><?php _e('Use speed-limit for comments (Check keystrokes per second):', 'wp-blackcheck'); ?></td>

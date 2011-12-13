@@ -46,17 +46,6 @@ function wpbc_pc_nobbcode($comment) {
 	}
 }
 
-// PreCheck - Trap-Field empty?
-function wpbc_pc_trapfield($comment) {
-	if ( trim($comment['comment_empty']) ) {
-		update_option( 'wpbc_counter_trap', get_option('wpbc_counter_trap') + 1 );
-		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
-		 wp_die( __('Your comment was rejected.', 'wp-blackcheck') );
-	} else {
-		return $comment;
-	}
-}
-
 // PreCheck - Speed-Limit
 function wpbc_pc_speedlimit($comment) {
 	if ( isset( $_POST['comment_timestamp'] )) {

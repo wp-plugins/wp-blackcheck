@@ -83,7 +83,11 @@ function wpbc_blackcheck($comment) {
 			// Validate IP Address
 			$sender_IP = preg_replace('/[^0-9.]/', '', $_SERVER['REMOTE_ADDR'] );
 			$trackback_IP = preg_replace('/[^0-9.]/', '', gethostbyname( wpbc_get_domainname($comment['comment_author_url']) ));
-			if ($sender_IP != $trackback_IP) wp_die( __('Sender IP does not match trackback IP.') );
+			if ($sender_IP != $trackback_IP) {
+				update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
+				update_option( 'wpbc_counter_tburl', get_option('wpbc_counter_tburl') + 1 );
+				wp_die( __('Sender IP does not match trackback IP.') );
+			}
 
 			// Make use of WP's Snoopy Class
 			include_once( ABSPATH . WPINC . '/class-snoopy.php' );

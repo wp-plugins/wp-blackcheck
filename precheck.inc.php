@@ -87,12 +87,6 @@ function wpbc_pc_speedlimit($comment) {
 		update_option( 'blackcheck_spam_count', get_option('blackcheck_spam_count') + 1 );
 		update_option( 'wpbc_counter_speed', get_option('wpbc_counter_speed') + 1 );
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
-
-		if(WPBC_LOGFILE != ''){
-			$log = fopen(WPBC_LOGFILE, 'a');
-			fwrite($log, date('c') . " - BLOCKD fast comment from ".$_SERVER['REMOTE_ADDR']. " took " . $totaltime . " seconds instead of more than " . $charnum / 6 . ". (start: " . $start . " end: " . $finish . ")" .PHP_EOL);
-		}
-
 		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
 

@@ -73,7 +73,7 @@ function wpbc_version() {
 			echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which offers some enhancements!', 'wp-blackcheck') . '</strong></p></div>';
 		}
 
-		if ( $serverversion[2] > $plugversion[2]) {
+		if ( $serverversion[2] > $plugversion[2] && $serverversion[1] <= $plugversion[1]) {
 			echo "<div id='wpbc-info' class='updated fade'><p><strong>" . __('There is a new version of WP-BlackCheck available which fixes some bugs!', 'wp-blackcheck') . '</strong></p></div>';
 		}
 	}

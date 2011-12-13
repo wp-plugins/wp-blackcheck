@@ -31,8 +31,8 @@ if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 define('WPBC_VERSION', '2.6.0');
 define('WPBC_SERVER', 'www.stargazer.at');
 
-define('WPBC_LOGFILE', '');
-// define('WPBC_LOGFILE', 'wpbclog.txt');
+// define('WPBC_LOGFILE', '');
+define('WPBC_LOGFILE', 'wpbclog.txt');
 
 include ('functions.inc.php');
 include ('precheck.inc.php');
@@ -82,8 +82,33 @@ function wpbc_blackcheck($comment) {
 
 			// Validate IP Address
 			$sender_IP = preg_replace('/[^0-9.]/', '', $_SERVER['REMOTE_ADDR'] );
-			$trackback_IP = preg_replace('/[^0-9.]/', '', gethostbyname(wpbc_get_domainname($comment['comment_author_url'])) );
+			$trackback_IP = preg_replace('/[^0-9.]/', '', gethostbyname( wpbc_get_domainname($comment['comment_author_url']) ));
 			if ($sender_IP != $trackback_IP) wp_die( __('Sender IP does not match trackback IP.') );
+
+			// Make use of WP's Snoopy Class
+			include_once( ABSPATH . WPINC . '/class-snoopy.php' );
+				$wpbc_snoopy = new Snoopy;
+				$wpbc_snoopy->fetchlinks($comment['comment_author_url']);
+				$remoteLinks = $wpbc_snoopy->results;
+				if ( is_array($remoteLinks) ) {
+					// We found some links at the other end
+					foreach ($remoteLinks as $loopLink) {
+						$loopLink = preg_replace('/(\/|\/trackback|\/trackback\/)$/', '', $loopLink);
+						if(WPBC_LOGFILE != ''){
+							$log = fopen(WPBC_LOGFILE, 'a');
+							fwrite($log, date('c') . " - Snoopy found Link: " . $loopLink );
+						}
+					}
+
+				} else {
+					// Problem? Logging?
+					if(WPBC_LOGFILE != ''){
+						$log = fopen(WPBC_LOGFILE, 'a');
+						fwrite($log, date('c') . " - Snoopy: Problem: Request from ".$_SERVER['REMOTE_ADDR']);
+					}
+
+				}
+
 
 		}
 

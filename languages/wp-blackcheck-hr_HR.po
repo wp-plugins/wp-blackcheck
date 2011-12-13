@@ -1,12 +1,13 @@
 # Copyright (C) 2010 WP-BlackCheck
 # This file is distributed under the same license as the WP-BlackCheck package.
+# Translators:
 # Tomislav Buz <tomislav.buza@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-BlackCheck\n"
 "Report-Msgid-Bugs-To: http://bugs.stargazer.at/\n"
-"POT-Creation-Date: 2011-07-19 09:49:44+00:00\n"
-"PO-Revision-Date: 2011-07-19 10:01+0000\n"
+"POT-Creation-Date: 2011-12-12 13:23+0100\n"
+"PO-Revision-Date: 2011-12-12 12:31+0000\n"
 "Last-Translator: cb5264 <transifex@stargazer.at>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,316 +15,337 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hr_HR\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: /home/cbauer/git/wp-blackcheck\n"
 
-#: adminpanel.php:110
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:107
 msgid "WP-BlackCheck - Settings"
 msgstr "WP-BlackCheck - Postavke"
 
-#: adminpanel.php:111
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:108
 msgid ""
 "Welcome to the settings page for WP-BlackCheck. You are able to configure "
 "the plugin to your needs. "
 msgstr ""
 
-#: adminpanel.php:112 stats.php:32
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:109
+#: /home/cbauer/git/wp-blackcheck/stats.php:30
+#, php-format
 msgid "For more information visit <a href=\"%s\" target=\"_blank\">this page</a>."
 msgstr ""
 
-#: adminpanel.php:113 stats.php:33
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:110
+#: /home/cbauer/git/wp-blackcheck/stats.php:31
+#, php-format
 msgid ""
 "If you found a bug, please report it at <a href=\"%s\" "
 "target=\"_blank\">this page</a>."
 msgstr ""
 
-#: adminpanel.php:115
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:112
 msgid "Settings updated."
 msgstr "Postavke ažurirane."
 
-#: adminpanel.php:117 functions.inc.php:165
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:114
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:165
 msgid "Settings"
 msgstr "Postavke"
 
-#: adminpanel.php:123
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:120
 msgid "Blacklist settings:"
 msgstr ""
 
-#: adminpanel.php:126
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:123
 msgid "Number of IPs to report at once:"
 msgstr ""
 
-#: adminpanel.php:131
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:128
 msgid "Enter -1 to report all the IPs at once, disabling the limit."
 msgstr ""
 
-#: adminpanel.php:134
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:131
 msgid "Purge spam comments older than 2 weeks:"
 msgstr ""
 
-#: adminpanel.php:140
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:137
 msgid "Show update notice:"
 msgstr ""
 
-#: adminpanel.php:145
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:142
 msgid "Notify on new (spam) comments:"
 msgstr ""
 
-#: adminpanel.php:152
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:149
 msgid "Misc Spam prevention functions:"
 msgstr ""
 
-#: adminpanel.php:155
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:152
 msgid ""
 "Block spammers who have 3 comments in your queue during the last 12 hours: "
 msgstr ""
 
-#: adminpanel.php:161
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:158
 msgid "Do not accept bbCode-Links:"
 msgstr ""
 
-#: adminpanel.php:170
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:167
 msgid "Automatically report IPs that try to send bbCode-Links:"
 msgstr ""
 
-#: adminpanel.php:178
-msgid "Add a hidden form field and check for if it stays empty:"
-msgstr ""
-
-#: adminpanel.php:184
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:176
 msgid "Use speed-limit for comments (Check keystrokes per second):"
 msgstr ""
 
-#: adminpanel.php:193
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:185
 msgid "Automatically report IPs that break speed-limits:"
 msgstr ""
 
-#: adminpanel.php:203
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:195
 msgid "Block comments having too many links:"
 msgstr ""
 
-#: adminpanel.php:211
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:203
 msgid "Maximum number of links:"
 msgstr ""
 
-#: adminpanel.php:220
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:212
 msgid "Pingback / Trackback Settings:"
 msgstr ""
 
-#: adminpanel.php:223
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:215
 msgid "Check Trackbacks against Blacklist (<i>not recommended</i>):"
 msgstr ""
 
-#: adminpanel.php:228
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:220
 msgid "Validate Trackbacks"
 msgstr ""
 
-#: adminpanel.php:234
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:226
 msgid "Statistics:"
 msgstr "Statistika:"
 
-#: adminpanel.php:237
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:229
 msgid "Show statistics on the dashboard:"
 msgstr ""
 
-#: adminpanel.php:242
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:234
+#: /home/cbauer/git/wp-blackcheck/stats.php:51
 msgid "Reset WP-BlackCheck stats"
 msgstr ""
 
-#: adminpanel.php:248
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:240
 msgid "Reset Akismet stats"
 msgstr ""
 
-#: adminpanel.php:254
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:246
 msgid "Factory Reset"
 msgstr ""
 
-#: adminpanel.php:257
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:249
 msgid "Drop all your custom settings and revert to the defaults."
 msgstr ""
 
-#: adminpanel.php:263
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:255
 msgid "Update Settings"
 msgstr "Ažuriraj postavke"
 
-#: adminpanel.php:270
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:262
 msgid "Frequently Asked Questions (FAQ):"
 msgstr ""
 
-#: adminpanel.php:274
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:266
 msgid ""
 "If the number of messages in the Spam-Queue is very high, the script times "
 "out."
 msgstr ""
 
-#: adminpanel.php:275
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:267
 msgid ""
 "Decrease the number of IPs being reported at once. The number you are "
 "reporting at once depends on your hosting environment."
 msgstr ""
 
-#: adminpanel.php:278
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:270
 msgid "Trackbacks do not work since WP-BlackCheck checks them."
 msgstr ""
 
-#: adminpanel.php:279
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:271
 msgid ""
 "As some blogs live on hosted environments it might have happened that the "
 "server got listed. Disable checking trackbacks against the blacklist."
 msgstr ""
 
-#: adminpanel.php:282
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:274
 msgid ""
 "Everytime someone is trying to post a comment they see: \"Slow down, cowboy!"
 " Speed kills.\""
 msgstr ""
 
-#: adminpanel.php:283
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:275
 msgid ""
 "A hidden validation field in your comments does not show up. Your theme "
 "might be missing the wp_footer() call."
 msgstr ""
 
-#: adminpanel.php:284
+#: /home/cbauer/git/wp-blackcheck/adminpanel.php:276
 msgid "Another possibility is that you did set your comment-time too low."
 msgstr ""
 
-#: functions.inc.php:45
-msgid "Reported new:"
-msgstr ""
-
-#: functions.inc.php:47
-msgid "Already known:"
-msgstr ""
-
-#: functions.inc.php:53
-msgid ""
-"There are still some spam comments in your queue. Click <a "
-"href=\"index.php?page=wp-blackcheck/wp-blackcheck.php\">here</a> to process "
-"the next batch."
-msgstr ""
-
-#: functions.inc.php:56
-msgid "Nothing to report. Your spam queue is empty."
-msgstr ""
-
-#: functions.inc.php:69
-msgid ""
-"There is a new version of WP-BlackCheck available. It offers a ton of new "
-"features."
-msgstr ""
-
-#: functions.inc.php:73
-msgid ""
-"There is a new version of WP-BlackCheck available which offers some "
-"enhancements!"
-msgstr ""
-
-#: functions.inc.php:77
-msgid ""
-"There is a new version of WP-BlackCheck available which fixes some bugs!"
-msgstr ""
-
-#: functions.inc.php:92
-msgid ""
-"Your WordPress installation does not meet the minimum requirements for "
-"running WP-BlackCheck!"
-msgstr ""
-
-#: functions.inc.php:93
-msgid "WP-BlackCheck needs at least PHP 5 and WordPress 2.9!"
-msgstr ""
-
-#: precheck.inc.php:35
+#: /home/cbauer/git/wp-blackcheck/precheck.inc.php:35
 msgid ""
 "You have already submitted too many comments at once. Please wait before "
 "posting the next comment."
 msgstr ""
 
-#: precheck.inc.php:45
+#: /home/cbauer/git/wp-blackcheck/precheck.inc.php:45
 msgid ""
 "Your comment was rejected because it contains <a "
 "href=\"http://en.wikipedia.org/wiki/BBCode\">BBCode</a>. This blog does not "
 "use BBCode."
 msgstr ""
 
-#: precheck.inc.php:54
-msgid "Your comment was rejected."
-msgstr ""
-
-#: precheck.inc.php:69 precheck.inc.php:77 precheck.inc.php:96
+#: /home/cbauer/git/wp-blackcheck/precheck.inc.php:58
+#: /home/cbauer/git/wp-blackcheck/precheck.inc.php:66
+#: /home/cbauer/git/wp-blackcheck/precheck.inc.php:79
 msgid "Slow down, cowboy! Speed kills."
 msgstr ""
 
-#: precheck.inc.php:108
+#: /home/cbauer/git/wp-blackcheck/precheck.inc.php:91
+#, php-format
 msgid "This blog has a limit of %d hyperlinks per comment."
 msgstr ""
 
-#: stats.php:30
+#: /home/cbauer/git/wp-blackcheck/stats.php:28
 msgid "WP-BlackCheck - Statistics"
 msgstr ""
 
-#: stats.php:31
+#: /home/cbauer/git/wp-blackcheck/stats.php:29
 msgid ""
 "Welcome to the statistics page for WP-BlackCheck. This page shows "
 "information about the effectiveness of the spam prevention methods of this "
 "plugin."
 msgstr ""
 
-#: wp-blackcheck.php:73
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:45
+msgid "Reported new:"
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:47
+msgid "Already known:"
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:53
+msgid ""
+"There are still some spam comments in your queue. Click <a "
+"href=\"index.php?page=wp-blackcheck/wp-blackcheck.php\">here</a> to process "
+"the next batch."
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:56
+msgid "Nothing to report. Your spam queue is empty."
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:69
+msgid ""
+"There is a new version of WP-BlackCheck available. It offers a ton of new "
+"features."
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:73
+msgid ""
+"There is a new version of WP-BlackCheck available which offers some "
+"enhancements!"
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:77
+msgid ""
+"There is a new version of WP-BlackCheck available which fixes some bugs!"
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:92
+msgid ""
+"Your WordPress installation does not meet the minimum requirements for "
+"running WP-BlackCheck!"
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/functions.inc.php:93
+msgid "WP-BlackCheck needs at least PHP 5 and WordPress 2.9!"
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:73
 msgid "Invalid request: Proxy servers do not send trackbacks or pingbacks."
 msgstr ""
 
-#: wp-blackcheck.php:80
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:80
 msgid "Invalid url: "
 msgstr "Neispravan url:"
 
-#: wp-blackcheck.php:90
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:90
+msgid "Sender IP does not match trackback IP."
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:112
+msgid "Backlink not found."
+msgstr ""
+
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:133
 msgid "Your host is blacklisted and cannot send any trackbacks."
 msgstr ""
 
-#: wp-blackcheck.php:118
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:161
+#, php-format
 msgid "The blacklist says: %s"
 msgstr ""
 
-#: wp-blackcheck.php:119
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:162
+#, php-format
 msgid "See <a href=\"%s\">here</a> for details."
 msgstr ""
 
-#: wp-blackcheck.php:147
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:190
 msgid "Report and Clean Spam"
 msgstr ""
 
-#: wp-blackcheck.php:155 wp-blackcheck.php:161
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:198
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:204
 msgid "Blocked"
 msgstr "Blokirano"
 
-#: wp-blackcheck.php:170
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:213
+#, php-format
 msgid ""
 "Your <a href=\"%s\">Settings</a> for WP-BlackCheck are outdated! You should "
 "update them as soon as possible!"
 msgstr ""
 
-#: wp-blackcheck.php:181
+#: /home/cbauer/git/wp-blackcheck/wp-blackcheck.php:224
 msgid "Process finished"
 msgstr "Proces završen"
 
-#. Plugin Name of the plugin/theme
-msgid "WP-BlackCheck"
-msgstr "WP-BlackCheck"
+#~ msgid "Minimum time for a comment:"
+#~ msgstr "Minimum time for a comment:"
 
-#. Plugin URI of the plugin/theme
-msgid "http://www.stargazer.at/projects#"
-msgstr "http://www.stargazer.at/projects#"
+#~ msgid "Bypass spam check if user's approved comments are greater than:"
+#~ msgstr "Bypass spam check if user's approved comments are greater than:"
 
-#. Description of the plugin/theme
-msgid "This plugin is a simple blacklisting checker that works with our hosts"
-msgstr ""
+#~ msgid "Known problems:"
+#~ msgstr "Known problems:"
 
-#. Author of the plugin/theme
-msgid "Christoph \"Stargazer\" Bauer"
-msgstr "Christoph \"Stargazer\" Bauer"
+#~ msgid "WP-BlackCheck"
+#~ msgstr "WP-BlackCheck"
 
-#. Author URI of the plugin/theme
-msgid "http://my.stargazer.at/"
-msgstr "http://my.stargazer.at/"
+#~ msgid "http://www.stargazer.at/projects#"
+#~ msgstr "http://www.stargazer.at/projects#"
+
+#~ msgid "This plugin is a simple blacklisting checker that works with our hosts"
+#~ msgstr ""
+#~ "This plugin is a simple blacklisting checker that works with our hosts"
+
+#~ msgid "Christoph \"Stargazer\" Bauer"
+#~ msgstr "Christoph \"Stargazer\" Bauer"
+
+#~ msgid "http://my.stargazer.at/"
+#~ msgstr "http://my.stargazer.at/"
 
 

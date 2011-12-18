@@ -21,6 +21,7 @@ WP-BlackCheck combines various ideas to protect your blog from spam.
 * Statistics
 
 = Languages =
+* Albanian (thanks to Taulant Ceka - http://sem.al)
 * English
 * German
 

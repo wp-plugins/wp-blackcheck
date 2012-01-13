@@ -2,7 +2,7 @@
 /**
  * @package WP-Blackcheck-Admin
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.0
+ * @version 2.6.1
  */
 /*
  * Function library used with WP-BlackCheck
@@ -31,7 +31,7 @@ echo sprintf ( __('For more information visit <a href="%s" target="_blank">this 
 echo sprintf ( __('If you found a bug, please report it at <a href="%s" target="_blank">this page</a>.', 'wp-blackcheck'), 'http://bugs.stargazer.at/' ) . '</p>';
 ?>
 
-<div border="1"><canvas width="400" height="180" id="canvas"></canvas></div>
+<div border="1"><canvas width="400" height="200" id="canvas"></canvas></div>
 
 <?php
 
@@ -44,6 +44,7 @@ if(isset($_POST['submitted'])) {
         update_option('wpbc_counter_link', '0');
         update_option('wpbc_counter_tbvia', '0');
         update_option('wpbc_counter_tburl', '0');
+        update_option('wpbc_counter_report', '0');
 } else {
 	echo '<form name="wpbc-stats" action="" method="post">';
 	echo '<div class="submit"><input type="hidden" name="submitted" /><input type="submit" name="Submit" value="';
@@ -77,16 +78,18 @@ window.onload = function() {
 	ctx.fillText("<?php echo get_option('wpbc_counter_blacklist'); ?>",  210, 135);
 	ctx.fillText("Total:",  0, 155);
 	ctx.fillText("<?php echo get_option('blackcheck_spam_count'); ?>",  210, 155);
+	ctx.fillText("Reported IPs:",  0, 185);
+	ctx.fillText("<?php echo get_option('wpbc_counter_report'); ?>",  210, 185);
 
 
 	ctx.fillStyle = "rgb(200,0,0)";
-	ctx.fillRect (237, 6, 	<?php echo wpbc_percentage_bar('wpbc_counter_tbvia'); ?>, 10);
-	ctx.fillRect (237, 26,  <?php echo wpbc_percentage_bar('wpbc_counter_tburl'); ?>, 10);
-	ctx.fillRect (237, 46,  <?php echo wpbc_percentage_bar('wpbc_counter_spamqueue'); ?>, 10);
-	ctx.fillRect (237, 66,  <?php echo wpbc_percentage_bar('wpbc_counter_bbcode'); ?>, 10);
-	ctx.fillRect (237, 86,  <?php echo wpbc_percentage_bar('wpbc_counter_link'); ?>, 10);
-	ctx.fillRect (237, 106, <?php echo wpbc_percentage_bar('wpbc_counter_speed'); ?>, 10);
-	ctx.fillRect (237, 126, <?php echo wpbc_percentage_bar('wpbc_counter_blacklist'); ?>, 10);
+	ctx.fillRect (240, 6, 	<?php echo wpbc_percentage_bar('wpbc_counter_tbvia'); ?>, 10);
+	ctx.fillRect (240, 26,  <?php echo wpbc_percentage_bar('wpbc_counter_tburl'); ?>, 10);
+	ctx.fillRect (240, 46,  <?php echo wpbc_percentage_bar('wpbc_counter_spamqueue'); ?>, 10);
+	ctx.fillRect (240, 66,  <?php echo wpbc_percentage_bar('wpbc_counter_bbcode'); ?>, 10);
+	ctx.fillRect (240, 86,  <?php echo wpbc_percentage_bar('wpbc_counter_link'); ?>, 10);
+	ctx.fillRect (240, 106, <?php echo wpbc_percentage_bar('wpbc_counter_speed'); ?>, 10);
+	ctx.fillRect (240, 126, <?php echo wpbc_percentage_bar('wpbc_counter_blacklist'); ?>, 10);
 
 	ctx.fillStyle = "rgb(0,0,0)";
 	ctx.fillRect (0, 140, 400, 2);

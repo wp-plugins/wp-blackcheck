@@ -21,7 +21,7 @@ WP-BlackCheck combines various ideas to protect your blog from spam.
 * Statistics
 
 = Languages =
-* Albanian (thanks to Taulant Ceka - http://sem.al)
+* Albanian (thanks to Taulant Ceka - http://sem.al )
 * English
 * German
 
@@ -67,6 +67,11 @@ Spammers usually hit quite a few servers with their IPs. It's pretty uncommon th
 The plugin comes with a file named wp-blackcheck.pot which contains the messages printed. Feel free to translate it into your language and send the .mo and .po file back to me, so I can include it into the next release.
 
 == Changelog ==
+
+= 2.6.1 =
+* Add counter for reported IPs
+* Fix bar graph text issue
+* New Webservice URL
 
 = 2.6.0 =
 * Improve trackback/pingback checks

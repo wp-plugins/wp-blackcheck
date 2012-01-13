@@ -2,14 +2,14 @@
 /**
  * @package WP-BlackCheck
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.0
+ * @version 2.6.1
  */
 /*
 Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 2.6.0
+Version: 2.6.1
 Author URI: http://my.stargazer.at/
 
     Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
@@ -28,7 +28,7 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-define('WPBC_VERSION', '2.6.0');
+define('WPBC_VERSION', '2.6.1');
 define('WPBC_SERVER', 'www.stargazer.at');
 
 // define('WPBC_LOGFILE', '');
@@ -40,7 +40,7 @@ include ('precheck.inc.php');
 // Check an IP
 function wpbc_do_check($userip) {
 	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.urlencode(get_option('home'));
-	$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
+	$response = wpbc_do_request($querystring, WPBC_SERVER, '/webservice/query.php');
 	return $response;
 }
 
@@ -49,7 +49,8 @@ function wpbc_do_report($userip) {
 	$response = wpbc_do_check($userip);
 	if ($response[1] == "NOT LISTED") {
 		$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.urlencode(get_option('home'));
-		$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
+		$response = wpbc_do_request($querystring, WPBC_SERVER, '/webservice/query.php');
+		update_option('wpbc_counter_report', get_option('wpbc_counter_report') + 1 );
 		return $response;
 	}
 }

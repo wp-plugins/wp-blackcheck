@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.0
+ * @version 2.6.1
  */
 /*
  Function library used with WP-BlackCheck
@@ -61,7 +61,7 @@ function wpbc_check_spam_queue($limit='-1') {
 function wpbc_version() {
 	if (get_option('wpbc_updatenotice') == 'on') {
 		$querystring = 'mode=wp-plugver&bloghost='.urlencode(get_option('home'));
-		$response = wpbc_do_request($querystring, WPBC_SERVER, '/blacklist/query.php');
+		$response = wpbc_do_request($querystring, WPBC_SERVER, '/webservice/query.php');
 		$serverversion = explode('.', (string)$response[1]);
 		$plugversion = explode('.', WPBC_VERSION);
 
@@ -215,6 +215,7 @@ function wpbc_install() {
                 update_option('wpbc_counter_link', '0');
                 update_option('wpbc_counter_tbvia', '0');
                 update_option('wpbc_counter_tburl', '0');
+		update_option('wpbc_counter_report', '0');
 
 	}
 }

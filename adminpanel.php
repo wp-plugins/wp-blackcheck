@@ -2,7 +2,7 @@
 /**
  * @package WP-Blackcheck-Admin
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.0
+ * @version 2.6.1
  */
 /*
  * Function library used with WP-BlackCheck
@@ -72,6 +72,7 @@ if(isset($_POST['submitted'])) {
 		update_option('wpbc_counter_link', '0');
 		update_option('wpbc_counter_tbvia', '0');
 		update_option('wpbc_counter_tburl', '0');
+		update_option('wpbc_counter_report', '0');
 	}
 	if ($_POST['wpbc_clear_akismet_stats']) update_option('akismet_spam_count', '0');
 

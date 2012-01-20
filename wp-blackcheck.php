@@ -170,7 +170,7 @@ function wpbc_blackcheck($comment) {
 function wpbc_get_comments_approved( $comment_author_email, $comment_author ) {
 	global $wpdb;
 	if ( !empty($comment_author_email) )
-		return $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$comment_author' AND comment_author_email = 'comment_author_email' and comment_approved = '1' LIMIT 1");
+		return $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$comment_author' AND comment_author_email = '$comment_author_email' and comment_approved = '1' LIMIT 1");
 	return 0;
 }
 

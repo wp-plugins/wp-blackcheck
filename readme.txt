@@ -68,6 +68,9 @@ The plugin comes with a file named wp-blackcheck.pot which contains the messages
 
 == Changelog ==
 
+= 2.6.2 =
+* fix wpbc_get_comments_approved
+
 = 2.6.1 =
 * Add counter for reported IPs
 * Fix bar graph text issue

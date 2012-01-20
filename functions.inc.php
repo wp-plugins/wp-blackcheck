@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.1
+ * @version 2.6.2
  */
 /*
  Function library used with WP-BlackCheck

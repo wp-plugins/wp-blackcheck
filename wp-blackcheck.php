@@ -2,14 +2,14 @@
 /**
  * @package WP-BlackCheck
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.1
+ * @version 2.6.2
  */
 /*
 Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
 Author: Christoph "Stargazer" Bauer
-Version: 2.6.1
+Version: 2.6.2
 Author URI: http://my.stargazer.at/
 
     Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
@@ -28,7 +28,7 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-define('WPBC_VERSION', '2.6.1');
+define('WPBC_VERSION', '2.6.2');
 define('WPBC_SERVER', 'www.stargazer.at');
 
 // define('WPBC_LOGFILE', '');

@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-Functions
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.2
+ * @version 2.7.0
  */
 /*
  Function library used with WP-BlackCheck
@@ -22,6 +22,36 @@
 
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
+
+// Hostname for our blog
+function wpbc_get_host() {
+	return urlencode(parse_url(get_option('home'), PHP_URL_HOST));
+}
+
+// Check an IP
+function wpbc_do_check($userip) {
+	$querystring = 'user_ip='.$userip.'&mode=query&bloghost='.wpbc_get_host();
+	$response = wpbc_do_request($querystring, WPBC_SERVER, '/webservice/query.php');
+	return $response;
+}
+
+// Check Hash
+function wpbc_check_hash($hash) {
+	$querystring = 'comment='.$hash.'&mode=hash&bloghost='.wpbc_get_host();
+	$response = wpbc_do_request($querystring, WPBC_SERVER, '/webservice/query.php');
+	return $response;
+}
+
+// Report an IP
+function wpbc_do_report($userip) {
+	$response = wpbc_do_check($userip);
+	if ($response[1] == "NOT LISTED") {
+		$querystring = 'user_ip='.$userip.'&mode=report&bloghost='.wpbc_get_host();
+		$response = wpbc_do_request($querystring, WPBC_SERVER, '/webservice/query.php');
+		update_option('wpbc_counter_report', get_option('wpbc_counter_report') + 1 );
+		return $response;
+	}
+}
 
 // Actual reporting happens here
 //- we loop through the comments
@@ -60,7 +90,7 @@ function wpbc_check_spam_queue($limit='-1') {
 // Version check
 function wpbc_version() {
 	if (get_option('wpbc_updatenotice') == 'on') {
-		$querystring = 'mode=wp-plugver&bloghost='.urlencode(get_option('home'));
+		$querystring = 'mode=wp-plugver&bloghost='.wpbc_get_host();
 		$response = wpbc_do_request($querystring, WPBC_SERVER, '/webservice/query.php');
 		$serverversion = explode('.', (string)$response[1]);
 		$plugversion = explode('.', WPBC_VERSION);
@@ -107,7 +137,7 @@ function wpbc_do_request($request, $host, $path, $port = 80) {
 			'User-Agent'		=> "WordPress/$wp_version | CheckBlack/" . WPBC_VERSION,
 		     ),
 		     'httpversion'	=> '1.0',
-		     'timeout'		=> 15
+		     'timeout'		=> 50
 		);
 		$myurl = 'http://' . $host . $path;
 
@@ -129,7 +159,7 @@ function wpbc_do_request($request, $host, $path, $port = 80) {
 		$http_request .= $request;
 
 		$response = '';
-		if( false != ( $fs = @fsockopen($host, $port, $errno, $errstr, 10) ) ) {
+		if( false != ( $fs = @fsockopen($host, $port, $errno, $errstr, 50) ) ) {
 			fwrite($fs, $http_request);
 
 			while ( !feof($fs) )
@@ -197,7 +227,7 @@ function wpbc_install() {
 		update_option('wpbc_nobbcode', 			'');
 		update_option('wpbc_nobbcode_autoreport',	'');
 		update_option('wpbc_timecheck', 		'on');
-		update_option('wpbc_timecheck_autoreport',	'');
+		update_option('wpbc_timecheck_autoreport',	'on');
 		update_option('wpbc_linklimit',			'');
 		update_option('wpbc_linklimit_number',		'2');
 		update_option('wpbc_trackback_list', 		'');
@@ -205,6 +235,9 @@ function wpbc_install() {
 		update_option('wpbc_autopurge',           	'');
 		update_option('wpbc_emailnotice',           	'');
 		update_option('wpbc_updatenotice',           	'on');
+		update_option('wpbc_redirect',			'on');
+		update_option('wpbc_redirect_to',		'http://www.fbi.gov/wanted/wanted_terrorists');
+		update_option('wpbc_hash',			'');
 
 		// Zero stats
 		update_option('blackcheck_spam_count', '0');
@@ -215,6 +248,7 @@ function wpbc_install() {
                 update_option('wpbc_counter_link', '0');
                 update_option('wpbc_counter_tbvia', '0');
                 update_option('wpbc_counter_tburl', '0');
+		update_option('wpbc_counter_hash', '0');
 		update_option('wpbc_counter_report', '0');
 
 	}
@@ -235,6 +269,9 @@ function wpbc_reset() {
 	update_option('wpbc_autopurge',			'');
 	update_option('wpbc_emailnotice',           	'');
 	update_option('wpbc_updatenotice',           	'on');
+	update_option('wpbc_redirect',			'on');
+	update_option('wpbc_redirect_to',               'http://www.fbi.gov/wanted/wanted_terrorists');
+	update_option('wpbc_hash',			'');
 }
 
 // Locales loading
@@ -281,8 +318,22 @@ function wpbc_counter($counter) {
 		case 'link':
 			update_option( 'wpbc_counter_link', get_option('wpbc_counter_link') + 1 );
 			break;
+		case 'hash':
+			update_option( 'wpbc_counter_hash', get_option('wpbc_counter_hash') + 1 );
+			break;
 	}
 }
 
+
+// Spam goes to?
+function wp_spammer($message) {
+	if ( get_option('wpbc_redirect') ){
+		wp_redirect(get_option('wpbc_redirect_to'));
+		// header('Location: ' . get_option('wpbc_redirect_to') );
+		exit;
+	} else {
+		wp_die($message);
+	}
+}
 
 ?>

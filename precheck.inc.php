@@ -2,7 +2,7 @@
 /**
  * @package WP-BlackCheck-PreChecks
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.2
+ * @version 2.7.0
  */
 /*
  * Function library used with WP-BlackCheck
@@ -31,7 +31,7 @@ function wpbc_pc_already_spam($userip) {
 	if ($hitcount > 2) {
 		wpbc_counter('squeue');
 		// we already have his spam at least 3 times - so let's just die.
-		wp_die( __('You have already submitted too many comments at once. Please wait before posting the next comment.', 'wp-blackcheck') );
+		wp_spammer( __('You have already submitted too many comments at once. Please wait before posting the next comment.', 'wp-blackcheck') );
 	}
 }
 
@@ -40,7 +40,7 @@ function wpbc_pc_nobbcode($comment) {
 	if (preg_match('|\[url(\=.*?)?\]|is', $comment['comment_content'])) {
 		if ( get_option('wpbc_nobbcode_autoreport') ) $response = wpbc_do_report($comment->comment_author_IP);
 		wpbc_counter('bbCode');
-		wp_die( __('Your comment was rejected because it contains <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a>. This blog does not use BBCode.', 'wp-blackcheck') );
+		wp_spammer( __('Your comment was rejected because it contains <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a>. This blog does not use BBCode.', 'wp-blackcheck') );
 	}
 }
 
@@ -52,14 +52,14 @@ function wpbc_pc_speedlimit($comment) {
 		// The bot could have messed with our form field.
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
 		wpbc_counter('speed');
-		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
+		wp_spammer( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
 
 	// Someone did change our form field for sure.
 	if (!is_numeric($start)) {
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
 		wpbc_counter('speed');
-		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
+		wp_spammer( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
 
 	$finish = $_SERVER['REQUEST_TIME'];
@@ -71,7 +71,7 @@ function wpbc_pc_speedlimit($comment) {
 	if ($totaltime < ($charnum / 6) ) {
 		wpbc_counter('speed');
 		if (get_option('wpbc_timecheck_autoreport')) $response = wpbc_do_report($comment->comment_author_IP);
-		wp_die( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
+		wp_spammer( __('Slow down, cowboy! Speed kills.', 'wp-blackcheck') );
 	}
 
 }
@@ -82,7 +82,17 @@ function wpbc_pc_linklimit($comment) {
 	$linkCount = preg_match_all("|(href\t*?=\t*?['\"]?)?(https?:)?//|i", $comment['comment_content'], $out);
 	if ($linkCount > $linklimit) {
 		wpbc_counter('link');
-		wp_die( sprintf( __("This blog has a limit of %d hyperlinks per comment.", 'wp-blackcheck'), $linklimit));
+		wp_spammer( sprintf( __("This blog has a limit of %d hyperlinks per comment.", 'wp-blackcheck'), $linklimit));
 	}
 }
+
+// PreCheck - Comment Hash
+function wpbc_pc_commenthash($comment) {
+	$response = wpbc_check_hash (( hash('sha256', $comment['comment_content'], false) ));
+	if ($response[1] != "NOT LISTED") {
+		wpbc_counter('hash');
+		wp_spammer( __('This is a well known spam comment.', 'wp-blackcheck') );
+	}
+}
+
 ?>

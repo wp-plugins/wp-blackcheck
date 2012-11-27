@@ -3,7 +3,7 @@ Contributors: Stargazer
 Donate link: http://my.stargazer.at/wishlist/
 Tags: comments,spam,blacklist
 Requires at least: 2.9
-Tested up to: 3.4
+Tested up to: 3.5
 Stable tag: trunk
 
 WP-BlackCheck is an Anti-Spam Solution for Wordpress blocking spam using local detection and a centralized Blacklist Service.
@@ -67,6 +67,12 @@ Spammers usually hit quite a few servers with their IPs. It's pretty uncommon th
 The plugin comes with a file named wp-blackcheck.pot which contains the messages printed. Feel free to translate it into your language and send the .mo and .po file back to me, so I can include it into the next release.
 
 == Changelog ==
+
+= 2.7.0 =
+* Implement redirection of spammers (i.e. send them to the fbi website)
+* Implement comment hash checking
+* relocate some functions to functions.inc.php (where they should be)
+* Increase HTTP Timeout for Web-Requests to avoid some server problems
 
 = 2.6.2 =
 * fix wpbc_get_comments_approved

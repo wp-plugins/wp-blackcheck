@@ -2,7 +2,7 @@
 /**
  * @package WP-Blackcheck-Admin
  * @author Christoph "Stargazer" Bauer
- * @version 2.6.2
+ * @version 2.7.0
  */
 /*
  * Function library used with WP-BlackCheck
@@ -40,6 +40,9 @@ if(isset($_POST['submitted'])) {
 	update_option('wpbc_autopurge', 	$_POST['wpbc_autopurge']);
 	update_option('wpbc_updatenotice',  	$_POST['wpbc_updatenotice']);
 	update_option('wpbc_emailnotice',  	$_POST['wpbc_emailnotice']);
+	update_option('wpbc_redirect',  	$_POST['wpbc_redirect']);
+	update_option('wpbc_redirect_to',  	$_POST['wpbc_redirect_to']);
+	update_option('wpbc_hash',  		$_POST['wpbc_hash']);
 
 
 	// Special option treatment
@@ -72,6 +75,7 @@ if(isset($_POST['submitted'])) {
 		update_option('wpbc_counter_link', '0');
 		update_option('wpbc_counter_tbvia', '0');
 		update_option('wpbc_counter_tburl', '0');
+		update_option('wpbc_counter_hash', '0');
 		update_option('wpbc_counter_report', '0');
 	}
 	if ($_POST['wpbc_clear_akismet_stats']) update_option('akismet_spam_count', '0');
@@ -100,6 +104,9 @@ $wpbc_version			= get_option('wpbc_version');
 $wpbc_autopurge         	= get_option('wpbc_autopurge');
 $wpbc_updatenotice		= get_option('wpbc_updatenotice');
 $wpbc_emailnotice		= get_option('wpbc_updatenotice');
+$wpbc_redirect			= get_option('wpbc_redirect');
+$wpbc_redirect_to		= get_option('wpbc_redirect_to');
+$wpbc_hash			= get_option('wpbc_hash');
 ?>
 
 
@@ -144,6 +151,24 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 			<td>&nbsp;</td>
 			<td><input name="wpbc_emailnotice" type="checkbox" value="on" <?php if($wpbc_emailnotice == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
+
+		<tr>
+			<td><?php _e('Redirect spammers instead of giving an error:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_redirect" type="checkbox" value="on" <?php if($wpbc_redirect == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
+
+		<?php
+		if ($wpbc_redirect) {
+		?>
+		<tr>
+			<td><?php _e('Redirect spammers to:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_redirect_to" type="text" size="50" maxlength="100" value="<?php echo $wpbc_redirect_to; ?>"/></td>
+		</tr>
+		<?php
+		}
+		?>
 
 
 		<tr height="30px">
@@ -208,7 +233,11 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 		<?php
 		}
 		?>
-
+		<tr>
+			<td><?php _e('Comment Hash module:', 'wp-blackcheck'); ?></td>
+			<td>&nbsp;</td>
+			<td><input name="wpbc_hash" type="checkbox" value="on" <?php if($wpbc_hash == 'on') { echo "checked=\"checked\""; } ?> /></td>
+		</tr>
 		<tr height="30px">
 			<td colspan="3"><strong><?php _e('Pingback / Trackback Settings:', 'wp-blackcheck'); ?></strong></td>
 		</tr>

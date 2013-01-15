@@ -83,7 +83,7 @@ function wpbc_blackcheck($comment) {
 					foreach ($remoteLinks as $loopLink) {
 						$loopLink = preg_replace('/(\/|\/trackback|\/trackback\/)$/', '', $loopLink);
 						$BlogLink = get_bloginfo('siteurl');
-						if ( strrpos( $loopLink, $BlogLink ) !== false ) $wpbcBackLink = true;						
+						if ( strrpos( $loopLink, $BlogLink ) !== false ) $wpbcBackLink = true;
 					}
 					if ($wpbcBackLink == false) {
 						wpbc_counter('tburl');
@@ -263,9 +263,9 @@ add_action('admin_notices',		'wpbc_blackcheck_warning');
 add_action('admin_notices', 		'wpbc_version');
 add_action('admin_notices', 		'wpbc_requirements');
 add_action('activate_wp-blackcheck/wp-blackcheck.php', 'wpbc_install');
-add_action('admin_menu', 		    'wpbc_blackcheck_add_page');
-add_action('comment_form', 		    'wpbc_extend_commentform');
-add_action('init', 			        'wpbc_textdomain');
+add_action('admin_menu', 		'wpbc_blackcheck_add_page');
+add_action('comment_form', 		'wpbc_extend_commentform');
+add_action('init', 			'wpbc_textdomain');
 add_action('manage_comments_nav',	'wpbc_report_spam_button');
 add_action('preprocess_comment', 	'wpbc_blackcheck', 1);
 ?>

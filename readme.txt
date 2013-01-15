@@ -24,6 +24,7 @@ WP-BlackCheck combines various ideas to protect your blog from spam.
 * Albanian (thanks to Taulant Ceka - http://sem.al )
 * English
 * German
+* Slovakian (thanks to Black Cat Artworks - http://blackcatartworks.eu/ )
 
 If you want to see this plugin in your language, feel free to contact me or use [transifex.net](https://www.transifex.net/projects/p/wpbc/resource/plugin/) to contribute.
 

@@ -1,18 +1,18 @@
 <?php
 /**
  * @package WP-BlackCheck
- * @author Christoph "Stargazer" Bauer
- * @version 2.7.0
+ * @author Viktoria Rei Bauer
+ * @version 2.7.1
  */
 /*
 Plugin Name: WP-BlackCheck
 Plugin URI: http://www.stargazer.at/projects#
 Description: This plugin is a simple blacklisting checker that works with our hosts
-Author: Christoph "Stargazer" Bauer
-Version: 2.7.0
+Author: Viktoria Rei Bauer
+Version: 2.7.1
 Author URI: http://my.stargazer.at/
 
-    Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
+    Copyright 2011 Viktoria Rei Bauer  (email : blackcheck@stargazer.at)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as

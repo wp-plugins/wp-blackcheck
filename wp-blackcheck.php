@@ -28,7 +28,7 @@ Author URI: http://my.stargazer.at/
 // Securing against direct calls
 if (!defined('ABSPATH')) die("Called directly. Taking the emergency exit.");
 
-define('WPBC_VERSION', '2.7.0');
+define('WPBC_VERSION', '2.7.1');
 define('WPBC_SERVER', 'www.stargazer.at');
 
 // define('WPBC_LOGFILE', '');

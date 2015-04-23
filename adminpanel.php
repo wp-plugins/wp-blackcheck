@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP-Blackcheck-Admin
- * @author Christoph "Stargazer" Bauer
- * @version 2.7.0
+ * @author Viktoria Rei Bauer
+ * @version 2.7.1
  */
 /*
  * Function library used with WP-BlackCheck
  *
- * Copyright 2011 Christoph Bauer  (email : cbauer@stargazer.at)
+ * Copyright 2011 Viktoria Rei Bauer  (email : blackcheck@stargazer.at)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -158,17 +158,11 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 			<td><input name="wpbc_redirect" type="checkbox" value="on" <?php if($wpbc_redirect == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
 
-		<?php
-		if ($wpbc_redirect) {
-		?>
 		<tr>
 			<td><?php _e('Redirect spammers to:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_redirect_to" type="text" size="50" maxlength="100" value="<?php echo $wpbc_redirect_to; ?>"/></td>
 		</tr>
-		<?php
-		}
-		?>
 
 
 		<tr height="30px">
@@ -185,18 +179,13 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 			<td>&nbsp;</td>
 			<td><input name="wpbc_nobbcode" type="checkbox" value="on" <?php if($wpbc_nobbcode == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
-
-		<?php
-		if ($wpbc_nobbcode) {
-		?>
+		
 		<tr>
 			<td><?php _e('Automatically report IPs that try to send bbCode-Links:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_nobbcode_autoreport" type="checkbox" value="on" <?php if($wpbc_nobbcode_autoreport == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
-		<?php
-		}
-		?>
+		
 
 		<tr>
 			<td><?php _e('Use speed-limit for comments (Check keystrokes per second):', 'wp-blackcheck'); ?></td>
@@ -204,35 +193,24 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 			<td><input name="wpbc_timecheck" type="checkbox" value="on" <?php if($wpbc_timecheck == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
 
-		<?php
-		if ($wpbc_timecheck) {
-		?>
 		<tr>
 			<td><?php _e('Automatically report IPs that break speed-limits:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_timecheck_autoreport" type="checkbox" value="on" <?php if($wpbc_timecheck_autoreport == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
 
-		<?php
-		}
-		?>
-
 		<tr>
 			<td><?php _e('Block comments having too many links:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_linklimit" type="checkbox" value="on" <?php if($wpbc_linklimit == 'on') { echo "checked=\"checked\""; } ?> /></td>
 		</tr>
-		<?php
-		if ($wpbc_linklimit) {
-		?>
+		
 		<tr>
 			<td><?php _e('Maximum number of links:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
 			<td><input name="wpbc_linklimit_number" type="text" size="5" maxlength="2" value="<?php echo $wpbc_linklimit_number; ?>"/></td>
 		</tr>
-		<?php
-		}
-		?>
+		
 		<tr>
 			<td><?php _e('Comment Hash module:', 'wp-blackcheck'); ?></td>
 			<td>&nbsp;</td>
@@ -265,13 +243,7 @@ echo '<h3>' . __('Settings', 'wp-blackcheck') . '</h3>';
 			<td>&nbsp;</td>
 			<td><input name="wpbc_clear_wpbc_stats" type="checkbox" value="on" /></td>
 		</tr>
-<?php if (function_exists('akismet_init')) { ?>
-		<tr>
-			<td><?php _e('Reset Akismet stats', 'wp-blackcheck'); ?> (<?php echo get_option('akismet_spam_count'); ?>):</td>
-			<td>&nbsp;</td>
-			<td><input name="wpbc_clear_akismet_stats" type="checkbox" value="on" /></td>
-		</tr>
-<?php } ?>
+
 		<tr height="30px">
 			<td colspan="3"><strong><?php _e('Factory Reset', 'wp-blackcheck'); ?></strong></td>
 		</tr>
